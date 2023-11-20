@@ -1,12 +1,13 @@
 import express from "express";
+import userRouter from "./users/usersRoutes";
 const app = express();
 import chalk from "chalk";
 import cors from "cors";
 require('dotenv').config();
 
-
 app.use(cors());
 app.use(express.json());
+app.use("/api/users", userRouter);
 
 
 const PORT = 8181;
