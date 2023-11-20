@@ -9,6 +9,7 @@ import pool from "./PostgreSQL/PostgreSQL";
 app.use(cors());
 app.use(express.json());
 app.use("/api/users", userRouter);
+app.use("/api/auth",userRouter);
 
 
 const PORT = 8181;

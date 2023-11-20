@@ -8,8 +8,9 @@ export const registerController = async (req: Request, res: Response) => {
     try {
       const user :UserInterface = req.body;
       const users = await registerService(user);
-      
-      if (users) return res.status(200).json({users : users});
+      const accessToken = Jwt.sign({ users }, 'secretKey', { expiresIn: '1h' });
+      const refreshToken = Jwt.sign({ users }, 'secretKey', { expiresIn: '1d' });
+      if (users) return res.status(200).header('Authorization',accessToken).json({users : users,refreshToken: refreshToken});
       else {
         return res.status(404).json({ message: "No Users found" });
       }
