@@ -1,5 +1,5 @@
-import { UserInterface } from "./userInterface";
-import { loginDal, registerDal } from "./userDal";
+import { UserInterface } from "../interfaces/userInterface";
+import { loginDal, registerDal } from "../users/userDal";
 
 export const registerService = async (user: UserInterface) => {
     try {

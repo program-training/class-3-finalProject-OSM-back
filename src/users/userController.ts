@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
 import Jwt from "jsonwebtoken"
-import { UserInterface } from "./userInterface";
+import { UserInterface } from "../interfaces/userInterface";
 import { registerService } from "./userService";
 
 
 export const registerController = async (req: Request, res: Response) => {
     try {
       const user :UserInterface = req.body;
+      console.log(user)
       const users = await registerService(user);
       const accessToken = Jwt.sign({ users }, 'secretKey', { expiresIn: '1h' });
       const refreshToken = Jwt.sign({ users }, 'secretKey', { expiresIn: '1d' });
