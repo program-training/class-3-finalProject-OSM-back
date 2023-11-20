@@ -1,5 +1,6 @@
 import express from "express";
 import userRouter from "./users/usersRoutes";
+import { createUsersTable } from "./users/userDal";
 const app = express();
 import chalk from "chalk";
 import cors from "cors";
@@ -16,4 +17,5 @@ const PORT = 8181;
 app.listen(PORT, async () => {
   console.log(chalk.blueBright(`Server listening on port: ${PORT}`));
    pool
+  
 });
