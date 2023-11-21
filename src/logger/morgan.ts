@@ -16,8 +16,7 @@ const morganLogger = morgan((tokens, req: CustomRequest , res) => {
     tokens.status(req, res),
     "-",
     tokens["response-time"](req, res),
-    "MS",
-    `User: ${req.user?.email}`
+    "MS"
   ].join(" ");
 
   if (+status! >= 400) return chalk.redBright(morganString);
