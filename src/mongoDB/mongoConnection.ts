@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+require("dotenv").config();
 export default async function connectToDatabase() {
  try {
     const uri = `mongodb+srv://${process.env.USER_NAME_MONGODB_ATLAS}:${process.env.PASSWORD_MONGODB_ATLAS}@cluster0.lyeaoqp.mongodb.net/?retryWrites=true&w=majority`;
@@ -9,4 +9,5 @@ export default async function connectToDatabase() {
  catch (error) {
     console.error('Error connecting to MongoDB:', error);
  }
+ 
 }
