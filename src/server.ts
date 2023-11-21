@@ -1,5 +1,6 @@
 import express from "express";
 import userRouter from "./users/usersRoutes";
+import { createUsersTable } from "./users/userDal";
 const app = express();
 import chalk from "chalk";
 import cors from "cors";

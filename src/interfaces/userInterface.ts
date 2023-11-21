@@ -1,5 +1,5 @@
 export interface UserInterface{
     email: string,
     password: string,
-    isAdmin: boolean
+    isadmin: boolean
 }
