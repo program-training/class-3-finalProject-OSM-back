@@ -1,16 +1,11 @@
-// import express from "express";
-// import {
-//   getAllOrders,
-//   updateByOrderId,
-//   addNewOrder,
-//   getOrdersByUserId,
-// } from "./orderController";
+import express from "express";
+import { handleGetAllOrders, handleUpdateByOrderId, handleAddNewOrder, handleGetOrdersByUserId } from "./orderController";
 
-// const orderRouter = express.Router();
+const orderRouter = express.Router();
 
-// orderRouter.get("/", getAllOrders);
-// orderRouter.put("/:orderId", updateByOrderId);
-// orderRouter.post("/", addNewOrder);
-// orderRouter.get("/:userId", getOrdersByUserId);
+orderRouter.get("/", handleGetAllOrders);
+orderRouter.put("/:orderId", handleUpdateByOrderId);
+orderRouter.post("/", handleAddNewOrder);
+orderRouter.get("/:userId", handleGetOrdersByUserId);
 
-// export default orderRouter;
+export default orderRouter;
