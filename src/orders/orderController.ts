@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 // import Jwt from "jsonwebtoken";
-import { OrderInterface } from "./orderInterface";
+import { OrderInterface } from "../interfaces/orderInterface";
 import { registerService } from "./orderService";
 
 export const getAllOrders = async (req: Request, res: Response) => {
