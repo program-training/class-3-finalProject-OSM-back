@@ -3,6 +3,7 @@ import { userRouter } from "./users/usersRoutes";
 //import orderRouter from "./orders/orderRoutes";
 const app = express();
 import chalk from "chalk";
+import morgan from "morgan";
 import cors from "cors";
 require("dotenv").config();
 import pool from "./PostgreSQL/PostgreSQL";
@@ -11,6 +12,7 @@ import { createUsersTable } from "./users/userDal";
 
 
 app.use(cors());
+app.use(morgan('tiny'))
 app.use(express.json());
 app.use("/api/users", userRouter);
 app.use("/api/auth",userRouter);
