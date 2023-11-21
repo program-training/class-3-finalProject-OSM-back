@@ -45,12 +45,12 @@ export async function registerDal(
   }
 }
 
-export async function loginDal(userId: number): Promise<UserInterface | null> {
+export async function loginDal(userEmail: string): Promise<UserInterface | null> {
   const client = await pool.connect();
 
   try {
-    const result = await client.query("SELECT * FROM users WHERE id = $1", [
-      userId,
+    const result = await client.query("SELECT * FROM users WHERE email = $1", [
+      userEmail,
     ]);
 
     if (result.rows.length > 0) {

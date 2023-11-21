@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import Jwt from "jsonwebtoken"
 import { UserInterface } from "../interfaces/userInterface";
-import { registerService } from "./userService";
+import { registerService,loginService } from "./userService";
+import * as JWT from '../jwt/jwt'
 
 
 export const registerController = async (req: Request, res: Response) => {
@@ -9,8 +10,12 @@ export const registerController = async (req: Request, res: Response) => {
       const user :UserInterface = req.body;
       console.log(user)
       const users = await registerService(user);
-      
-      if (users) return res.status(200).json({users : users});
+      if (users) {
+        const accessToken = JWT.generateAccessToken(user)
+        const refreshToken = JWT.generateRefreshToken(user)
+        JWT.refreshTokens.push(refreshToken)
+        return res.status(200).json({users : user,accessToken: accessToken,refreshToken: refreshToken});
+      }
       else {
         return res.status(404).json({ message: "No Users found" });
       }
@@ -19,3 +24,24 @@ export const registerController = async (req: Request, res: Response) => {
       res.status(500).json({ error: "Server error while retrieving users" });
     }
   }
+
+
+  export const loginController = async (req: Request, res: Response) => {
+    try {
+      const logInUser:UserInterface = req.body;
+      const user = await loginService(logInUser);
+      if (user) {
+        const accessToken = JWT.generateAccessToken(user)
+        const refreshToken = JWT.generateRefreshToken(user)
+        JWT.refreshTokens.push(refreshToken)
+        return res.status(200).json({users : user,accessToken: accessToken,refreshToken: refreshToken});
+      }
+      return res.status(404).json({ message: "No users found" });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Server error while retrieving users" });
+    }
+  };
+
+
+  
