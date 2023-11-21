@@ -1,5 +1,5 @@
 import express from "express";
-import userRouter from "./users/usersRoutes";
+import { userRouter } from "./users/usersRoutes";
 import orderRouter from "./orders/orderRoutes";
 const app = express();
 import chalk from "chalk";
