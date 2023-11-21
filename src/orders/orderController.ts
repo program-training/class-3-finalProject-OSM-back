@@ -1,64 +1,52 @@
-import { Request, Response } from "express";
-// import Jwt from "jsonwebtoken";
-import { OrderInterface } from "../interfaces/orderInterface";
-import { registerService } from "./orderService";
+import { Types } from 'mongoose';
+import { Request, Response } from 'express';
+import {OrderInterface} from '../interfaces/orderInterface';
+import {
+  getAllOrdersService,
+  updateByOrderIdService,
+  addNewOrderService,
+  getOrdersByUserIdService,
+} from './orderService';
+import { handleError } from '../utils/handleErrors';
 
-export const getAllOrders = async (req: Request, res: Response) => {
+export const handleGetAllOrders = async (req: Request, res: Response) => {
   try {
-    const order: OrderInterface = req.body;
-    const orders = await registerService(order);
-
-    if (orders) return res.status(200).json({ users: orders });
-    else {
-      return res.status(404).json({ message: "No orders found" });
-    }
+    const orders = await getAllOrdersService();
+    res.send(orders);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server error while retrieving orders" });
+    handleError(res, error);
   }
 };
 
-export const updateByOrderId = async (req: Request, res: Response) => {
+export const handleUpdateByOrderId = async (req: Request, res: Response) => {
   try {
-    const order: OrderInterface = req.body;
-    const orders = await registerService(order);
-
-    if (orders) return res.status(200).json({ users: orders });
-    else {
-      return res.status(404).json({ message: "No orders found" });
-    }
+    const orderId = new Types.ObjectId(req.params.orderId);
+    const updatedData = req.body as OrderInterface;
+    const updatedOrder = await updateByOrderIdService(orderId, updatedData);
+    res.send(updatedOrder);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server error while retrieving orders" });
+    handleError(res, error);
   }
 };
 
-export const addNewOrder = async (req: Request, res: Response) => {
+export const handleAddNewOrder = async (req: Request, res: Response) => {
   try {
-    const order: OrderInterface = req.body;
-    const orders = await registerService(order);
-
-    if (orders) return res.status(200).json({ users: orders });
-    else {
-      return res.status(404).json({ message: "No orders found" });
-    }
+    const orderData = req.body as OrderInterface;
+    const newOrder = await addNewOrderService(orderData);
+    res.send(newOrder);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server error while retrieving orders" });
+    handleError(res, error);
   }
 };
 
-export const getOrdersByUserId = async (req: Request, res: Response) => {
+export const handleGetOrdersByUserId = async (req: Request, res: Response) => {
   try {
-    const order: OrderInterface = req.body;
-    const orders = await registerService(order);
-
-    if (orders) return res.status(200).json({ users: orders });
-    else {
-      return res.status(404).json({ message: "No orders found" });
-    }
+    const userId = req.params.userId;
+    console.log(userId, "controller");
+    const ordersByUser = await getOrdersByUserIdService(userId);
+    res.send(ordersByUser);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Server error while retrieving orders" });
+    handleError(res, error);
   }
 };
+

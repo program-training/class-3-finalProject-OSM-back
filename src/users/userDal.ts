@@ -12,7 +12,7 @@ export async function createUsersTable(): Promise<void> {
         isadmin BOOLEAN DEFAULT false)
     `);
 
-    console.log("Users table created or already exists.");
+    // console.log("Users table created or already exists.");
   } catch (error) {
     console.error("Error creating users table:", (error as Error).message);
   }
@@ -24,8 +24,16 @@ export async function registerDal(
   const client = await pool.connect();
 
   try {
+    const existingUserCheck = await client.query(
+      "SELECT * FROM users WHERE email = $1",
+      [user.email]
+    );
+
+    if (existingUserCheck.rows.length > 0) {
+      throw new Error("User with this email already exists.");
+    }
     const result = await client.query(
-      "INSERT INTO users ( email, password,isadmin) VALUES ($1, $2,$3) RETURNING * ",
+      "INSERT INTO users (email, password, isadmin) VALUES ($1, $2, $3) RETURNING *",
       [user.email, user.password, user.isadmin || false]
     );
 
@@ -39,18 +47,18 @@ export async function registerDal(
     }
   } catch (error) {
     console.error("Error adding user to the table:", (error as Error).message);
-    return null;
+    throw error;
   } finally {
     client.release();
   }
 }
 
-export async function loginDal(userId: number): Promise<UserInterface | null> {
+export async function loginDal(userEmail: string): Promise<UserInterface | null> {
   const client = await pool.connect();
 
   try {
-    const result = await client.query("SELECT * FROM users WHERE id = $1", [
-      userId,
+    const result = await client.query("SELECT * FROM users WHERE email = $1", [
+      userEmail,
     ]);
 
     if (result.rows.length > 0) {
