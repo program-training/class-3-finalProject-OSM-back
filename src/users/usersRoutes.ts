@@ -1,8 +1,9 @@
-import  express  from "express";
-
+import express from "express";
+import { createUsersTable } from "./userDal";
+import { registerController } from "./userController";
 const userRouter = express.Router();
+createUsersTable();
+userRouter.post("/register", registerController);
+userRouter.post("/login");
 
-userRouter.post("/register");
-userRouter.post('/login');
-
-export default userRouter
+export default userRouter;
