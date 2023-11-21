@@ -7,9 +7,9 @@ import { registerService } from "./userService";
 export const registerController = async (req: Request, res: Response) => {
     try {
       const user :UserInterface = req.body;
-      console.log(user)
+      console.log(user,"user")
       const users = await registerService(user);
-      
+      console.log(users,"users")
       if (users) return res.status(200).json({users : users});
       else {
         return res.status(404).json({ message: "No Users found" });
@@ -19,3 +19,5 @@ export const registerController = async (req: Request, res: Response) => {
       res.status(500).json({ error: "Server error while retrieving users" });
     }
   }
+
+

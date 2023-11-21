@@ -19,3 +19,4 @@ app.listen(PORT, async () => {
    pool
   
 });
+export default app;

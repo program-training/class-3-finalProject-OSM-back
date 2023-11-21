@@ -34,7 +34,7 @@ async function checkConnection() {
 
   try {
     client = await pool.connect();
-    console.log(chalk.yellowBright('Connected to PostgreSQL database'));
+    // console.log(chalk.yellowBright('Connected to PostgreSQL database'));
   } catch (error) {
     console.error('Error connecting to PostgreSQL:', (error as Error).message);
   } finally {

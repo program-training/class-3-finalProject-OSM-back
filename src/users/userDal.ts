@@ -12,7 +12,7 @@ export async function createUsersTable(): Promise<void> {
         isadmin BOOLEAN DEFAULT false)
     `);
 
-    console.log("Users table created or already exists.");
+    // console.log("Users table created or already exists.");
   } catch (error) {
     console.error("Error creating users table:", (error as Error).message);
   }
