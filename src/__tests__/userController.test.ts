@@ -30,8 +30,6 @@ import { registerController } from "../users/userController"; // Replace with th
 //     // expect(response.body.users.email).toEqual(newUser.email);
 //   });
 // });
-
-
 const app = express();
 app.use(express.json()); 
 
@@ -39,17 +37,14 @@ app.post('/api/users/register', registerController);
 
 describe('User Controller', () => {
   test('Register a new user', async () => {
-    const newUser = {
-      email: 'test@example3.com',
-      password: 'testpassword',
-      isadmin: false,
-    };
+    const newUser = {"email":"elchi3@gmail.com","password":"1234567e","isadmin":"false"}
 
     const response = await request(app)
       .post('/api/users/register')
       .send(newUser)
       .expect(200);
-    expect(response.body.users).toBeDefined();
-    expect(response.body.users.email).toEqual(newUser.email);
+    const { users } = response.body;
+    expect(users).toBeDefined();
+    expect(users.email).toEqual(newUser.email);
   });
 });
