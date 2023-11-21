@@ -3,14 +3,15 @@ import { userRouter } from "./users/usersRoutes";
 import orderRouter from "./orders/orderRoutes";
 const app = express();
 import chalk from "chalk";
+import morgan from "morgan";
 import cors from "cors";
 require("dotenv").config();
 import pool from "./PostgreSQL/PostgreSQL";
 import connectToDatabase from "./mongoDB/mongoConnection";
-import morgan from "./logger/morgan";
 
-app.use(morgan);
+
 app.use(cors());
+app.use(morgan('tiny'))
 app.use(express.json());
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
@@ -22,3 +23,4 @@ app.listen(PORT, async () => {
    pool
    connectToDatabase(); 
 });
+export default app;
