@@ -25,6 +25,6 @@ const orderSchema = new Schema({
   shippingDetails: shippingDetailsSchema 
 });
 
-export const Product = mongoose.model('Product', productSchema);
-export const ShippingDetails = mongoose.model('ShippingDetails', shippingDetailsSchema);
-export const Order = mongoose.model('Order', orderSchema);
+export const ProductModel = mongoose.model('Product', productSchema);
+export const ShippingDetailsModel = mongoose.model('ShippingDetails', shippingDetailsSchema);
+export const OrderModel = mongoose.model('Order', orderSchema);
