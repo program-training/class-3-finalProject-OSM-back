@@ -14,7 +14,7 @@ export const registerService = async (user: UserInterface) => {
 
   export const loginService = async (user: UserInterface) => {
     try {
-      const result = await loginDal(user.email);
+      const result = await loginDal(user.email,user.password);
       return result;
     } catch (err) {
       console.error("Error reading data:(service)", err);

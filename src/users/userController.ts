@@ -36,7 +36,7 @@ export const registerController = async (req: Request, res: Response) => {
         JWT.refreshTokens.push(refreshToken)
         return res.status(200).json({users : user,accessToken: accessToken,refreshToken: refreshToken});
       }
-      return res.status(404).json({ message: "No users found" });
+      return res.status(404).json({ message: "Incorrect email or password" });
     } catch (error) {
       console.log(error);
       res.status(500).json({ error: "Server error while retrieving users" });
