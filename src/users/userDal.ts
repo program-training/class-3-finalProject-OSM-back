@@ -52,21 +52,19 @@ export async function registerDal(
   }
 }
 
-export async function loginDal(
-  userEmail: string
-): Promise<UserInterface | null> {
+export async function loginDal(userEmail: string,userPassword:string): Promise<UserInterface | null> {
   const client = await pool.connect();
 
   try {
-    const result = await client.query("SELECT * FROM users WHERE email = $1", [
-      userEmail,
+    const result = await client.query("SELECT * FROM users WHERE email = $1 AND password = $2 ", [
+      userEmail,userPassword
     ]);
 
     if (result.rows.length > 0) {
       const userById: UserInterface = result.rows[0];
       return userById;
     } else {
-      console.error("User not found.");
+      console.error("Incorrect email or password");
       return null;
     }
   } catch (error) {
