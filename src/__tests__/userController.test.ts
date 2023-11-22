@@ -11,7 +11,7 @@ import { loginController } from "../users/userController";
 
 describe('User Controller', () => {
   test('Register a new user', async () => {
-    const newUser = {"email":"eeg18PwLOuYTrrd@gmail.com","password":"1234567e","isadmin":"false"}
+    const newUser = {"email":"eeg18PwLOuYTrrrd@gmail.com","password":"1234567e","isadmin":"false"}
 
     const response = await request(app)
       .post('/api/users/register')
