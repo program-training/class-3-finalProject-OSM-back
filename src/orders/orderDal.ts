@@ -9,7 +9,6 @@ type CollectionResult = Promise<Document[] | Error>;
 export const getAllOrders = async (): CollectionResult => {
   try {
     const orders = await OrderModel.find({});
-    console.log(orders);
     
     return orders;
   } catch (error) {
