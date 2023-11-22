@@ -48,6 +48,8 @@ export const addNewOrder = async (orderData: OrderInterface): CollectionResult =
 export const getOrdersByUserId = async (userId: Types.ObjectId): CollectionResult => {
   try {
     const orders = await OrderModel.find({ "shippingDetails.userId": userId });
+    console.log(orders);
+    
     return orders;
   } catch (error) {
     return handleDBResponseError(error);
