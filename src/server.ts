@@ -16,7 +16,7 @@ app.use(express.json());
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
 
-const PORT = 8181;
+const PORT = process.env.PORT;
 
 app.listen(PORT, async () => {
   console.log(chalk.blueBright(`Server listening on port: ${PORT}`));
