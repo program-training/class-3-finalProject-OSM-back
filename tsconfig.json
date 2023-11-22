@@ -13,5 +13,8 @@
       // ... other types
       "@types/jest"
     ]
-  }
+    
+  },"exclude": [
+    "src/__tests__/**"
+  ]
 }

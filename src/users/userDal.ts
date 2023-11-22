@@ -39,7 +39,6 @@ export async function registerDal(
 
     if (result.rows.length > 0) {
       const insertedUser: UserInterface = result.rows[0];
-      console.log("User added to the table:", insertedUser);
       return insertedUser;
     } else {
       console.error("Error inserting user into the table.");
@@ -63,7 +62,6 @@ export async function loginDal(userEmail: string,userPassword:string): Promise<U
 
     if (result.rows.length > 0) {
       const userById: UserInterface = result.rows[0];
-      console.log("User retrieved by ID:", userById);
       return userById;
     } else {
       console.error("Incorrect email or password");

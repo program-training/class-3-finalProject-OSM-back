@@ -47,9 +47,7 @@ export const addNewOrder = async (orderData: OrderInterface): CollectionResult =
 
 export const getOrdersByUserId = async (userId: string): CollectionResult => {
   try {
-    console.log(userId, "dal");
     const orders = await OrderModel.find({ "shippingDetails.userId": userId });
-    console.log(orders);
     return orders;
   } catch (error) {
     return handleDBResponseError(error);

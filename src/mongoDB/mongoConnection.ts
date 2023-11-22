@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 require("dotenv").config();
 export default async function connectToDatabase() {
  try {
-    const uri = process.env.MONGODB_ATLAS_ORDERS as string;
+    const uri = process.env.MONGO_CONNECTION_URI as string;
     await mongoose.connect(uri);
     console.log('Connected to MongoDB');
  }

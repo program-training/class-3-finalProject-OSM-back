@@ -1,6 +1,6 @@
 import chalk from "chalk";
-import { Pool } from 'pg';
-require('dotenv').config();
+import { Pool } from "pg";
+require("dotenv").config();
 const pool = new Pool({
   connectionString: process.env.DATABASE_USERNAME,
   ssl: {
@@ -15,7 +15,7 @@ async function checkConnection() {
     client = await pool.connect();
     // console.log(chalk.yellowBright('Connected to PostgreSQL database'));
   } catch (error) {
-    console.error('Error connecting to PostgreSQL:', (error as Error).message);
+    console.error("Error connecting to PostgreSQL:", (error as Error).message);
   } finally {
     if (client) {
       client.release();
@@ -23,4 +23,4 @@ async function checkConnection() {
   }
 }
 checkConnection();
-export default pool
+export default pool;
