@@ -56,7 +56,7 @@ export const handleDeleteOrdersByOrderId = async (req: Request, res: Response) =
     const orderId = req.params.orderId;
     console.log(orderId, "controller");
     const ordersByUser = await deleteOrdersByOrderIdService(orderId);
-    res.send(ordersByUser);
+    res.send({ message: 'Order deleted successfully'});
   } catch (error) {
     handleError(res, error);
   }
