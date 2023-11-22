@@ -1,5 +1,4 @@
 import express from "express";
-import { createUsersTable } from "./userDal";
 import { registerController,loginController } from "./userController";
 import { validateUser }  from "../validation/validation";
 
