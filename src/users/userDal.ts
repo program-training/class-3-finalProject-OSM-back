@@ -53,7 +53,9 @@ export async function registerDal(
   }
 }
 
-export async function loginDal(userEmail: string): Promise<UserInterface | null> {
+export async function loginDal(
+  userEmail: string
+): Promise<UserInterface | null> {
   const client = await pool.connect();
 
   try {
