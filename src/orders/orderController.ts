@@ -41,10 +41,12 @@ export const handleAddNewOrder = async (req: Request, res: Response) => {
 
 export const handleGetOrdersByUserId = async (req: Request, res: Response) => {
   try {
-    const userId = new Types.ObjectId(req.params.userId) ;
+    const userId = req.params.userId;
+    console.log(userId, "controller");
     const ordersByUser = await getOrdersByUserIdService(userId);
     res.send(ordersByUser);
   } catch (error) {
     handleError(res, error);
   }
 };
+

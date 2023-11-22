@@ -18,6 +18,7 @@ export const getAllOrdersService = async () => {
 
 export const updateByOrderIdService = async (orderId: Types.ObjectId, updatedData: OrderInterface) => {
   try {
+    console.log(orderId);
     const updatedOrderFromDAL = await updateByOrderId(orderId, updatedData);
     return updatedOrderFromDAL;
   } catch (error) {
@@ -36,15 +37,20 @@ export const addNewOrderService = async (orderData: OrderInterface) => {
   }
 };
 
-export const getOrdersByUserIdService = async (userId: Types.ObjectId) => {
+export const getOrdersByUserIdService = async (userId: string) => {
   try {
+    console.log(userId, "service");
     const ordersByUserFromDAL = await getOrdersByUserId(userId);
-    if (!ordersByUserFromDAL) {
+
+    // Use type assertion to explicitly tell TypeScript that you expect an array
+    if (!Array.isArray(ordersByUserFromDAL) || ordersByUserFromDAL.length === 0) {
       throw new Error("No orders found for the given user");
     }
+
     return ordersByUserFromDAL;
   } catch (error) {
     console.log(chalk.redBright(error));
     throw error;
   }
 };
+
