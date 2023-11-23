@@ -1,7 +1,7 @@
 import chalk from "chalk";
 import { Types } from "mongoose";
-import {OrderInterface} from "../interfaces/orderInterface";
-import { getAllOrders, updateByOrderId, addNewOrder, getOrdersByUserId ,deleteByOrderId } from "./orderDal";
+import { OrderInterface } from "../interfaces/orderInterface";
+import { getAllOrders, updateByOrderId, addNewOrder, getOrdersByUserId, deleteByOrderId } from "./orderDal";
 
 export const getAllOrdersService = async () => {
   try {
@@ -54,9 +54,12 @@ export const getOrdersByUserIdService = async (userId: string) => {
   }
 };
 
-export const deleteByOrderIdService = async (orderId: Types.ObjectId) => {
+
+export const deleteOrdersByOrderIdService = async (orderId:string) => {
   try {
-    await deleteByOrderId(orderId);
+    console.log(orderId);
+    const deleteOrderFromDAL = await deleteByOrderId(orderId);
+    // return deleteOrderFromDAL;
   } catch (error) {
     console.log(chalk.redBright(error));
     throw error;

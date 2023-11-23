@@ -54,10 +54,16 @@ export const getOrdersByUserId = async (userId: string): CollectionResult => {
   }
 };
 
-export const deleteByOrderId = async (orderId: Types.ObjectId): Promise<void> => {
+export const deleteByOrderId = async (orderId: string):Promise<void> => {
   try {
-    const deletedOrder = await OrderModel.findByIdAndDelete(orderId);
-    if (!deletedOrder) throw new Error('Order not found!');
+    console.log(orderId, "dal");
+    const orderDelete = await OrderModel.findOneAndDelete({ orderId });
+
+    if (!orderDelete) {
+      console.log(`Order with ID ${orderId} not found`);
+      throw new Error(`Order with ID ${orderId} not found!`);
+    }
+
   } catch (error) {
     return handleDBResponseError(error);
   }
