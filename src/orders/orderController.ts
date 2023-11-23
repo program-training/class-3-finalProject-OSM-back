@@ -6,7 +6,7 @@ import {
   updateByOrderIdService,
   addNewOrderService,
   getOrdersByUserIdService,
-  deleteByOrderIdService
+  deleteOrdersByOrderIdService,
 } from './orderService';
 import { handleError } from '../utils/handleErrors';
 
@@ -34,7 +34,7 @@ export const handleAddNewOrder = async (req: Request, res: Response) => {
   try {
     const orderData = req.body as OrderInterface;
     const newOrder = await addNewOrderService(orderData);
-    res.send(newOrder);
+    res.json({ newOrder:newOrder,productNotFound:res.locals.productNotFound });
   } catch (error) {
     handleError(res, error);
   }
@@ -51,11 +51,12 @@ export const handleGetOrdersByUserId = async (req: Request, res: Response) => {
 };
 
 
-export const handleDeleteByOrderId = async (req: Request, res: Response) => {
+export const handleDeleteOrdersByOrderId = async (req: Request, res: Response) => {
   try {
-    const orderId = new Types.ObjectId(req.params.orderId);
-    await deleteByOrderIdService(orderId);
-    res.send({ message: 'Order deleted successfully' });
+    const orderId = req.params.orderId;
+    console.log(orderId, "controller");
+    const ordersByUser = await deleteOrdersByOrderIdService(orderId);
+    res.send({ message: 'Order deleted successfully'});
   } catch (error) {
     handleError(res, error);
   }

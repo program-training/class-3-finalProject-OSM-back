@@ -9,7 +9,7 @@ export let refreshTokens:string[] = [];
 
 export const generateAccessToken=(user:UserInterface)=> {
     const secretKey:string=process.env.SECRET_TOKEN_KEY as string
-    return Jwt.sign(user, secretKey, { expiresIn: '15s' })
+    return Jwt.sign(user, secretKey)
   }
 
 export const generateRefreshToken=(user:UserInterface) => {
@@ -18,16 +18,15 @@ export const generateRefreshToken=(user:UserInterface) => {
   }
 
   export const verifyToken=(req:Request, res:Response, next:NextFunction) => {
-    const authHeader = req.headers['authorization']
-    const token = authHeader && authHeader.split(' ')[1]
+    const token = req.headers['authorization']
     
     if (token == null) {
-        return res.sendStatus(401).json({ message: "no token found" })
+        return res.json(  "no token found"  ).sendStatus(401)
     }
     const secretKey:string=process.env.SECRET_TOKEN_KEY as string
     Jwt.verify(token,secretKey , (err, user ) => {
       console.log(err)
-      if (err) return res.sendStatus(403).json({ message: 'Token verification failed' })
+      if (err) return res.json({ message: "Token verification failed" }).sendStatus(403)
       req.body.user = user as UserInterface
       next()
     })
