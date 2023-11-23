@@ -59,7 +59,7 @@ export const deleteOrdersByOrderIdService = async (orderId:string) => {
   try {
     console.log(orderId);
     const deleteOrderFromDAL = await deleteByOrderId(orderId);
-    // return deleteOrderFromDAL;
+     return deleteOrderFromDAL;
   } catch (error) {
     console.log(chalk.redBright(error));
     throw error;
