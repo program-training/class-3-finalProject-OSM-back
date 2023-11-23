@@ -33,7 +33,7 @@ export const handleAddNewOrder = async (req: Request, res: Response) => {
   try {
     const orderData = req.body as OrderInterface;
     const newOrder = await addNewOrderService(orderData);
-    res.send(newOrder);
+    res.json({ newOrder:newOrder,productNotFound:res.locals.productNotFound });
   } catch (error) {
     handleError(res, error);
   }

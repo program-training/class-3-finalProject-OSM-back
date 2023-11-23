@@ -21,12 +21,12 @@ export const generateRefreshToken=(user:UserInterface) => {
     const token = req.headers['authorization']
     
     if (token == null) {
-        return res.sendStatus(401).json(  "no token found"  )
+        return res.json(  "no token found"  ).sendStatus(401)
     }
     const secretKey:string=process.env.SECRET_TOKEN_KEY as string
     Jwt.verify(token,secretKey , (err, user ) => {
       console.log(err)
-      if (err) return res.sendStatus(403).json({ message: "Token verification failed" })
+      if (err) return res.json({ message: "Token verification failed" }).sendStatus(403)
       req.body.user = user as UserInterface
       next()
     })
