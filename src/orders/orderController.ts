@@ -6,6 +6,7 @@ import {
   updateByOrderIdService,
   addNewOrderService,
   getOrdersByUserIdService,
+  deleteOrdersByOrderIdService,
 } from './orderService';
 import { handleError } from '../utils/handleErrors';
 
@@ -42,7 +43,6 @@ export const handleAddNewOrder = async (req: Request, res: Response) => {
 export const handleGetOrdersByUserId = async (req: Request, res: Response) => {
   try {
     const userId = req.params.userId;
-    console.log(userId, "controller");
     const ordersByUser = await getOrdersByUserIdService(userId);
     res.send(ordersByUser);
   } catch (error) {
@@ -50,3 +50,14 @@ export const handleGetOrdersByUserId = async (req: Request, res: Response) => {
   }
 };
 
+
+export const handleDeleteOrdersByOrderId = async (req: Request, res: Response) => {
+  try {
+    const orderId = req.params.orderId;
+    console.log(orderId, "controller");
+    const ordersByUser = await deleteOrdersByOrderIdService(orderId);
+    res.send({ message: 'Order deleted successfully'});
+  } catch (error) {
+    handleError(res, error);
+  }
+};

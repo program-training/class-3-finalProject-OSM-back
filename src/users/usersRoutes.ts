@@ -4,5 +4,5 @@ import { validateUser }  from "../validation/validation";
 
 export const userRouter = express.Router();
 
-userRouter.post("/register",validateUser,registerController);
-userRouter.post('/login',validateUser,loginController);
+userRouter.post("/register", validateUser, registerController);
+userRouter.post("/login", validateUser, loginController);
