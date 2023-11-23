@@ -6,9 +6,9 @@ import { handleGetAllOrders, handleUpdateByOrderId, handleAddNewOrder, handleGet
 const orderRouter = express.Router();
 
 orderRouter.get("/",verifyToken, handleGetAllOrders);
-orderRouter.put("/:orderId", handleUpdateByOrderId);
+orderRouter.put("/:orderId",verifyToken, handleUpdateByOrderId);
 orderRouter.post("/",checkingProductQuantity, handleAddNewOrder);
-orderRouter.get("/:userId", handleGetOrdersByUserId);
-orderRouter.delete("/:orderId", handleDeleteOrdersByOrderId);
+orderRouter.get("/:userId",verifyToken, handleGetOrdersByUserId);
+orderRouter.delete("/:orderId",verifyToken, handleDeleteOrdersByOrderId);
 
 export default orderRouter;
