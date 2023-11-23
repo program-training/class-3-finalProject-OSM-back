@@ -1,6 +1,7 @@
 import { PoolClient } from "pg";
 import pool from "../PostgreSQL/PostgreSQL";
 import { UserInterface } from "../interfaces/userInterface";
+import { comparePassword } from "../bycrypt/bycrypt";
 
 export async function createUsersTable(): Promise<void> {
   try {
@@ -52,17 +53,20 @@ export async function registerDal(
   }
 }
 
-export async function loginDal(userEmail: string,userPassword:string): Promise<UserInterface | null> {
+export async function loginDal(userEmail: string,userPassword:string) {
   const client = await pool.connect();
 
   try {
-    const result = await client.query("SELECT * FROM users WHERE email = $1 AND password = $2 ", [
-      userEmail,userPassword
-    ]);
+    const result= await client.query("SELECT * FROM users WHERE email = $1 ", [
+      userEmail
+    ])as { rows: UserInterface[] };
 
-    if (result.rows.length > 0) {
-      const userById: UserInterface = result.rows[0];
-      return userById;
+      if (result.rows.length > 0) {
+        const userById: UserInterface = result.rows[0];
+        if (comparePassword(userPassword, userById.password)) {
+          return userById;
+      
+        }
     } else {
       console.error("Incorrect email or password");
       return null;
