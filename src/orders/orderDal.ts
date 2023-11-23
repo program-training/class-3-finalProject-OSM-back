@@ -9,7 +9,6 @@ type CollectionResult = Promise<Document[] | Error>;
 export const getAllOrders = async (): CollectionResult => {
   try {
     const orders = await OrderModel.find({});
-    console.log(orders);
     
     return orders;
   } catch (error) {
@@ -27,7 +26,7 @@ export const updateByOrderId = async (orderId: Types.ObjectId, updatedData: Orde
   }
 };
 
-export const addNewOrder = async (orderData: OrderInterface): CollectionResult => {
+export const addNewOrder = async (orderData: OrderInterface) => {
   try {
     const newOrder = new OrderModel({
       cartItems: orderData.cartItems,
@@ -39,7 +38,7 @@ export const addNewOrder = async (orderData: OrderInterface): CollectionResult =
 
     newOrder.isNew = true;
     await newOrder.save();
-    return [newOrder];
+    return newOrder;
   } catch (error) {
     return handleDBResponseError(error);
   }
