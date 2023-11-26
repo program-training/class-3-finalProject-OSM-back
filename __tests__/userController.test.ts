@@ -1,19 +1,20 @@
 import request from "supertest";
+import { Request } from "express";
 // import express from "express";
-import app from "../server";
-import { registerController } from "../users/userController"; 
-import { loginController } from "../users/userController";
+import app from "../src/server";
+// import { registerController } from "../users/userController"; 
+// import { loginController } from "../users/userController";
 // const app = express();
 // app.use(express.json()); 
 
 // app.post('/api/users/register', registerController);
 // app.post('api/users/login',loginController)
-
+const server=request('http://localhost:8080')
 describe('User Controller', () => {
   test('Register a new user', async () => {
-    const newUser = {"email":"eeg18PwLOuYTrrrd@gmail.com","password":"1234567e","isadmin":"false"}
+    const newUser = {"email":"eeg18PqwLOuYTrr76rd@gmail.com","password":"1234567e","isadmin":"false"}
 
-    const response = await request(app)
+    const response = await server
       .post('/api/users/register')
       .send(newUser)
       .timeout(10000)
@@ -25,10 +26,10 @@ describe('User Controller', () => {
   });
   test('Log in an existing user', async () => {
     const existingUser = {
-      "email":"etvrwer1urrd@gmail.com","password":"1234567e","isadmin":"false"
+      "email":"elchide@gmail.com","password":"1234567e","isadmin":"false"
     };
 
-    const res = await request(app)
+    const res = await server
       .post('/api/users/login')
       .send(existingUser)
       .timeout(10000)
