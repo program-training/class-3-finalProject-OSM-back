@@ -78,3 +78,32 @@ export async function loginDal(userEmail: string,userPassword:string) {
     client.release();
   }
 }
+
+export const getAllUsersDal = async ()=>{
+  const client = await pool.connect();
+  try{
+    const users = await client.query("SELECT * FROM users")
+    return users
+  }catch (error) {
+    console.error('Error executing SQL query:', error);
+  }finally {
+    client.release();
+  }
+}
+
+export const deleteUserByEmailDal = async (email: string): Promise<void> => {
+  const client = await pool.connect();
+  try {
+    const deleteUser = await client.query("DELETE FROM users WHERE email = $1", [email]);
+    console.log(`User with email ${email} has been deleted.`);
+    if (deleteUser.rowCount === 0) {
+      console.log(`Order with ID ${email} not found`);
+      throw new Error(`Order with ID ${email} not found!`);
+    }
+  } catch (error) {
+    console.error("Error deleting user:", (error as Error).message);
+    throw error;
+  } finally {
+    client.release();
+  }
+};

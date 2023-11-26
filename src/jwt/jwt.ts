@@ -8,7 +8,12 @@ dotenv.config();
 export let refreshTokens:string[] = [];
 
 export const generateAccessToken=(user:UserInterface)=> {
-    const secretKey:string=process.env.SECRET_TOKEN_KEY as string
+  let secretKey:string =''
+  if(user.isadmin){
+     secretKey = process.env.SECRET_TOKEN_KEY_ADMIN as string
+  }else{
+     secretKey=process.env.SECRET_TOKEN_KEY as string
+  }
     return Jwt.sign(user, secretKey)
   }
 
