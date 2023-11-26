@@ -59,7 +59,6 @@ export const resetPassword = async (req: Request, res: Response) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 };
-
 export const loginController = async (req: Request, res: Response) => {
   try {
     const logInUser: UserInterface = req.body;
