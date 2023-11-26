@@ -59,7 +59,6 @@ export const deleteByOrderId = async (orderId: string):Promise<void> => {
     const orderDelete = await OrderModel.findOneAndDelete({ _id:orderId });
     console.log(orderDelete);
     
-
     if (!orderDelete) {
       console.log(`Order with ID ${orderId} not found`);
       throw new Error(`Order with ID ${orderId} not found!`);
