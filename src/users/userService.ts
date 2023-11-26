@@ -1,5 +1,5 @@
 import { UserInterface } from "../interfaces/userInterface";
-import { loginDal, registerDal } from "../users/userDal";
+import { loginDal, registerDal, deleteUserByEmailDal } from "../users/userDal";
 
 export const registerService = async (user: UserInterface) => {
   try {
@@ -21,3 +21,13 @@ export const registerService = async (user: UserInterface) => {
     }
   };
   
+  export const deleteUserByEmailService = async(userEmail:string) => {
+    try{
+      const deleteUser = await deleteUserByEmailDal(userEmail)
+      return deleteUser
+    }catch(arr){
+      console.error("Error delete user:(service)",arr)
+      throw arr
+    }
+
+  }
