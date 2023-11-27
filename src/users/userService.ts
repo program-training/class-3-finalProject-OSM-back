@@ -1,5 +1,5 @@
 import { UserInterface } from "../interfaces/userInterface";
-import { loginDal, registerDal,deleteUserByEmailDal,forgotPasswordDal,resetPasswordDal } from "../users/userDal";
+import { loginDal, registerDal,deleteUserByEmailDal,forgotPasswordDal,resetPasswordDal,getAllUsersDal } from "../users/userDal";
 import { generateUserPassword } from "../bycrypt/bycrypt";
 
 export const registerService = async (user: UserInterface) => {
@@ -34,6 +34,8 @@ export const resetPasswordService = async(email:string,newPassword:string)=>{
   export const loginService = async (user: UserInterface) => {
     try {
       const result = await loginDal(user.email,user.password);
+      console.log(result);
+      
       return result;
     } catch (err) {
       console.error("Error reading data:(service)", err);
@@ -49,5 +51,14 @@ export const resetPasswordService = async(email:string,newPassword:string)=>{
       console.error("Error delete user:(service)",arr)
       throw arr
     }
+  }
 
+  export const getAllUsersService = async()=>{
+    try{
+      const users = await getAllUsersDal()
+      return users
+    }catch(arr){
+      console.error("Error get all users:(service)",arr)
+      throw arr
+    }
   }

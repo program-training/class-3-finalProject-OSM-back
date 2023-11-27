@@ -17,6 +17,8 @@ app.use(express.json());
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
 
+dotenv.config();
+
 const PORT = process.env.PORT;
 
 app.listen(PORT, async () => {

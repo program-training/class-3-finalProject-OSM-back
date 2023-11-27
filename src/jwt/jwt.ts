@@ -3,15 +3,19 @@ import { NextFunction, Request, Response } from "express";
 import * as dotenv from 'dotenv';
 import { UserInterface } from "../interfaces/userInterface"
 dotenv.config();
+
 export const refreshTokens:string[] = [];
+
 export const generateAccessToken=(user:UserInterface)=> {
     const secretKey=process.env.SECRET_TOKEN_KEY as string
     return Jwt.sign(user, secretKey)
   }
+
 export const generateRefreshToken=(user:UserInterface) => {
     const secretKey:string=process.env.SECRET_REFRESH_TOKEN_KEY as string
     return Jwt.sign(user,secretKey)
   }
+
   export const verifyToken=(req:Request, res:Response, next:NextFunction) => {
     const token = req.headers['authorization']
     if (token == null) {
@@ -24,6 +28,7 @@ export const generateRefreshToken=(user:UserInterface) => {
       next()
     })
   }
+
   export const verifyAdminToken=(req:Request, res:Response, next:NextFunction) => {
     const token = req.headers['authorization']
     if (token == null) {
@@ -41,6 +46,7 @@ export const generateRefreshToken=(user:UserInterface) => {
       }
     })
   }
+  
   export const refreshToken = (req:Request, res:Response) => {
       const refreshToken = req.body.refreshToken
       if (refreshToken == null){

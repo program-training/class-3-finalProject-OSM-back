@@ -13,7 +13,6 @@ export const checkingProductQuantity = async (
   try {
     const cartItems: Product[] = req.body.cartItems;
     const productNotFound: NotFound[] = [];
-    let errorFlag:boolean = false;
     const reqData = createArrayRequest(cartItems);
     const quantityProduct = await fetch(
         "https://erp-server-uxqd.onrender.com/api/shop_inventory/updateInventory",
@@ -28,23 +27,27 @@ export const checkingProductQuantity = async (
     const responseData = await quantityProduct.json();
     for (let i = 0; i<responseData.length; i++) {
         if(responseData[i].error){
-            productNotFound.push({id:cartItems[i].id as string, error: responseData[i].error});
-            errorFlag = true
+            productNotFound.push({id:cartItems[i].id as string, error: responseData[i].error}); 
+            req.body.price -= (cartItems[i].price as number) * (cartItems[i].quantity as number);
+             cartItems.splice(i,1)
         }
     }
-    if (errorFlag === true) {
+    if (cartItems.length === 0){ 
       res.status(406).json({ productNotFound:productNotFound })
     } else {
-        next()
+      req.body.cartItems=cartItems
+      res.locals.productNotFound=productNotFound
+      next()
     }
   } catch {
     res.status(500).json("checking product quantity is failed");
   }
 };
+
 const createArrayRequest = (cartItems:Product[])=>{
      const reqData:Array<object>=[]
      cartItems.forEach((cartItem:Product)=>{
-        const req = { _id: cartItem.id, quantity: cartItem.quantity}
+        const req = { productId: cartItem.id, requiredQuantity: cartItem.quantity}
         reqData.push(req)
      })
      return reqData
