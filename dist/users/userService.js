@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserByEmailService = exports.loginService = exports.resetPasswordService = exports.comperepasswordService = exports.forgotPasswordService = exports.registerService = void 0;
+exports.deleteUserByEmailService = exports.loginService = exports.resetPasswordService = exports.forgotPasswordService = exports.registerService = void 0;
 const userDal_1 = require("../users/userDal");
 const bycrypt_1 = require("../bycrypt/bycrypt");
 const registerService = async (user) => {
@@ -25,17 +25,6 @@ const forgotPasswordService = async (email, code) => {
     }
 };
 exports.forgotPasswordService = forgotPasswordService;
-const comperepasswordService = async (email, code) => {
-    try {
-        const result = await (0, userDal_1.comperepasswordDal)(email, code);
-        return result;
-    }
-    catch (err) {
-        console.error("Error reading data:(service)", err);
-        throw err;
-    }
-};
-exports.comperepasswordService = comperepasswordService;
 const resetPasswordService = async (email, newPassword) => {
     try {
         const newPasswordBycrypt = (0, bycrypt_1.generateUserPassword)(newPassword);

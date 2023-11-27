@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserByEmailDal = exports.loginDal = exports.resetPasswordDal = exports.comperepasswordDal = exports.forgotPasswordDal = exports.registerDal = exports.createUsersTable = void 0;
+exports.deleteUserByEmailDal = exports.loginDal = exports.resetPasswordDal = exports.forgotPasswordDal = exports.registerDal = exports.createUsersTable = void 0;
 const PostgreSQL_1 = __importDefault(require("../PostgreSQL/PostgreSQL"));
 const bycrypt_1 = require("../bycrypt/bycrypt");
 async function createUsersTable() {
@@ -16,6 +16,7 @@ async function createUsersTable() {
         isadmin BOOLEAN DEFAULT false,
         resetcode VARCHAR (255)
         )
+   
     `);
         console.log("Users table created or already exists.");
     }
@@ -72,28 +73,7 @@ async function forgotPasswordDal(email, code) {
     }
 }
 exports.forgotPasswordDal = forgotPasswordDal;
-async function comperepasswordDal(email, newPassword) {
-    try {
-        const result = await PostgreSQL_1.default.query("SELECT resetcode FROM users WHERE email = $1", [email]);
-        if (result.rows.length === 1) {
-            const resetCodeFromDB = result.rows[0].resetcode;
-            const isMatch = resetCodeFromDB === newPassword;
-            if (isMatch) {
-                return true;
-            }
-            else {
-                return false;
-            }
-        }
-    }
-    catch (error) {
-        console.error("Error comparing passwords:", error);
-        return false;
-    }
-}
-exports.comperepasswordDal = comperepasswordDal;
 async function resetPasswordDal(email, newPassword) {
-    console.log(newPassword, "new");
     const client = await PostgreSQL_1.default.connect();
     try {
         await client.query("UPDATE users SET password = $1, resetcode = NULL WHERE email = $2", [newPassword, email]);

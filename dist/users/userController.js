@@ -23,7 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserByUserEmail = exports.loginController = exports.resetPassword = exports.comperepassword = exports.forgotPassword = exports.registerController = void 0;
+exports.deleteUserByUserEmail = exports.loginController = exports.resetPassword = exports.forgotPassword = exports.registerController = void 0;
 const userService_1 = require("./userService");
 const bycrypt_1 = require("../bycrypt/bycrypt");
 const JWT = __importStar(require("../jwt/jwt"));
@@ -68,23 +68,10 @@ const forgotPassword = async (req, res) => {
     }
 };
 exports.forgotPassword = forgotPassword;
-const comperepassword = async (req, res) => {
-    const emailToReset = req.body.email;
-    const code = req.body.code;
-    try {
-        const result = (0, userService_1.comperepasswordService)(emailToReset, code);
-        res.send("sucsess");
-    }
-    catch (error) {
-        console.error("Error ", error);
-        res.status(500).send("Internal Server Error");
-    }
-};
-exports.comperepassword = comperepassword;
 const resetPassword = async (req, res) => {
     try {
-        const { email, password } = req.body;
-        const result = await (0, userService_1.resetPasswordService)(email, password);
+        const { email, newPassword } = req.body;
+        const result = await (0, userService_1.resetPasswordService)(email, newPassword);
         res
             .status(200)
             .json({ success: true, message: "Password reset successful" });
