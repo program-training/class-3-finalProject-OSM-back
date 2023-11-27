@@ -14,7 +14,6 @@ export const checkingProductQuantity = async (
   try {
     const cartItems: Product[] = req.body.cartItems;
     const productNotFound: NotFound[] = [];
-    let errorFlag:boolean = false;
     const reqData = createArrayRequest(cartItems);
     const quantityProduct = await fetch(
         "https://erp-server-uxqd.onrender.com/api/shop_inventory/updateInventory",

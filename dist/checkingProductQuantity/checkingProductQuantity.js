@@ -5,7 +5,6 @@ const checkingProductQuantity = async (req, res, next) => {
     try {
         const cartItems = req.body.cartItems;
         const productNotFound = [];
-        let errorFlag = false;
         const reqData = createArrayRequest(cartItems);
         const quantityProduct = await fetch("https://erp-server-uxqd.onrender.com/api/shop_inventory/updateInventory", {
             method: "post",
