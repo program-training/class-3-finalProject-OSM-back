@@ -5,6 +5,7 @@ const checkingProductQuantity = async (req, res, next) => {
     try {
         const cartItems = req.body.cartItems;
         let productNotFound = [];
+<<<<<<< HEAD
         let errorFlag = false;
         const reqData = createArrayRequest(cartItems);
         let quantityProduct = await fetch("https://erp-server-uxqd.onrender.com/api/shop_inventory/updateInventory", {
@@ -23,6 +24,27 @@ const checkingProductQuantity = async (req, res, next) => {
         }
         if (errorFlag === true) {
             res.status(406).json({ productNotFound: productNotFound });
+=======
+        for (let i = cartItems.length - 1; i >= 0; i--) {
+            const resData = { _id: cartItems[i].id, quantity: cartItems[i].quantity };
+            let quantityProduct = await fetch("https://erp-server-uxqd.onrender.com/api/shop_inventory/updateInventory", {
+                method: "post",
+                body: JSON.stringify(resData),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const responseData = await quantityProduct.json();
+            if (quantityProduct.status !== 200 || responseData.error === 'not enough in stock' || responseData.error === 'no product id') {
+                productNotFound.push(cartItems[i].id);
+                req.body.price -=
+                    cartItems[i].price * cartItems[i].quantity;
+                cartItems.splice(i, 1);
+            }
+        }
+        if (cartItems.length === 0) {
+            res.status(405).json({ message: "No products in stock" });
+>>>>>>> develop
         }
         else {
             next();

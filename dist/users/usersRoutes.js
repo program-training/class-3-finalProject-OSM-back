@@ -11,7 +11,14 @@ const rateLimiter_1 = require("../rateLimiter/rateLimiter");
 exports.userRouter = express_1.default.Router();
 exports.userRouter.get('/', userController_1.getAllUsersController);
 exports.userRouter.post("/register", validation_1.validateUser, userController_1.registerController);
+<<<<<<< HEAD
 exports.userRouter.post("/login", rateLimiter_1.limiter, validation_1.validateUser, userController_1.loginController);
 exports.userRouter.post('/forgotpassword', userController_1.forgotPassword);
 exports.userRouter.post('/resetpaasword', userController_1.resetPassword);
 exports.userRouter.delete("/:userEmail", userController_1.deleteUserByUserEmail);
+=======
+exports.userRouter.post("/login", rateLimiter_1.default, validation_1.validateUser, userController_1.loginController);
+exports.userRouter.delete("/:userEmail", userController_1.deleteUserByUserEmail);
+exports.userRouter.post('/forgotpassword', userController_1.forgotPassword);
+exports.userRouter.post('/resetpaasword', userController_1.resetPassword);
+>>>>>>> develop

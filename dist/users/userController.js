@@ -23,7 +23,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+<<<<<<< HEAD
 exports.getAllUsersController = exports.deleteUserByUserEmail = exports.loginController = exports.resetPassword = exports.forgotPassword = exports.registerController = void 0;
+=======
+exports.deleteUserByUserEmail = exports.loginController = exports.resetPassword = exports.forgotPassword = exports.registerController = void 0;
+>>>>>>> develop
 const userService_1 = require("./userService");
 const bycrypt_1 = require("../bycrypt/bycrypt");
 const JWT = __importStar(require("../jwt/jwt"));
@@ -90,7 +94,13 @@ const loginController = async (req, res) => {
             const accessToken = JWT.generateAccessToken(user);
             const refreshToken = JWT.generateRefreshToken(user);
             JWT.refreshTokens.push(refreshToken);
-            return res.status(200).json({ users: user, accessToken: accessToken, refreshToken: refreshToken });
+            return res
+                .status(200)
+                .json({
+                users: user,
+                accessToken: accessToken,
+                refreshToken: refreshToken,
+            });
         }
         return res.status(404).json({ message: "Incorrect email or password" });
     }
@@ -112,6 +122,7 @@ const deleteUserByUserEmail = async (req, res) => {
     }
 };
 exports.deleteUserByUserEmail = deleteUserByUserEmail;
+<<<<<<< HEAD
 const getAllUsersController = async (req, res) => {
     try {
         const allUsers = await (0, userService_1.getAllUsersService)();
@@ -122,3 +133,5 @@ const getAllUsersController = async (req, res) => {
     }
 };
 exports.getAllUsersController = getAllUsersController;
+=======
+>>>>>>> develop
