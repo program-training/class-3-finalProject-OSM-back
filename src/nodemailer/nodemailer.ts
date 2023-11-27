@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
-require("dotenv").config();
+import * as dotenv from 'dotenv';
+dotenv.config();
 export function generateUniqueCode(): string {
   return Math.random().toString(36).substring(2, 8).toUpperCase();
 }

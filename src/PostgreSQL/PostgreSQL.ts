@@ -1,5 +1,6 @@
 import { Pool } from "pg";
-require("dotenv").config();
+import * as dotenv from 'dotenv';
+dotenv.config();
 const pool = new Pool({
   connectionString: process.env.DATABASE_USERNAME,
   ssl: {
