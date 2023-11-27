@@ -45,9 +45,9 @@ export const checkingProductQuantity = async (
 };
 
 const createArrayRequest = (cartItems:Product[])=>{
-     let reqData:Array<object>=[]
+     const reqData:Array<object>=[]
      cartItems.forEach((cartItem:Product)=>{
-        let req = { productId: cartItem.id, requiredQuantity: cartItem.quantity}
+        const req = { productId: cartItem.id, requiredQuantity: cartItem.quantity}
         reqData.push(req)
      })
      return reqData

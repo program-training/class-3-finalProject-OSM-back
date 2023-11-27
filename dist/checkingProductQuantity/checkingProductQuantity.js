@@ -36,9 +36,9 @@ const checkingProductQuantity = async (req, res, next) => {
 };
 exports.checkingProductQuantity = checkingProductQuantity;
 const createArrayRequest = (cartItems) => {
-    let reqData = [];
+    const reqData = [];
     cartItems.forEach((cartItem) => {
-        let req = { productId: cartItem.id, requiredQuantity: cartItem.quantity };
+        const req = { productId: cartItem.id, requiredQuantity: cartItem.quantity };
         reqData.push(req);
     });
     return reqData;
