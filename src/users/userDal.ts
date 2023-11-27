@@ -120,7 +120,7 @@ export async function loginDal(userEmail: string, userPassword: string) {
 export const getAllUsersDal = async ()=>{
   const client = await pool.connect();
   try{
-    const users = await client.query("SELECT * FROM users")
+    const { rows:users } = await client.query("SELECT * FROM users")
     return users
   }catch (error) {
     console.error('Error executing SQL query:', error);

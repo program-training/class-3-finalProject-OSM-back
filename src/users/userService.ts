@@ -1,5 +1,5 @@
 import { UserInterface } from "../interfaces/userInterface";
-import { loginDal, registerDal,deleteUserByEmailDal,forgotPasswordDal,resetPasswordDal } from "../users/userDal";
+import { loginDal, registerDal,deleteUserByEmailDal,forgotPasswordDal,resetPasswordDal,getAllUsersDal } from "../users/userDal";
 import { generateUserPassword } from "../bycrypt/bycrypt";
 
 export const registerService = async (user: UserInterface) => {
