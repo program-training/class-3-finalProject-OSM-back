@@ -83,8 +83,8 @@ const comperepassword = async (req, res) => {
 exports.comperepassword = comperepassword;
 const resetPassword = async (req, res) => {
     try {
-        const { email, newPassword } = req.body;
-        const result = await (0, userService_1.resetPasswordService)(email, newPassword);
+        const { email, password } = req.body;
+        const result = await (0, userService_1.resetPasswordService)(email, password);
         res
             .status(200)
             .json({ success: true, message: "Password reset successful" });

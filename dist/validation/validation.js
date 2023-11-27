@@ -41,7 +41,12 @@ const validateUser = (req, res, next) => {
         next();
     }
     catch (error) {
-        res.status(400).json({ errors: error.errors });
+        if (error instanceof yup.ValidationError) {
+            res.status(400).json({ errors: error.errors });
+        }
+        else {
+            throw error;
+        }
     }
 };
 exports.validateUser = validateUser;

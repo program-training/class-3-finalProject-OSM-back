@@ -93,6 +93,7 @@ async function comperepasswordDal(email, newPassword) {
 }
 exports.comperepasswordDal = comperepasswordDal;
 async function resetPasswordDal(email, newPassword) {
+    console.log(newPassword, "new");
     const client = await PostgreSQL_1.default.connect();
     try {
         await client.query("UPDATE users SET password = $1, resetcode = NULL WHERE email = $2", [newPassword, email]);

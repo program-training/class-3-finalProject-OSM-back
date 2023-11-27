@@ -96,6 +96,7 @@ export async function comperepasswordDal(email: string, newPassword: string) {
   }
 }
 export async function resetPasswordDal(email: string, newPassword: string) {
+  console.log(newPassword,"new")
   const client = await pool.connect();
   try {
     await client.query(
