@@ -26,7 +26,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.refreshToken = exports.verifyToken = exports.generateRefreshToken = exports.generateAccessToken = exports.refreshTokens = void 0;
+exports.refreshToken = exports.verifyAdminToken = exports.verifyToken = exports.generateRefreshToken = exports.generateAccessToken = exports.refreshTokens = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
@@ -48,7 +48,6 @@ const verifyToken = (req, res, next) => {
     }
     const secretKey = process.env.SECRET_TOKEN_KEY;
     jsonwebtoken_1.default.verify(token, secretKey, (err, user) => {
-        console.log(err);
         if (err)
             return res.json({ message: "Token verification failed" }).sendStatus(403);
         req.body.user = user;
@@ -56,6 +55,26 @@ const verifyToken = (req, res, next) => {
     });
 };
 exports.verifyToken = verifyToken;
+const verifyAdminToken = (req, res, next) => {
+    const token = req.headers['authorization'];
+    if (token == null) {
+        return res.json("no token found").sendStatus(401);
+    }
+    const secretKey = process.env.SECRET_TOKEN_KEY;
+    jsonwebtoken_1.default.verify(token, secretKey, (err, user) => {
+        if (err) {
+            return res.json({ message: "Token verification failed" }).sendStatus(403);
+        }
+        else if (user.isadmin) {
+            req.body.user = user;
+            next();
+        }
+        else {
+            return res.json({ message: "allow only for admin" }).sendStatus(406);
+        }
+    });
+};
+exports.verifyAdminToken = verifyAdminToken;
 const refreshToken = (req, res) => {
     const refreshToken = req.body.refreshToken;
     if (refreshToken == null) {
