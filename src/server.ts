@@ -5,9 +5,11 @@ const app = express();
 import chalk from "chalk";
 import morgan from "morgan";
 import cors from "cors";
-require("dotenv").config();
+import * as dotenv from 'dotenv';
 import pool from "./PostgreSQL/PostgreSQL";
 import connectToDatabase from "./mongoDB/mongoConnection";
+
+dotenv.config();
 
 app.use(cors());
 app.use(morgan("tiny"));
