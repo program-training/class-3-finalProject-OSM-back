@@ -6,19 +6,24 @@ const checkingProductQuantity = async (req, res, next) => {
         const cartItems = req.body.cartItems;
         let productNotFound = [];
         for (let i = cartItems.length - 1; i >= 0; i--) {
-            const resData = { productId: cartItems[i].id, requiredQuantity: cartItems[i].quantity };
-            let quantityProduct = await fetch('https://erp-server-uxqd.onrender.com/api/shop_inventory/updateInventory', {
-                method: 'post',
-                body: JSON.stringify(resData)
+            const resData = { _id: cartItems[i].id, quantity: cartItems[i].quantity };
+            let quantityProduct = await fetch("https://erp-server-uxqd.onrender.com/api/shop_inventory/updateInventory", {
+                method: "post",
+                body: JSON.stringify(resData),
+                headers: {
+                    "Content-Type": "application/json",
+                },
             });
-            if (quantityProduct.status !== 200) {
-                productNotFound.push(`${cartItems[i].id}`);
-                req.body.price -= cartItems[i].price * cartItems[i].quantity;
+            const responseData = await quantityProduct.json();
+            if (quantityProduct.status !== 200 || responseData.error === 'not enough in stock' || responseData.error === 'no product id') {
+                productNotFound.push(cartItems[i].id);
+                req.body.price -=
+                    cartItems[i].price * cartItems[i].quantity;
                 cartItems.splice(i, 1);
             }
         }
         if (cartItems.length === 0) {
-            res.status(405).json({ message: 'No products in stock' }).status(405);
+            res.status(405).json({ message: "No products in stock" });
         }
         else {
             req.body.cartItems = cartItems;
@@ -27,7 +32,7 @@ const checkingProductQuantity = async (req, res, next) => {
         }
     }
     catch {
-        res.json('checking product quantity is failed').status(500);
+        res.status(500).json("checking product quantity is failed");
     }
 };
 exports.checkingProductQuantity = checkingProductQuantity;
