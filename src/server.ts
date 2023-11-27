@@ -9,6 +9,7 @@ import * as dotenv from 'dotenv';
 import pool from "./PostgreSQL/PostgreSQL";
 import connectToDatabase from "./mongoDB/mongoConnection";
 
+dotenv.config();
 
 app.use(cors());
 app.use(morgan('tiny'))

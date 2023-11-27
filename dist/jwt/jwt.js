@@ -32,7 +32,7 @@ const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 exports.refreshTokens = [];
 const generateAccessToken = (user) => {
-    let secretKey = process.env.SECRET_TOKEN_KEY;
+    const secretKey = process.env.SECRET_TOKEN_KEY;
     return jsonwebtoken_1.default.sign(user, secretKey);
 };
 exports.generateAccessToken = generateAccessToken;

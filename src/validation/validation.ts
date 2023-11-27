@@ -11,13 +11,27 @@ const validationSchema = yup.object().shape({
     .required('Password is required'),
 });
 
-export const validateUser = (req: Request,res: Response,next: NextFunction) => {
+// export const validateUser = (req: Request,res: Response,next: NextFunction) => {
+//     const { email, password } = req.body;
+//     try {
+//       validationSchema.validateSync({ email, password }, { abortEarly: false });
+//       next();
+//     } catch (error:any) {
+//       res.status(400).json({ errors: error.errors });
+//     }
+//   };
+
+  export const validateUser = (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
     try {
-      validationSchema.validateSync({ email, password }, { abortEarly: false });
-      next();
-    } catch (error:any) {
-      res.status(400).json({ errors: error.errors });
+        validationSchema.validateSync({ email, password }, { abortEarly: false });
+        next();
+    } catch (error) {
+        if (error instanceof yup.ValidationError) {
+            res.status(400).json({ errors: error.errors });
+        } else {
+            throw error 
+        }
     }
-  };
+};
 

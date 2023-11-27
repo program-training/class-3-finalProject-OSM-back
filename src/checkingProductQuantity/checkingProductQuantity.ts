@@ -5,7 +5,6 @@ interface NotFound{
   id:string;
   error:string;
 }
-
 export const checkingProductQuantity = async (
   req: Request,
   res: Response,

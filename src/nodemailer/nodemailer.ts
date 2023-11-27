@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
-require("dotenv").config();
+import * as dotenv from 'dotenv';
+dotenv.config();
 export function generateUniqueCode(): string {
   return Math.random().toString(36).substring(2, 8).toUpperCase();
 }
@@ -10,7 +11,7 @@ export const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_password,
   },
 });
-export async function sendemail(user: string, code: any) {
+export async function sendemail(user: string, code: string) {
   const info = await transporter.sendMail({
     from: process.env.GMAIL_USER,
     to: user,

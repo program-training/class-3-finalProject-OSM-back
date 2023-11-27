@@ -36,6 +36,7 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv = __importStar(require("dotenv"));
 const PostgreSQL_1 = __importDefault(require("./PostgreSQL/PostgreSQL"));
 const mongoConnection_1 = __importDefault(require("./mongoDB/mongoConnection"));
+dotenv.config();
 app.use((0, cors_1.default)());
 app.use((0, morgan_1.default)('tiny'));
 app.use(express_1.default.json());

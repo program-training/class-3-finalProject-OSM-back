@@ -1,14 +1,13 @@
 import Jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
-import * as dotenv from 'dotenv'; 
+import * as dotenv from 'dotenv';
 import { UserInterface } from "../interfaces/userInterface"
 dotenv.config();
 
-
-export let refreshTokens:string[] = [];
+export const refreshTokens:string[] = [];
 
 export const generateAccessToken=(user:UserInterface)=> {
-    let secretKey=process.env.SECRET_TOKEN_KEY as string
+    const secretKey=process.env.SECRET_TOKEN_KEY as string
     return Jwt.sign(user, secretKey)
   }
 
@@ -19,7 +18,6 @@ export const generateRefreshToken=(user:UserInterface) => {
 
   export const verifyToken=(req:Request, res:Response, next:NextFunction) => {
     const token = req.headers['authorization']
-
     if (token == null) {
         return res.json(  "no token found"  ).sendStatus(401)
     }
@@ -48,7 +46,7 @@ export const generateRefreshToken=(user:UserInterface) => {
       }
     })
   }
-
+  
   export const refreshToken = (req:Request, res:Response) => {
       const refreshToken = req.body.refreshToken
       if (refreshToken == null){
@@ -62,7 +60,6 @@ export const generateRefreshToken=(user:UserInterface) => {
         if (err) {
           return res.sendStatus(403);
         }
-        
         const accessToken = generateAccessToken(user as UserInterface);
         res.json({ accessToken: accessToken });
       });
