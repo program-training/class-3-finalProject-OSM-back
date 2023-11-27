@@ -3,7 +3,7 @@ import chalk from "chalk";
 
 export const handleError = (
   res: Response,
-  error: any,
+  error: unknown ,
   status: number = 400
 ) => {
   if (error && error instanceof Error)
