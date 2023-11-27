@@ -2,9 +2,10 @@ import express from "express";
 import { registerController,loginController,deleteUserByUserEmail,forgotPassword,resetPassword,getAllUsersController } from "./userController";
 import { validateUser }  from "../validation/validation";
 import { limiter } from '../rateLimiter/rateLimiter'; 
+import { verifyAdminToken } from "../jwt/jwt";
 export const userRouter = express.Router();
 
-userRouter.get('/',getAllUsersController)
+userRouter.get('/',verifyAdminToken,getAllUsersController)
 userRouter.post("/register", validateUser, registerController);
 userRouter.post("/login",limiter, validateUser, loginController);
 userRouter.post('/forgotpassword',forgotPassword)

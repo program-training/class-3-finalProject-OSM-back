@@ -3,11 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-<<<<<<< HEAD
 exports.deleteUserByEmailDal = exports.getAllUsersDal = exports.loginDal = exports.resetPasswordDal = exports.forgotPasswordDal = exports.registerDal = exports.createUsersTable = void 0;
-=======
-exports.deleteUserByEmailDal = exports.loginDal = exports.resetPasswordDal = exports.forgotPasswordDal = exports.registerDal = exports.createUsersTable = void 0;
->>>>>>> develop
 const PostgreSQL_1 = __importDefault(require("../PostgreSQL/PostgreSQL"));
 const bycrypt_1 = require("../bycrypt/bycrypt");
 async function createUsersTable() {
@@ -97,6 +93,7 @@ async function loginDal(userEmail, userPassword) {
         if (result.rows.length > 0) {
             const userById = result.rows[0];
             if ((0, bycrypt_1.comparePassword)(userPassword, userById.password)) {
+                console.log(userById);
                 return userById;
             }
         }
@@ -114,7 +111,6 @@ async function loginDal(userEmail, userPassword) {
     }
 }
 exports.loginDal = loginDal;
-<<<<<<< HEAD
 const getAllUsersDal = async () => {
     const client = await PostgreSQL_1.default.connect();
     try {
@@ -129,8 +125,6 @@ const getAllUsersDal = async () => {
     }
 };
 exports.getAllUsersDal = getAllUsersDal;
-=======
->>>>>>> develop
 const deleteUserByEmailDal = async (email) => {
     const client = await PostgreSQL_1.default.connect();
     try {

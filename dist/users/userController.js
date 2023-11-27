@@ -23,11 +23,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-<<<<<<< HEAD
 exports.getAllUsersController = exports.deleteUserByUserEmail = exports.loginController = exports.resetPassword = exports.forgotPassword = exports.registerController = void 0;
-=======
-exports.deleteUserByUserEmail = exports.loginController = exports.resetPassword = exports.forgotPassword = exports.registerController = void 0;
->>>>>>> develop
 const userService_1 = require("./userService");
 const bycrypt_1 = require("../bycrypt/bycrypt");
 const JWT = __importStar(require("../jwt/jwt"));
@@ -89,18 +85,15 @@ exports.resetPassword = resetPassword;
 const loginController = async (req, res) => {
     try {
         const logInUser = req.body;
+        console.log(logInUser);
         const user = await (0, userService_1.loginService)(logInUser);
+        console.log(user);
         if (user) {
             const accessToken = JWT.generateAccessToken(user);
+            console.log(accessToken);
             const refreshToken = JWT.generateRefreshToken(user);
             JWT.refreshTokens.push(refreshToken);
-            return res
-                .status(200)
-                .json({
-                users: user,
-                accessToken: accessToken,
-                refreshToken: refreshToken,
-            });
+            return res.status(200).json({ users: user, accessToken: accessToken, refreshToken: refreshToken });
         }
         return res.status(404).json({ message: "Incorrect email or password" });
     }
@@ -122,16 +115,13 @@ const deleteUserByUserEmail = async (req, res) => {
     }
 };
 exports.deleteUserByUserEmail = deleteUserByUserEmail;
-<<<<<<< HEAD
 const getAllUsersController = async (req, res) => {
     try {
         const allUsers = await (0, userService_1.getAllUsersService)();
-        res.status(200).json({ user: allUsers });
+        res.status(200).json({ users: allUsers });
     }
     catch (error) {
         res.status(500).json({ error: "Server error while get all users" });
     }
 };
 exports.getAllUsersController = getAllUsersController;
-=======
->>>>>>> develop

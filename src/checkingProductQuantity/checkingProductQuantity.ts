@@ -1,6 +1,11 @@
 import { NextFunction, Request, Response } from "express";
 import { Product } from "../interfaces/orderInterface";
 
+interface NotFound{
+  id:string;
+  error:string;
+}
+
 export const checkingProductQuantity = async (
   req: Request,
   res: Response,
@@ -8,10 +13,10 @@ export const checkingProductQuantity = async (
 ) => {
   try {
     const cartItems: Product[] = req.body.cartItems;
-    let productNotFound: Object[] = [];
+    const productNotFound: NotFound[] = [];
     let errorFlag:boolean = false;
-    const reqData =createArrayRequest(cartItems);
-    let quantityProduct = await fetch(
+    const reqData = createArrayRequest(cartItems);
+    const quantityProduct = await fetch(
         "https://erp-server-uxqd.onrender.com/api/shop_inventory/updateInventory",
         {
           method: "post",
@@ -25,13 +30,16 @@ export const checkingProductQuantity = async (
     for (let i = 0; i<responseData.length; i++) {
         if(responseData[i].error){
             productNotFound.push({id:cartItems[i].id as string, error: responseData[i].error}); 
-            errorFlag = true
+            req.body.price -= (cartItems[i].price as number) * (cartItems[i].quantity as number);
+             cartItems.splice(i,1)
         }
     }
-    if (errorFlag === true) {  
+    if (cartItems.length === 0){ 
       res.status(406).json({ productNotFound:productNotFound })
     } else {
-        next()
+      req.body.cartItems=cartItems
+      res.locals.productNotFound=productNotFound
+      next()
     }
   } catch {
     res.status(500).json("checking product quantity is failed");
@@ -41,7 +49,7 @@ export const checkingProductQuantity = async (
 const createArrayRequest = (cartItems:Product[])=>{
      let reqData:Array<object>=[]
      cartItems.forEach((cartItem:Product)=>{
-        let req = { _id: cartItem.id, quantity: cartItem.quantity}
+        let req = { productId: cartItem.id, requiredQuantity: cartItem.quantity}
         reqData.push(req)
      })
      return reqData

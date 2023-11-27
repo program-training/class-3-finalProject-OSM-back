@@ -100,9 +100,11 @@ export async function loginDal(userEmail: string, userPassword: string) {
       [userEmail]
     )) as { rows: UserInterface[] };
 
+      
     if (result.rows.length > 0) {
       const userById: UserInterface = result.rows[0];
       if (comparePassword(userPassword, userById.password)) {
+        console.log(userById);
         return userById;
       }
     } else {

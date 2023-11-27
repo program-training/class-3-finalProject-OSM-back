@@ -64,9 +64,12 @@ export const resetPassword = async (req: Request, res: Response) => {
   export const loginController = async (req: Request, res: Response) => {
     try {
       const logInUser:UserInterface = req.body;
+      console.log(logInUser)
       const user = await loginService(logInUser);
+      console.log(user);
       if (user) {
         const accessToken = JWT.generateAccessToken(user)
+        console.log(accessToken);
         const refreshToken = JWT.generateRefreshToken(user)
         JWT.refreshTokens.push(refreshToken)
         return res.status(200).json({users : user,accessToken: accessToken,refreshToken: refreshToken});
@@ -92,7 +95,7 @@ export const deleteUserByUserEmail = async (req:Request, res:Response) =>{
 export const getAllUsersController = async (req:Request, res:Response) =>{
   try{
     const allUsers = await getAllUsersService()
-    res.status(200).json({ user: allUsers})
+    res.status(200).json({ users: allUsers})
   }catch(error){
     res.status(500).json({ error: "Server error while get all users" })
   }
