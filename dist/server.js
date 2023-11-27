@@ -42,6 +42,7 @@ app.use((0, morgan_1.default)("tiny"));
 app.use(express_1.default.json());
 app.use("/api/users", usersRoutes_1.userRouter);
 app.use("/api/orders", orderRoutes_1.default);
+dotenv.config();
 const PORT = process.env.PORT;
 app.listen(PORT, async () => {
     console.log(chalk_1.default.blueBright(`Server listening on port: ${PORT}`));
