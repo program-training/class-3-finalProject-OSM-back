@@ -100,9 +100,11 @@ export async function loginDal(userEmail: string, userPassword: string) {
       [userEmail]
     )) as { rows: UserInterface[] };
 
+      
     if (result.rows.length > 0) {
       const userById: UserInterface = result.rows[0];
       if (comparePassword(userPassword, userById.password)) {
+        console.log(userById);
         return userById;
       }
     } else {
@@ -113,6 +115,18 @@ export async function loginDal(userEmail: string, userPassword: string) {
     console.error("Error getting user by ID:", (error as Error).message);
     return null;
   } finally {
+    client.release();
+  }
+}
+
+export const getAllUsersDal = async ()=>{
+  const client = await pool.connect();
+  try{
+    const { rows:users } = await client.query("SELECT * FROM users")
+    return users
+  }catch (error) {
+    console.error('Error executing SQL query:', error);
+  }finally {
     client.release();
   }
 }

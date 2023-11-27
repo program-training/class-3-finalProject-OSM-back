@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserByEmailService = exports.loginService = exports.resetPasswordService = exports.forgotPasswordService = exports.registerService = void 0;
+exports.getAllUsersService = exports.deleteUserByEmailService = exports.loginService = exports.resetPasswordService = exports.forgotPasswordService = exports.registerService = void 0;
 const userDal_1 = require("../users/userDal");
 const bycrypt_1 = require("../bycrypt/bycrypt");
 const registerService = async (user) => {
@@ -40,6 +40,7 @@ exports.resetPasswordService = resetPasswordService;
 const loginService = async (user) => {
     try {
         const result = await (0, userDal_1.loginDal)(user.email, user.password);
+        console.log(result);
         return result;
     }
     catch (err) {
@@ -59,3 +60,14 @@ const deleteUserByEmailService = async (userEmail) => {
     }
 };
 exports.deleteUserByEmailService = deleteUserByEmailService;
+const getAllUsersService = async () => {
+    try {
+        const users = await (0, userDal_1.getAllUsersDal)();
+        return users;
+    }
+    catch (arr) {
+        console.error("Error get all users:(service)", arr);
+        throw arr;
+    }
+};
+exports.getAllUsersService = getAllUsersService;
