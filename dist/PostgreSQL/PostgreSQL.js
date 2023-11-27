@@ -1,5 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const chalk_1 = __importDefault(require("chalk"));
 const pg_1 = require("pg");
 require("dotenv").config();
 const pool = new pg_1.Pool({
@@ -12,6 +16,7 @@ async function checkConnection() {
     let client;
     try {
         client = await pool.connect();
+        console.log(chalk_1.default.yellowBright('Connected to PostgreSQL database'));
     }
     catch (error) {
         console.error("Error connecting to PostgreSQL:", error.message);

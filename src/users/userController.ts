@@ -5,7 +5,7 @@ import {
   loginService,
   forgotPasswordService,
   resetPasswordService,
-  deleteUserByEmailService ,
+  deleteUserByEmailService ,comperepasswordService
 } from "./userService";
 import { validateUser } from "../validation/validation";
 import { generateUserPassword } from "../bycrypt/bycrypt";
@@ -44,6 +44,17 @@ export const forgotPassword = async (req: Request, res: Response) => {
     res.send("Email sent with instructions to reset your password.");
   } catch (error) {
     console.error("Error sending email", error);
+    res.status(500).send("Internal Server Error");
+  }
+};
+export const comperepassword=async (req: Request, res: Response) => {
+  const emailToReset = req.body.email;
+  const code = req.body.code
+  try {
+    const result = comperepasswordService(emailToReset, code);
+    res.send("sucsess");
+  } catch (error) {
+    console.error("Error ", error);
     res.status(500).send("Internal Server Error");
   }
 };

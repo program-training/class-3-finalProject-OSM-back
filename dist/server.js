@@ -14,11 +14,11 @@ require("dotenv").config();
 const PostgreSQL_1 = __importDefault(require("./PostgreSQL/PostgreSQL"));
 const mongoConnection_1 = __importDefault(require("./mongoDB/mongoConnection"));
 app.use((0, cors_1.default)());
-app.use((0, morgan_1.default)('tiny'));
+app.use((0, morgan_1.default)("tiny"));
 app.use(express_1.default.json());
 app.use("/api/users", usersRoutes_1.userRouter);
 app.use("/api/orders", orderRoutes_1.default);
-const PORT = 8080;
+const PORT = process.env.PORT;
 app.listen(PORT, async () => {
     console.log(chalk_1.default.blueBright(`Server listening on port: ${PORT}`));
     PostgreSQL_1.default;
