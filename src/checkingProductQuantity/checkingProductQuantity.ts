@@ -22,6 +22,7 @@ export const checkingProductQuantity = async (
         }
       );
       const responseData = await quantityProduct.json();
+      console.log(responseData)
       if (quantityProduct.status !== 200||responseData.error==='not enough in stock'||responseData.error==='no product id') {
         productNotFound.push(cartItems[i].id as string);
         req.body.price -=

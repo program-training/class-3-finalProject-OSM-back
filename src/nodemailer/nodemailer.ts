@@ -10,7 +10,7 @@ export const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_password,
   },
 });
-export async function sendemail(user: string, code: any) {
+export async function sendemail(user: string, code: string) {
   const info = await transporter.sendMail({
     from: process.env.GMAIL_USER,
     to: user,

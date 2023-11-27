@@ -5,7 +5,7 @@ import { UserInterface } from "../interfaces/userInterface"
 dotenv.config();
 
 
-export let refreshTokens:string[] = [];
+export const refreshTokens:string[] = [];
 
 export const generateAccessToken=(user:UserInterface)=> {
     const secretKey:string=process.env.SECRET_TOKEN_KEY as string
