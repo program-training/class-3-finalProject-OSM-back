@@ -1,7 +1,6 @@
 import express from "express";
 import { userRouter } from "./users/usersRoutes";
 import orderRouter from "./orders/orderRoutes";
-const app = express();
 import chalk from "chalk";
 import morgan from "morgan";
 import cors from "cors";
@@ -10,6 +9,8 @@ import pool from "./PostgreSQL/PostgreSQL";
 import connectToDatabase from "./mongoDB/mongoConnection";
 
 dotenv.config();
+
+const app = express();
 
 app.use(cors());
 app.use(morgan('tiny'))

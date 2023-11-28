@@ -2,7 +2,7 @@ import express from "express";
 import { registerController,loginController,deleteUserByUserEmail,forgotPassword,resetPassword,getAllUsersController } from "./userController";
 import { validateUser }  from "../validation/validation";
 import { limiter } from '../rateLimiter/rateLimiter'; 
-import { verifyToken,isAdmin } from "../jwt/jwt";
+import { verifyToken } from "../jwt/jwt";
 export const userRouter = express.Router();
 
 userRouter.get('/',verifyToken,getAllUsersController)
