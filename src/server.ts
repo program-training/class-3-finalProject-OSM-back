@@ -18,6 +18,7 @@ app.use(express.json());
 
 //authentication
 app.use((req:Request,res:Response,next) => {
+  
   const token = req.headers['authorization']
     if (token == null) {
         return res.json(  "no token found"  ).sendStatus(401)
