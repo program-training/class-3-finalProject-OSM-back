@@ -9,16 +9,8 @@ import {checkConnection} from "./PostgreSQL/PostgreSQL";
 import connectToDatabase from "./mongoDB/mongoConnection";
 // import corsHandler from "./cors/cors";
 dotenv.config();
-<<<<<<< HEAD
-
-const app = express();
-
-app.use(cors());
-app.use(morgan('tiny'))
-=======
 const app = express();
 app.use(morgan("tiny"));
->>>>>>> develop
 app.use(express.json());
 // app.use(corsHandler);
 app.use(cors())
