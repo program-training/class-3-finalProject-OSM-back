@@ -1,5 +1,6 @@
 import { UserInterface } from "../interfaces/userInterface";
-import { loginDal, registerDal,deleteUserByEmailDal,forgotPasswordDal,resetPasswordDal,getAllUsersDal } from "../users/userDal";
+import { loginDal, registerDal,deleteUserByEmailDal,
+  forgotPasswordDal,resetPasswordDal,getAllUsersDal,comperepasswordDal } from "../users/userDal";
 import { generateUserPassword } from "../bycrypt/bycrypt";
 
 export const registerService = async (user: UserInterface) => {
@@ -14,6 +15,15 @@ export const registerService = async (user: UserInterface) => {
 export const forgotPasswordService = async(email:string,code:string)=>{
   try {
     const result = await forgotPasswordDal(email,code);
+    return result;
+  } catch (err) {
+    console.error("Error reading data:(service)", err);
+    throw err;
+  }
+}
+export const comperepasswordService= async(email:string,code:string)=>{
+  try {
+    const result = await comperepasswordDal(email,code);
     return result;
   } catch (err) {
     console.error("Error reading data:(service)", err);

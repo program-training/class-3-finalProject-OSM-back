@@ -13,10 +13,8 @@ export async function createUsersTable(): Promise<void> {
         isadmin BOOLEAN DEFAULT false,
         resetcode VARCHAR (255)
         )
-   
     `);
-
-    // console.log("Users table created or already exists.");
+    console.log("Users table created or already exists.");
   } catch (error) {
     console.error("Error creating users table:", (error as Error).message);
   }
@@ -77,7 +75,28 @@ export async function forgotPasswordDal(email: string, code: string) {
     client.release();
   }
 }
+export async function comperepasswordDal(email: string, newPassword: string) {
+  try {
+    const result = await pool.query(
+      "SELECT resetcode FROM users WHERE email = $1",
+      [email]
+    );
+    if (result.rows.length === 1) {
+      const resetCodeFromDB = result.rows[0].resetcode;
+      const isMatch = resetCodeFromDB === newPassword;
+      if (isMatch) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  } catch (error) {
+    console.error("Error comparing passwords:", error);
+    return false;
+  }
+}
 export async function resetPasswordDal(email: string, newPassword: string) {
+  console.log(newPassword,"new")
   const client = await pool.connect();
   try {
     await client.query(
@@ -147,7 +166,10 @@ export const deleteUserByEmailDal = async (email: string): Promise<void> => {
   const client = await pool.connect();
 
   try {
-    const deleteUser = await client.query("DELETE FROM users WHERE email = $1", [email]);
+    const deleteUser = await client.query(
+      "DELETE FROM users WHERE email = $1",
+      [email]
+    );
     console.log(`User with email ${email} has been deleted.`);
     if (deleteUser.rowCount === 0) {
       console.log(`Order with ID ${email} not found`);
