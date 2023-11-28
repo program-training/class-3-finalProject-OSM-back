@@ -11,10 +11,10 @@ export const generateAccessToken=(user:UserInterface)=> {
     return Jwt.sign(user, secretKey)
   }
 
-// export const generateRefreshToken=(user:UserInterface) => {
-//     const secretKey:string=process.env.SECRET_REFRESH_TOKEN_KEY as string
-//     return Jwt.sign(user,secretKey)
-//   }
+export const generateRefreshToken=(user:UserInterface) => {
+    const secretKey:string=process.env.SECRET_REFRESH_TOKEN_KEY as string
+    return Jwt.sign(user,secretKey)
+  }
 
   export const verifyToken=(req:Request, res:Response, next:NextFunction) => {
     const token = req.headers['authorization']
