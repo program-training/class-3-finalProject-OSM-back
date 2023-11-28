@@ -6,7 +6,8 @@ import {
   forgotPasswordService,
   resetPasswordService,
   deleteUserByEmailService ,
-  getAllUsersService
+  getAllUsersService,
+  comperepasswordService
 } from "./userService";
 import { validateUser } from "../validation/validation";
 import { generateUserPassword } from "../bycrypt/bycrypt";
@@ -48,10 +49,21 @@ export const forgotPassword = async (req: Request, res: Response) => {
     res.status(500).send("Internal Server Error");
   }
 };
+export const comperepassword=async (req: Request, res: Response) => {
+  const emailToReset = req.body.email;
+  const code = req.body.code
+  try {
+    const result = comperepasswordService(emailToReset, code);
+    res.send("sucsess");
+  } catch (error) {
+    console.error("Error ", error);
+    res.status(500).send("Internal Server Error");
+  }
+};
 export const resetPassword = async (req: Request, res: Response) => {
   try {
-    const { email, newPassword } = req.body;
-    const result = await resetPasswordService(email, newPassword);
+    const { email, password } = req.body;
+    const result = await resetPasswordService(email, password);
     res
       .status(200)
       .json({ success: true, message: "Password reset successful" });
