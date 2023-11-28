@@ -21,12 +21,9 @@ export const registerController = async (req: Request, res: Response) => {
     const user = await registerService(registerUser);
     if (user) {
       const accessToken = JWT.generateAccessToken(user);
-      const refreshToken = JWT.generateRefreshToken(user);
-      JWT.refreshTokens.push(refreshToken);
       return res.status(200).json({
         users: user,
         accessToken: accessToken,
-        refreshToken: refreshToken,
       });
     } else {
       return res.status(404).json({ message: "No Users found" });
@@ -70,9 +67,7 @@ export const resetPassword = async (req: Request, res: Response) => {
       if (user) {
         const accessToken = JWT.generateAccessToken(user)
         console.log(accessToken);
-        const refreshToken = JWT.generateRefreshToken(user)
-        JWT.refreshTokens.push(refreshToken)
-        return res.status(200).json({users : user,accessToken: accessToken,refreshToken: refreshToken});
+        return res.status(200).json({users : user,accessToken: accessToken});
       }
       return res.status(404).json({ message: "Incorrect email or password" });
     } catch (error) {
