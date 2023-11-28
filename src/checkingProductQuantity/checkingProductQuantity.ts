@@ -1,5 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { Product } from "../interfaces/orderInterface";
+import * as dotenv from 'dotenv';
+
+dotenv.config
 
 interface NotFound{
   id:string;
