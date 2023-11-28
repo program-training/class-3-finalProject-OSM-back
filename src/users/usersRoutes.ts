@@ -7,7 +7,7 @@ import { limiter } from '../rateLimiter/rateLimiter';
 import { verifyAdminToken } from "../jwt/jwt";
 export const userRouter = express.Router();
 
-userRouter.get('/',verifyAdminToken,getAllUsersController)
+userRouter.get('/',isAdmin,getAllUsersController)
 userRouter.post("/register", validateUser, registerController);
 userRouter.post("/login",limiter, validateUser, loginController);
 userRouter.post('/forgotpassword',forgotPassword)
