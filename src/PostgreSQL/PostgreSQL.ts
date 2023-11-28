@@ -8,11 +8,11 @@ const pool = new Pool({
   },
 });
 
-async function checkConnection() {
+export async function checkConnection() {
   let client;
-
   try {
     client = await pool.connect();
+    console.log("conenct to PostgreSQL")
   } catch (error) {
     console.error("Error connecting to PostgreSQL:", (error as Error).message);
   } finally {
@@ -21,5 +21,4 @@ async function checkConnection() {
     }
   }
 }
-checkConnection();
 export default pool;
