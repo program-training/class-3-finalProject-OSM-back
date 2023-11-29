@@ -19,17 +19,22 @@ export const generateAccessToken=(user:UserInterface)=> {
     return Jwt.sign( String(user.id), secretKey)
   }
 
-export const verifyToken = (req:Request, res:Response, next:NextFunction) => {
+export const verifyToken =  (req:Request, res:Response, next:NextFunction) => {
     const token = req.headers['authorization']
     if (token == null) {
         return res.json(  "no token found"  ).sendStatus(401)
     }
     const secretKey:string = process.env.SECRET_TOKEN_KEY as string
-    Jwt.verify(token,secretKey , (err, userId: unknown|string ) => {
+    Jwt.verify(token,secretKey ,async (err, userId: unknown|string ) => {
       if (err) return res.json({ message: "Token verification failed" }).sendStatus(403)
       if(urlNeedAdmin(req.originalUrl)){
-        const user:UserInterface = getUserById(userId as string) as unknown as UserInterface
-        return isAdmin(user) ? next() : res.json({ message: "allow only for admin" }).sendStatus(406)
+        const user:UserInterface[] = await getUserById(userId as string) as unknown as UserInterface[]
+        console.log(user)
+        if (user[0].isadmin){
+          next()
+        }else{
+          res.json({ message: "allow only for admin" }).sendStatus(406)
+        }
       }else{
         next()
       }})

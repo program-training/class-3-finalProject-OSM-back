@@ -102,7 +102,7 @@ export const deleteUserByUserEmail = async (req:Request, res:Response) =>{
 export const getAllUsersController = async (req:Request, res:Response) =>{
   try{
     const allUsers = await getAllUsersService()
-    res.status(200).json({ users: allUsers})
+    res.status(200).json( allUsers )
   }catch(error){
     res.status(500).json({ error: "Server error while get all users" })
   }

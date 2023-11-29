@@ -141,7 +141,7 @@ export async function loginDal(userEmail: string, userPassword: string) {
 export const getUserById = async (userId:string) =>{
   const client = await pool.connect();
   try{
-    const { rows:user } = await client.query("SELECT * FROM users WERE id=$1",[userId])
+    const { rows:user } = await client.query("SELECT * FROM users WHERE id=$1",[userId])
     return user
   }catch (error) {
     console.error('Error executing SQL query:', error);
@@ -153,8 +153,8 @@ export const getUserById = async (userId:string) =>{
 export const getAllUsersDal = async ()=>{
   const client = await pool.connect();
   try{
-    const { rows:users } = await client.query("SELECT * FROM users")
-    return users
+    const result = await client.query("SELECT * FROM users")
+    return result.rows
   }catch (error) {
     console.error('Error executing SQL query:', error);
   }finally {
