@@ -15,6 +15,7 @@ const app = express();
 app.use(morgan("tiny"));
 app.use(express.json());
 app.use(cors(corsConfigs));
+
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
 

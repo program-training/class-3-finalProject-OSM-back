@@ -5,7 +5,7 @@ import {
   loginService,
   forgotPasswordService,
   resetPasswordService,
-  deleteUserByEmailService ,
+  deleteUserByIdService ,
   getAllUsersService,
   comperepasswordService
 } from "./userService";
@@ -88,11 +88,13 @@ export const resetPassword = async (req: Request, res: Response) => {
     }
 };
 
-export const deleteUserByUserEmail = async (req:Request, res:Response) =>{
+export const deleteUserByUserId = async (req:Request, res:Response) =>{
   try{
-    const userEmail = req.params.userEmail
-    const deleteUserEmail = await deleteUserByEmailService(userEmail)
-    res.send({ message: 'user deleted successfully'})
+    const userId = req.params.userId
+    const deleteUserId = await deleteUserByIdService(Number(userId))
+    console.log((deleteUserId));
+    
+    res.send({ message: `${deleteUserId}user deleted successfully`})
   }catch(error){
     console.log(error);
     res.status(500).json({ error: "Server error while delete user" })
