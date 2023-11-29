@@ -1,5 +1,5 @@
 import { UserInterface } from "../interfaces/userInterface";
-import { loginDal, registerDal,deleteUserByEmailDal,
+import { loginDal, registerDal,deleteUserByIdDal,
   forgotPasswordDal,resetPasswordDal,getAllUsersDal,comperepasswordDal } from "../users/userDal";
 import { generateUserPassword } from "../bycrypt/bycrypt";
 
@@ -53,9 +53,9 @@ export const resetPasswordService = async(email:string,newPassword:string)=>{
     }
   };
   
-  export const deleteUserByEmailService = async(userEmail:string) => {
+  export const deleteUserByIdService = async(userId:number) => {
     try{
-      const deleteUser = await deleteUserByEmailDal(userEmail)
+      const deleteUser = await deleteUserByIdDal(userId)
       return deleteUser
     }catch(arr){
       console.error("Error delete user:(service)",arr)

@@ -162,18 +162,19 @@ export const getAllUsersDal = async ()=>{
   }
 }
 
-export const deleteUserByEmailDal = async (email: string): Promise<void> => {
+export const deleteUserByIdDal = async (id : number): Promise<void> => {
   const client = await pool.connect();
-
+  console.log(id);
+  
   try {
     const deleteUser = await client.query(
-      "DELETE FROM users WHERE email = $1",
-      [email]
+      "DELETE FROM users WHERE id = $1",
+      [id]
     );
-    console.log(`User with email ${email} has been deleted.`);
+    console.log(`User with id ${id} has been deleted.`);
     if (deleteUser.rowCount === 0) {
-      console.log(`Order with ID ${email} not found`);
-      throw new Error(`Order with ID ${email} not found!`);
+      console.log(`Order with ID ${id} not found`);
+      throw new Error(`Order with ID ${id} not found!`);
     }
   } catch (error) {
     console.error("Error deleting user:", (error as Error).message);
