@@ -3,12 +3,14 @@ import { allowedOrigins } from "./allowedOrigins"
 export const corsConfigs = {
     origin: (origin:string | undefined, callback:(err: Error | null, allow?: boolean) => void) => {
         console.log(`${origin}  cors`);
-        console.log(allowedOrigins.indexOf(origin as string)+' cors');
+        const origin1 = origin as string
+        console.log(allowedOrigins.includes(origin1) +' cors');
+        console.log(allowedOrigins)
         
-        if (allowedOrigins.indexOf(origin as string) !== -1  ) {
+        if (!origin || allowedOrigins.includes(origin1)   ) {
             callback(null, true)
         } else {
-            callback(new Error('origin not allowed by Cors'))
+            callback(new Error('origin not allowed by Cors'),false)
         }
     },
     optionsSuccessStatus: 200,
