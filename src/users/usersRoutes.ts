@@ -3,6 +3,8 @@ import { registerController,loginController,deleteUserByUserEmail,forgotPassword
 import { validateUser }  from "../validation/validation";
 import { limiter } from '../rateLimiter/rateLimiter'; 
 import { verifyToken } from "../jwt/jwt";
+import cors from "cors"
+import { corsConfigs } from "../config/corsConfigs";
 export const userRouter = express.Router();
 
 userRouter.get('/',verifyToken,getAllUsersController)
