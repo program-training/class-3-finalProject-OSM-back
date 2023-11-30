@@ -1,4 +1,4 @@
-pipline {
+pipeline {
     agant any 
     stages {
         stage ("verify tooling"){
