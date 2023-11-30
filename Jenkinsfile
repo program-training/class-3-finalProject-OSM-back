@@ -1,5 +1,5 @@
 pipeline {
-    agant any 
+    agent any 
     stages {
         stage ("verify tooling"){
             steps{
