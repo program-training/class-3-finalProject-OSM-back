@@ -25,7 +25,7 @@ pipeline {
         always {
             script {
                 docker.withTool('docker-compose') {
-                    sh 'docker-compose -f docker-compose.yml down'
+                    sh 'docker-compose -f docker-compose.yaml down'
                 }
             }
         }
