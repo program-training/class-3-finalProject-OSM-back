@@ -7,13 +7,12 @@ import cors from "cors";
 import * as dotenv from 'dotenv';
 import {checkConnection} from "./PostgreSQL/PostgreSQL";
 import connectToDatabase from "./mongoDB/mongoConnection";
-// import corsHandler from "./cors/cors";
+import corsHandler from "./cors/cors";
 dotenv.config();
 const app = express();
 app.use(morgan("tiny"));
 app.use(express.json());
-// app.use(corsHandler);
-app.use(cors())
+
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
 
