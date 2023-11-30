@@ -5,13 +5,16 @@ import chalk from "chalk";
 import morgan from "morgan";
 import cors from "cors";
 import * as dotenv from 'dotenv';
-import {checkConnection} from "./PostgreSQL/PostgreSQL";
+import { checkConnection } from "./PostgreSQL/PostgreSQL";
 import connectToDatabase from "./mongoDB/mongoConnection";
-import corsHandler from "./cors/cors";
+import  { corsConfigs }   from "./config/corsConfigs";
+
+
 dotenv.config();
 const app = express();
 app.use(morgan("tiny"));
 app.use(express.json());
+app.use(cors(corsConfigs));
 
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);

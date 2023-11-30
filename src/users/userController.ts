@@ -5,7 +5,7 @@ import {
   loginService,
   forgotPasswordService,
   resetPasswordService,
-  deleteUserByEmailService,
+  deleteUserByIdService ,
   getAllUsersService,
   comperepasswordService,
 } from "./userService";
@@ -22,12 +22,9 @@ export const registerController = async (req: Request, res: Response) => {
     const user = await registerService(registerUser);
     if (user) {
       const accessToken = JWT.generateAccessToken(user);
-      const refreshToken = JWT.generateRefreshToken(user);
-      JWT.refreshTokens.push(refreshToken);
       return res.status(200).json({
         users: user,
         accessToken: accessToken,
-        refreshToken: refreshToken,
       });
     } else {
       return res.status(404).json({ message: "No Users found" });
@@ -74,48 +71,43 @@ export const resetPassword = async (req: Request, res: Response) => {
   }
 };
 
-export const loginController = async (req: Request, res: Response) => {
-  try {
-    const logInUser: UserInterface = req.body;
-    console.log(logInUser);
-    const user = await loginService(logInUser);
-    console.log(user);
-    if (user) {
-      const accessToken = JWT.generateAccessToken(user);
-      console.log(accessToken);
-      const refreshToken = JWT.generateRefreshToken(user);
-      JWT.refreshTokens.push(refreshToken);
-      return res
-        .status(200)
-        .json({
-          users: user,
-          accessToken: accessToken,
-          refreshToken: refreshToken,
-        });
+  export const loginController = async (req: Request, res: Response) => {
+    try {
+      const logInUser:UserInterface = req.body;
+      console.log(logInUser)
+      const user = await loginService(logInUser);
+      console.log(user);
+      if (user) {
+        const accessToken = JWT.generateAccessToken(user)
+        console.log(accessToken);
+        return res.status(200).json({users : user,accessToken: accessToken});
+      }
+      return res.status(404).json({ message: "Incorrect email or password" });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: "Server error while retrieving users" });
     }
     return res.status(404).json({ message: "Incorrect email or password" });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: "Server error while retrieving users" });
-  }
 };
 
-export const deleteUserByUserEmail = async (req: Request, res: Response) => {
-  try {
-    const userEmail = req.params.userEmail;
-    const deleteUserEmail = await deleteUserByEmailService(userEmail);
-    res.send({ message: "user deleted successfully" });
-  } catch (error) {
+export const deleteUserByUserId = async (req:Request, res:Response) =>{
+  try{
+    const userId = req.params.userId
+    const deleteUserId = await deleteUserByIdService(Number(userId))
+    console.log((deleteUserId));
+    
+    res.send({ message: `${deleteUserId}user deleted successfully`})
+  }catch(error){
     console.log(error);
     res.status(500).json({ error: "Server error while delete user" });
   }
 };
 
-export const getAllUsersController = async (req: Request, res: Response) => {
-  try {
-    const allUsers = await getAllUsersService();
-    res.status(200).json({ users: allUsers });
-  } catch (error) {
-    res.status(500).json({ error: "Server error while get all users" });
+export const getAllUsersController = async (req:Request, res:Response) =>{
+  try{
+    const allUsers = await getAllUsersService()
+    res.status(200).json( allUsers )
+  }catch(error){
+    res.status(500).json({ error: "Server error while get all users" })
   }
 };
