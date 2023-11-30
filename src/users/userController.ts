@@ -35,7 +35,7 @@ export const registerController = async (req: Request, res: Response) => {
   }
 };
 export const forgotPassword = async (req: Request, res: Response) => {
-  const emailToReset = req.body.emailInput;
+  const emailToReset = req.body.email;
   console.log(emailToReset, "emailtoreset");
   const code = generateUniqueCode();
   try {
