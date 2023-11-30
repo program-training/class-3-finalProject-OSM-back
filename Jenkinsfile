@@ -14,7 +14,7 @@ pipeline {
             steps {
                 script {
                     docker.withTool('docker-compose') {
-                        sh 'docker-compose -f docker-compose.yml up --build'
+                        sh 'docker-compose -f docker-compose.yaml up --build'
                     }
                 }
             }
