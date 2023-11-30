@@ -1,5 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { Product } from "../interfaces/orderInterface";
+import * as dotenv from 'dotenv';
+
+dotenv.config
 
 interface NotFound{
   id:string;
@@ -14,6 +17,7 @@ export const checkingProductQuantity = async (
     const cartItems: Product[] = req.body.cartItems;
     const productNotFound: NotFound[] = [];
     const reqData = createArrayRequest(cartItems);
+    let errorFlag = false
     const quantityProduct = await fetch(
         "https://erp-server-uxqd.onrender.com/api/shop_inventory/updateInventory",
         {
@@ -25,18 +29,19 @@ export const checkingProductQuantity = async (
         }
       );
     const responseData = await quantityProduct.json();
+    console.log(responseData);
     for (let i = 0; i<responseData.length; i++) {
         if(responseData[i].error){
+            console.log(responseData[i])
             productNotFound.push({id:cartItems[i].id as string, error: responseData[i].error}); 
             req.body.price -= (cartItems[i].price as number) * (cartItems[i].quantity as number);
-             cartItems.splice(i,1)
+            errorFlag = true;
+            cartItems.splice(i,1)
         }
     }
-    if (cartItems.length === 0){ 
+    if (errorFlag){ 
       res.status(406).json({ productNotFound:productNotFound })
     } else {
-      req.body.cartItems=cartItems
-      res.locals.productNotFound=productNotFound
       next()
     }
   } catch {
