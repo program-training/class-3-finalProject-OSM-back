@@ -1,4 +1,3 @@
-import { PoolClient } from "pg";
 import pool from "../PostgreSQL/PostgreSQL";
 import { UserInterface } from "../interfaces/userInterface";
 import { comparePassword } from "../bycrypt/bycrypt";
