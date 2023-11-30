@@ -7,7 +7,7 @@ import {
   resetPasswordService,
   deleteUserByIdService ,
   getAllUsersService,
-  comperepasswordService
+  comperepasswordService,
 } from "./userService";
 import { validateUser } from "../validation/validation";
 import { generateUserPassword } from "../bycrypt/bycrypt";
@@ -35,7 +35,8 @@ export const registerController = async (req: Request, res: Response) => {
   }
 };
 export const forgotPassword = async (req: Request, res: Response) => {
-  const emailToReset = req.body.email;
+  const emailToReset = req.body.emailInput;
+  console.log(emailToReset, "emailtoreset");
   const code = generateUniqueCode();
   try {
     sendemail(emailToReset, code);
@@ -46,9 +47,9 @@ export const forgotPassword = async (req: Request, res: Response) => {
     res.status(500).send("Internal Server Error");
   }
 };
-export const comperepassword=async (req: Request, res: Response) => {
+export const comperepassword = async (req: Request, res: Response) => {
   const emailToReset = req.body.email;
-  const code = req.body.code
+  const code = req.body.code;
   try {
     const result = comperepasswordService(emailToReset, code);
     res.send("sucsess");
@@ -86,6 +87,7 @@ export const resetPassword = async (req: Request, res: Response) => {
       console.log(error);
       res.status(500).json({ error: "Server error while retrieving users" });
     }
+    return res.status(404).json({ message: "Incorrect email or password" });
 };
 
 export const deleteUserByUserId = async (req:Request, res:Response) =>{
@@ -97,9 +99,9 @@ export const deleteUserByUserId = async (req:Request, res:Response) =>{
     res.send({ message: `${deleteUserId}user deleted successfully`})
   }catch(error){
     console.log(error);
-    res.status(500).json({ error: "Server error while delete user" })
+    res.status(500).json({ error: "Server error while delete user" });
   }
-}
+};
 
 export const getAllUsersController = async (req:Request, res:Response) =>{
   try{
@@ -108,4 +110,4 @@ export const getAllUsersController = async (req:Request, res:Response) =>{
   }catch(error){
     res.status(500).json({ error: "Server error while get all users" })
   }
-}
+};
