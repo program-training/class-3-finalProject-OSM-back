@@ -5,6 +5,7 @@ pipeline {
         stage('Build Backend Image') {
             steps {
                 script {
+                    // Ensure the image name matches the one in docker-compose.yaml
                     docker.build('your-backend-image-name')
                 }
             }
@@ -13,9 +14,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    docker.withTool('docker-compose') {
-                        sh 'docker-compose -f docker-compose.yaml up --build'
-                    }
+                    sh 'docker-compose -f docker-compose.yaml up --build'
                 }
             }
         }
@@ -24,9 +23,7 @@ pipeline {
     post {
         always {
             script {
-                docker.withTool('docker-compose') {
-                    sh 'docker-compose -f docker-compose.yaml down'
-                }
+                sh 'docker-compose -f docker-compose.yaml down'
             }
         }
     }
