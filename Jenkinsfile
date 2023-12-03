@@ -24,7 +24,7 @@ pipeline {
             steps {
                 script {
                     // Execute psql command with allocated TTY
-                    sh 'docker exec -it test psql -U postgres'
+                    sh 'docker exec test psql -U postgres'
                 }
             }
         }
