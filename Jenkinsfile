@@ -49,7 +49,7 @@ pipeline {
                 script {
                     // Assuming your Node.js tests are in the cloned repository
                     dir('your/repository') {
-                        sh 'lsof -i :8080'
+                        sh 'sudo netstat -nlp | grep :8080'
                         sh 'npm run test'
                     }
                 }
