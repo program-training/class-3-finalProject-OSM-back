@@ -3,7 +3,7 @@ version: '3.8'
 services:
   # Node.js Backend Service
   backend:
-    image: node:14 
+    image: backend
     working_dir: /app
     volumes:
       - ./class-3-finalProject-OSM-back:/app
