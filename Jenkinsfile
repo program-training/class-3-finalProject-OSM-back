@@ -9,14 +9,15 @@ pipeline {
                 '''
             }
         }
-    stage("Integration Testing") {
-        steps {
-            script {
-                sh 'docker build -t my-node-app ./backend'
-
-                sh 'docker-compose up -d'
-
-                sh 'docker exec my-node-app npm run test'
+        stage("Integration Testing") {
+            steps {
+                script {
+                    sh 'docker build -t my-node-app ./backend'
+    
+                    sh 'docker-compose up -d'
+    
+                    sh 'docker exec my-node-app npm run test'
+                }
             }
         }
     }
