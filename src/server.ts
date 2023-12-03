@@ -26,9 +26,4 @@ app.listen(PORT, async () => {
   checkConnection()
   connectToDatabase();
 });
-const server = app.listen(PORT, async () => {
-  console.log(chalk.blueBright(`Server listening on port: ${PORT}`));
-  checkConnection();
-  connectToDatabase();
-});
 export default app;
