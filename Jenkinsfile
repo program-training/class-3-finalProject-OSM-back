@@ -12,14 +12,18 @@ pipeline {
         stage("Integration Testing") {
             steps {
                 script {
-                    sh 'docker build -t my-node-app ./class-3-finalProject-OSM-back'
-    
+                    // Build the Node.js backend image
+                    sh 'docker build -t my-node-app .'
+        
+                    // Start Docker Compose services
                     sh 'docker-compose up -d'
-    
-                    sh 'docker exec my-node-app npm run test'
+        
+                    // Run integration tests
+                    sh 'docker exec my-node-app npm run test-integration'
                 }
             }
         }
     }
 }
-        
+
+    
