@@ -15,7 +15,7 @@ pipeline {
                     sh 'docker images ls'
         
                     // Run integration tests in the 'backend' container
-                    sh 'docker exec backend npm run test'
+                    sh 'docker exec workspace_backend_1 npm run test'
                 }
             }
         }
