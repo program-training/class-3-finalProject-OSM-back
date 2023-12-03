@@ -19,7 +19,7 @@ app.use(cors());
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5432;
 
 app.listen(PORT, async () => {
   console.log(chalk.blueBright(`Server listening on port: ${PORT}`));
