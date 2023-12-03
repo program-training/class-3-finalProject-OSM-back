@@ -49,7 +49,7 @@ pipeline {
             steps {
                 script {
                     // Assuming your Node.js tests are in the cloned repository
-                    dir('your/repository') {
+                    dir('./') {
                         sh 'npm run test'
                     }
                 }
