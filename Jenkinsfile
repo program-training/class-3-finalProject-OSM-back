@@ -15,25 +15,49 @@ pipeline {
             steps {
                 script {
                     sh 'docker run --rm --name test -e POSTGRES_PASSWORD=12345 -p 5432:5432 -d postgres'
-
                     sh 'sleep 10s'
                 }
             }
         }
 
-        stage("Execute psql command") {
+        stage("Clone application repository") {
             steps {
                 script {
-                    sh 'docker exec test psql -U postgres'
+                    git 'https://github.com/your/repository.git'
                 }
             }
         }
-        post {
-            always {
+
+        stage("Run Node.js application") {
+            steps {
                 script {
-                    sh 'docker stop test || true'
-                    sh 'docker rm test || true'
+                    // Assuming your Node.js application is in the cloned repository
+                    dir('./') {
+                        sh 'npm install'
+                        sh 'npm start &'  // Adjust the startup command based on your application
+                        sh 'sleep 10s'
+                    }
                 }
+            }
+        }
+
+        stage("Execute npm run test") {
+            steps {
+                script {
+                    // Assuming your Node.js tests are in the cloned repository
+                    dir('your/repository') {
+                        sh 'npm run test'
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                sh 'docker stop test || true'
+                sh 'docker rm test || true'
             }
         }
     }
