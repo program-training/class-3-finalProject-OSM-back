@@ -23,7 +23,7 @@ pipeline {
         stage("Clone application repository") {
             steps {
                 script {
-                    git 'https://github.com/your/repository.git'
+                    git 'https://github.com/program-training/class-3-finalProject-OSM-back.git'
                 }
             }
         }
