@@ -6,7 +6,6 @@ pipeline {
                 sh '''
                 docker info
                 docker version 
-                curl --versionjq --version
                 '''
             }
         }
