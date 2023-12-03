@@ -9,8 +9,6 @@ pipeline {
         
                     // Start Docker Compose services
                     sh 'docker-compose up -d'
-                    
-                    sh docker-compose ps -q backend | xargs docker inspect -f '{{ .State.ExitCode }}'
 
                     sh 'docker ps'
 
