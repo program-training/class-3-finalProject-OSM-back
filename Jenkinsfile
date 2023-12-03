@@ -60,7 +60,7 @@ pipeline {
     post {
         always {
             script {
-                sh 'docker rm test || true'
+                sh 'docker rm -f test || true'
             }
         }
     }
