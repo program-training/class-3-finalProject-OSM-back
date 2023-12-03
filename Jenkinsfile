@@ -12,7 +12,7 @@ pipeline {
         stage("Integration Testing") {
             steps {
                 script {
-                    sh 'docker build -t my-node-app ./backend'
+                    sh 'docker build -t my-node-app ./class-3-finalProject-OSM-back'
     
                     sh 'docker-compose up -d'
     
