@@ -16,6 +16,9 @@ pipeline {
                 script {
                     // Run PostgreSQL container
                     sh 'docker run --rm --name test -e POSTGRES_PASSWORD=12345 -p 5432:5432 -d postgres'
+
+                    // Sleep for a few seconds to allow PostgreSQL to start
+                    sh 'sleep 10s'
                 }
             }
         }
