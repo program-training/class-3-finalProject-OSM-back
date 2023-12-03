@@ -17,6 +17,12 @@ pipeline {
                 }
             }
         }
+        stage("Verify Docker Compose Version") {
+            steps {
+                sh 'docker-compose version'
+            }
+        }
+
     }
 }
         
