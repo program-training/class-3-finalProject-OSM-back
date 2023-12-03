@@ -2,7 +2,7 @@ backend:
   image: node:14
   working_dir: /app
   volumes:
-    - ./backend:/app
+    - ./class-3-finalProject-OSM-back:/app
   command: npm run test
   environment:
     - NODE_ENV=test
