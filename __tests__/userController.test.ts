@@ -24,7 +24,6 @@ describe('User Controller', () => {
 
       const deleteResponse = await server
       .delete(`/api/users/${userId}`)
-      .set('Authorization', `Bearer ${accessToken}`)
       .expect(200);
   });
 });
