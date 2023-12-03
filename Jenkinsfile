@@ -11,7 +11,7 @@ pipeline {
                     sh 'docker-compose up -d'
         
                     // Run integration tests in the 'backend' container
-                    sh 'docker run backend npm run test'
+                    sh 'docker exec backend npm run test'
                 }
             }
         }
