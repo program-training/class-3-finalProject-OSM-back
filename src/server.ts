@@ -19,7 +19,7 @@ app.use(cors());
 app.use("/api/users", userRouter);
 app.use("/api/orders", orderRouter);
 
-const PORT = process.env.PORT || 5432;
+const PORT = process.env.PORT;
 
 app.listen(PORT, async () => {
   console.log(chalk.blueBright(`Server listening on port: ${PORT}`));
@@ -31,14 +31,4 @@ const server = app.listen(PORT, async () => {
   checkConnection();
   connectToDatabase();
 });
-
-// Gracefully shut down the server
-process.on('SIGINT', () => {
-  console.log('Server is shutting down...');
-  server.close(() => {
-    console.log('Server has shut down.');
-    process.exit(0);
-  });
-});
-
 export default app;
