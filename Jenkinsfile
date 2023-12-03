@@ -9,6 +9,10 @@ pipeline {
         
                     // Start Docker Compose services
                     sh 'docker-compose up -d'
+
+                    sh 'docker ps'
+
+                    sh 'docker images ls'
         
                     // Run integration tests in the 'backend' container
                     sh 'docker exec backend npm run test'
