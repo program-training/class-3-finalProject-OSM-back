@@ -1,8 +1,8 @@
 pipeline {
     agent any 
     stages {
-        stage ("verify tooling"){
-            steps{
+        stage ("verify tooling") {
+            steps {
                 sh '''
                 docker info
                 docker version 
@@ -18,12 +18,10 @@ pipeline {
                     // Start Docker Compose services
                     sh 'docker-compose up -d'
         
-                    // Run integration tests
-                    sh 'docker exec my-node-app npm run test'
+                    // Run integration tests in the 'backend' container
+                    sh 'docker exec backend npm run test'
                 }
             }
         }
     }
 }
-
-    
