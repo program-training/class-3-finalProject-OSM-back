@@ -28,11 +28,12 @@ pipeline {
                 }
             }
         }
-    post {
-        always {
-            script {
-                sh 'docker stop test || true'
-                sh 'docker rm test || true'
+        post {
+            always {
+                script {
+                    sh 'docker stop test || true'
+                    sh 'docker rm test || true'
+                }
             }
         }
     }
