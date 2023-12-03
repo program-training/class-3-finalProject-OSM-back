@@ -19,15 +19,18 @@ pipeline {
                 }
             }
         }
-
-        stage("Clone application repository") {
+          stage("Clone application repository") {
             steps {
                 script {
-                    git 'https://github.com/program-training/class-3-finalProject-OSM-back.git'
+                    checkout([
+                        $class: 'GitSCM',
+                        branches: [[name: '*/DevOps']],  // Adjust the branch name as needed
+                        userRemoteConfigs: [[url: 'https://github.com/program-training/class-3-finalProject-OSM-back.git']],
+                        credentialsId: 'test'  // Specify your credentials ID here
+                    ])
                 }
             }
         }
-
         stage("Run Node.js application") {
             steps {
                 script {
