@@ -9,12 +9,16 @@ pipeline {
                 '''
             }
         }
-        stage("Verify Docker Compose Version") {
-            steps {
-                sh 'docker-compose version'
+    stage("Integration Testing") {
+        steps {
+            script {
+                sh 'docker build -t my-node-app ./backend'
+
+                sh 'docker-compose up -d'
+
+                sh 'docker exec my-node-app npm run test-integration'
             }
         }
-
     }
 }
         
