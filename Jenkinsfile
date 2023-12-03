@@ -4,7 +4,6 @@ pipeline {
         stage("Stop and remove existing container") {
             steps {
                 script {
-                    sh 'printenv'
                     sh 'docker stop test || true'
                     sh 'docker rm test || true'
                     sh 'sleep 5s'
