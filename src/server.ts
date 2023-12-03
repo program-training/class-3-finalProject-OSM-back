@@ -16,8 +16,8 @@ app.use(morgan("tiny"));
 app.use(express.json());
 app.use(cors());
 
-app.use("/api/users", userRouter);
-app.use("/api/orders", orderRouter);
+app.use("/users", userRouter);
+app.use("/orders", orderRouter);
 
 const PORT = process.env.PORT;
 
