@@ -16,7 +16,7 @@ pipeline {
 
                 sh 'docker-compose up -d'
 
-                sh 'docker exec my-node-app npm run test-integration'
+                sh 'docker exec my-node-app npm run test'
             }
         }
     }
