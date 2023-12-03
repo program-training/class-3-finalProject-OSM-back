@@ -7,6 +7,9 @@ pipeline {
                     // Stop and remove existing container if it exists
                     sh 'docker stop test || true'
                     sh 'docker rm test || true'
+                    
+                    // Sleep for a few seconds to allow Docker to complete cleanup
+                    sh 'sleep 5s'
                 }
             }
         }
@@ -55,8 +58,8 @@ pipeline {
         always {
             // Clean up: Stop and remove the container after execution
             script {
-                sh 'docker stop test'
-                sh 'docker rm test'
+                sh 'docker stop test || true'
+                sh 'docker rm test || true'
             }
         }
     }
