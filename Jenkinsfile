@@ -1,21 +1,17 @@
 pipeline {
     agent any 
     stages {
-        stage("Integration Testing") {
+        stage("run postgerss image") {
             steps {
                 script {
-                    // Build the Node.js backend image
-                    sh 'docker build -t backend .'
-        
-                    // Start Docker Compose services
-                    sh 'docker-compose up -d'
+                    sh 'docker run --name test -e POSTGRES_PASSWORD=12345 -p 5432:5432 -d postgres
+'                  
+                    sh 'docker exec -it test psql -U postgres'
 
                     sh 'docker ps'
 
                     sh 'docker images ls'
-        
-                    // Run integration tests in the 'backend' container
-                    // sh 'docker exec workspace_backend_1 npm run test'
+    
                 }
             }
         }
