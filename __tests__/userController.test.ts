@@ -1,10 +1,10 @@
-import request from "supertest";
-import app from "../src/server";
+import request from 'supertest';
+import server from '../src/server';
 
-const server = request(app);
+const serverRequest = request(server); // Use the server object
 
 describe('User Controller', () => {
-  let userId: Number;
+  let userId: number;
 
   test('register a new user', async () => {
     const existingUser = {
@@ -43,11 +43,8 @@ describe('User Controller', () => {
 
   // Add an afterAll block to close the Express server
   afterAll(async () => {
-    // Assuming that your Express app has a `close` method
-    await new Promise(resolve => app.close(resolve));
-
-    // Add any additional cleanup logic (e.g., disconnecting from the database)
-    // For example, if you have a method called `disconnectFromDatabase`
-    // await disconnectFromDatabase();
+      await new Promise(resolve => server.close(resolve));
+    });
   });
 });
+
