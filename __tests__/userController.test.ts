@@ -1,6 +1,6 @@
 import request from "supertest";
 import { Request } from "express";
-import app from "../src/server";
+// import app from "../src/server";
 
 const server=request('http://localhost:8080')
 describe('User Controller', () => {
