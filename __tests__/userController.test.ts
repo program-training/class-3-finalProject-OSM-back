@@ -1,7 +1,7 @@
 import request from "supertest";
 import app from "../src/server";
 
-const server = request('http://localhost:3000');
+const server = request(app);
 
 describe('User Controller', () => {
   let userId: Number;
