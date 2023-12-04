@@ -38,7 +38,7 @@ pipeline {
                 script {
                     dir('./') {
                         sh 'npm install'
-                        sh 'npm start'  
+                        sh 'npm start &'  
                         sh 'sleep 10s'
                     }
                 }
