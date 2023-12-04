@@ -1,43 +1,44 @@
 pipeline {
     agent any
     stages {
-        stage("Stop and remove existing container") {
+        stage("Stop and remove existing containers") {
             steps {
                 script {
-                    sh 'docker stop test || true'
-                    sh 'docker rm test || true'
+                    sh 'docker-compose down -v --remove-orphans'
+                    sh 'docker system prune -af'
                     sh 'sleep 5s'
                 }
             }
         }
 
-        stage("Run PostgreSQL container") {
+        stage("Run Docker Compose") {
             steps {
                 script {
-                    sh 'docker run --rm --name test -e POSTGRES_PASSWORD=12345 -p 5432:5432 -d postgres'
-                    sh 'sleep 10s'
+                    sh 'docker-compose up -d'
+                    sh 'sleep 20s' // Adjust the delay based on your application startup time
                 }
             }
         }
-          stage("Clone application repository") {
+
+        stage("Clone application repository") {
             steps {
                 script {
                     checkout([
                         $class: 'GitSCM',
-                        branches: [[name: '*/DevOps']],  // Adjust the branch name as needed
+                        branches: [[name: '*/DevOps']],
                         userRemoteConfigs: [[url: 'https://github.com/program-training/class-3-finalProject-OSM-back.git']],
-                        credentialsId: 'test'  // Specify your credentials ID here
+                        credentialsId: 'test'
                     ])
                 }
             }
         }
+
         stage("Run Node.js application") {
             steps {
                 script {
-                    // Assuming your Node.js application is in the cloned repository
                     dir('./') {
                         sh 'npm install'
-                        sh 'npm start &'  // Adjust the startup command based on your application
+                        sh 'npm start'  
                         sh 'sleep 10s'
                     }
                 }
@@ -47,7 +48,6 @@ pipeline {
         stage("Execute npm run test") {
             steps {
                 script {
-                    // Assuming your Node.js tests are in the cloned repository
                     dir('./') {
                         sh 'npm run test'
                     }
@@ -59,8 +59,10 @@ pipeline {
     post {
         always {
             script {
-                sh 'docker rm -f test || true'
+                sh 'docker-compose down -v --remove-orphans'
+                sh 'docker system prune -af'
             }
         }
     }
 }
+
