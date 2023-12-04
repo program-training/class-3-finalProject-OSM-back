@@ -41,11 +41,6 @@ describe('User Controller', () => {
       throw error;  // Rethrow the error to fail the test
     }
   });
-
-  afterAll(async () => {
-    // Close the app after all tests
-    await app.close();
-  });
 });
 
 
