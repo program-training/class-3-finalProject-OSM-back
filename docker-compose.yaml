@@ -12,6 +12,6 @@ services:
     build: .
     command: npm start
     ports:
-      - "your_preferred_port:your_application_port"
+      - "8081:3000"
     depends_on:
       - test
