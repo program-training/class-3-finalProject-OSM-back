@@ -1,10 +1,10 @@
-import request from 'supertest';
-import server from '../src/server';
+ import request from "supertest";
+import app from "../src/server";
 
-const serverRequest = request(server); // Use the server object
+const server = request(app);
 
 describe('User Controller', () => {
-  let userId: number;
+  let userId: Number;
 
   test('register a new user', async () => {
     const existingUser = {
@@ -39,12 +39,6 @@ describe('User Controller', () => {
       console.error('Test Error:', error);
       throw error;  // Rethrow the error to fail the test
     }
-  });
-
-  // Add an afterAll block to close the Express server
-  afterAll(async () => {
-      await new Promise(resolve => server.close(resolve));
-    });
   });
 });
 
