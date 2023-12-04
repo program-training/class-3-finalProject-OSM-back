@@ -49,7 +49,7 @@ pipeline {
             steps {
                 script {
                     dir('./') {
-                        sh 'npm run test'
+                        sh 'sh 'npm run test -- --detectOpenHandles''
                     }
                 }
             }
