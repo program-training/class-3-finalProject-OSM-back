@@ -9,23 +9,20 @@ import {
   getAllUsersService,
   comperepasswordService,
 } from './userService';
+import { resolversinterface } from '../interfaces/resolverinterface';
 import * as JWT from '../jwt/jwt';
 import { generateUniqueCode } from '../nodemailer/nodemailer';
 import { generateUserPassword } from "../bycrypt/bycrypt";
 import { sendemail } from "../nodemailer/nodemailer";
 
 export const userResolvers = {
-  registerUser: async (args: { email: string,password:string }): Promise<{ user: UserInterface; accessToken: string }> => {
+  registerUser: async (parent:string, args: { email: string; password: string }, context:string, info:string): Promise<{ user: UserInterface; accessToken: string }> => {
     console.log('Received mutation with email:', args.email, 'and password:', args.password);
     try {
-      // const registerUser: UserInterface = {
-      //   id:1, 
-      //   isadmin: false, 
-      //   code: " ", 
-      //   email,
-      //   password: generateUserPassword(password),
-      // }
       const registerUser:any=args
+      console.log(registerUser.password,"register");
+      
+      registerUser.password = generateUserPassword(registerUser.password);
       const user = await registerService(registerUser);
       if (user) {
         const accessToken = JWT.generateAccessToken(user);
@@ -41,7 +38,7 @@ export const userResolvers = {
   
   
 
-  forgotPassword: async (args: { email: string }): Promise<string> => {
+  forgotPassword: async (parent:string, args: { email: string}, context:string, info:string): Promise<string> => {
     const emailToReset = args.email;
     console.log(emailToReset, 'emailtoreset');
     const code = generateUniqueCode();
@@ -55,7 +52,7 @@ export const userResolvers = {
     }
   },
 
-  comperepassword: async (args: { email: string; code: string }): Promise<string> => {
+  comperepassword: async (parent:string, args: { email: string; code: string }, context:string, info:string): Promise<string> => {
     const emailToReset = args.email;
     const code = args.code;
     try {
@@ -67,7 +64,7 @@ export const userResolvers = {
     }
   },
 
-  resetPassword: async (args: { email: string; password: string }): Promise<{ success: boolean; message: string }> => {
+  resetPassword: async (parent:string, args: { email: string; password: string }, context:string, info:string): Promise<{ success: boolean; message: string }> => {
     try {
       const { email, password } = args;
       const result = await resetPasswordService(email, password);
@@ -78,10 +75,11 @@ export const userResolvers = {
     }
   },
 
-  login: async (args:  UserInterface ): Promise<{ user: UserInterface; accessToken: string }> => {
+  login: async (parent:string, args: { email: string; password: string }, context:string, info:string): Promise<{ user: UserInterface; accessToken: string }> => {
     try {
-      const logInUser: UserInterface = args;
+      const logInUser:any = args;
       const user = await loginService(logInUser);
+
       if (user) {
         const accessToken = JWT.generateAccessToken(user);
         return { user, accessToken };
@@ -93,8 +91,9 @@ export const userResolvers = {
     }
   },
 
-  deleteUser: async (args:any) => {
+  deleteUser: async (parent:string, args:{id:number} , context:string, info:string):Promise<string> => {
     try {
+      console.log(args.id,"dele");
       const userId = args.id;
       const deleteUserId = await deleteUserByIdService(Number(userId));
       return `${deleteUserId} user deleted successfully`;
@@ -102,7 +101,7 @@ export const userResolvers = {
       console.error(error);
       throw new Error('Server error while deleting user');
     }
-  },
+},
 
   getAllUsers: async (): Promise<UserInterface[]> => {
     try {
