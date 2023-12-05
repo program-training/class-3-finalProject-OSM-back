@@ -8,7 +8,6 @@ describe('User Controller', () => {
 
   afterEach(async () => {
     if (userId) {
-      // Delete the user after each test
       await server.delete(`/api/users/${userId}`).expect(200);
     }
   });
@@ -38,7 +37,7 @@ describe('User Controller', () => {
       expect(users.email).toEqual(existingUser.email);
     } catch (error) {
       console.error('Test Error:', error);
-      throw error;  // Rethrow the error to fail the test
+      throw error;
     }
   });
 });
