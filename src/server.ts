@@ -2,8 +2,8 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import * as dotenv from 'dotenv';
-import { typeDefs } from "./schemaGql/ordersSchema";
-import  resolvers  from "./resolversGql/ordersResolvers";
+import { typeDefs } from "./schema/schema";
+import { resolvers } from "./resolvers/resolvers";
 import { checkConnection } from "./PostgreSQL/PostgreSQL";
 import connectToDatabase from "./mongoDB/mongoConnection";
 import { ApolloServer } from '@apollo/server';
@@ -11,13 +11,16 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import { expressMiddleware } from '@apollo/server/express4';
 import http from 'http'
 
+interface context  {
+  token?: string
+}
 
 dotenv.config();
 const PORT = process.env.PORT as unknown as number;
  
 const app = express();
 const httpServer = http.createServer(app);
-const server = new ApolloServer({
+const server = new ApolloServer<context>({
   typeDefs,
   resolvers,
   plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
