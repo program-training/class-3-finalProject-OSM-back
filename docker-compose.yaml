@@ -22,6 +22,7 @@ services:
       - postgres
     environment:
       DATABASE_URL: postgres://yourdbuser:yourdbpassword@postgres:5432/yourdbname
+    container_name: server
 
   test:
     build:
