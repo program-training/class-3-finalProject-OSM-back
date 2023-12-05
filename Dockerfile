@@ -13,7 +13,7 @@ RUN npm install
 
 RUN npm install -g typescript
 
-COPY ./src ./src
+COPY . ./app
 
 RUN tsc
 
