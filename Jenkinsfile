@@ -2,20 +2,22 @@ pipeline {
     agent any
 
     stages {
-        stage('Build and Test') {
+        stage('Build') {
             steps {
-                script {
-                    sh 'docker-compose -f docker-compose.yaml up -d --build'
-
-                    try {
-                        // Use the service name defined in docker-compose.yaml for the server
-                        sh 'docker exec server npm install'
-                        sh 'docker exec server npm run test'
-                    } finally {
-                        sh 'docker-compose -f docker-compose.yaml down'
-                    }
-                }
+                sh 'docker-compose build'
             }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'docker-compose up --exit-code-from test'
+            }
+        }
+    }
+
+    post {
+        always {
+            sh 'docker-compose down'
         }
     }
 }
