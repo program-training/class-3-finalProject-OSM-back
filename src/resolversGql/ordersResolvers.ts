@@ -1,24 +1,42 @@
-
-import { Types } from 'mongoose';
+import { Types } from "mongoose";
 import {
   getAllOrdersService,
   getOrdersByUserIdService,
   updateByOrderIdService,
   addNewOrderService,
   deleteOrdersByOrderIdService,
-} from '../orders/orderService'; // Update the path accordingly
-import { OrderInterface } from "../interfaces/orderInterface"
+} from "../orders/orderService"; // Update the path accordingly
+import { OrderInterface } from "../interfaces/orderInterface";
 
 const resolvers = {
   Query: {
     getAllOrders: () => getAllOrdersService(),
-    getOrdersByUserId: (_: unknown, { userId }: { userId: string }) => getOrdersByUserIdService(userId),
+    getOrdersByUserId: (_: unknown, { userId }: { userId: string }) =>
+      getOrdersByUserIdService(userId),
   },
   Mutation: {
-    updateOrder: (_: unknown, { orderId, updatedData }: { orderId: string, updatedData: OrderInterface }) =>
-    updateByOrderIdService(new Types.ObjectId(orderId), updatedData),
-    addNewOrder: (_: unknown, { orderData }: { orderData: OrderInterface }) => addNewOrderService(orderData),
-    deleteOrder: (_: unknown, { orderId }: { orderId: string }) => deleteOrdersByOrderIdService(orderId),
+    updateOrder: (
+      _: unknown,
+      { orderId, updatedData }: { orderId: string; updatedData: OrderInterface }
+    ) => updateByOrderIdService(new Types.ObjectId(orderId), updatedData),
+    addNewOrder: (_: unknown, { orderData }: { orderData: OrderInterface }) =>{
+     try{
+      const newOrder = addNewOrderService(orderData)
+      return newOrder
+     } catch(error){
+      throw new Error("Could not adding order");
+     }
+    },
+    deleteOrder: async (_: unknown, { orderId }: { orderId: string }) => {
+      const id = orderId;
+      try {
+        const order = await deleteOrdersByOrderIdService(id);
+        return order;
+      } catch (error) {
+        console.error("Error deleting order:", error);
+        throw new Error("Could not delete order");
+      }
+    },
   },
 };
 

@@ -56,7 +56,6 @@ export const getOrdersByUserIdService = async (userId: string) => {
 
 export const deleteOrdersByOrderIdService = async (orderId:string) => {
   try {
-    console.log(orderId);
     const deleteOrderFromDAL = await deleteByOrderId(orderId);
      return deleteOrderFromDAL;
   } catch (error) {
