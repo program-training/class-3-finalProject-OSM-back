@@ -1,5 +1,5 @@
 // userResolvers.ts
-import {UserInterface as User } from '../interfaces/userInterface';
+import {UserInterface } from '../interfaces/userInterface';
 import {
   registerService,
   loginService,
@@ -15,10 +15,17 @@ import { generateUserPassword } from "../bycrypt/bycrypt";
 import { sendemail } from "../nodemailer/nodemailer";
 
 export const userResolvers = {
-  registerUser: async (args: User ): Promise<{ user: User; accessToken: string }> => {
+  registerUser: async (args: { email: string,password:string }): Promise<{ user: UserInterface; accessToken: string }> => {
+    console.log('Received mutation with email:', args.email, 'and password:', args.password);
     try {
-      const registerUser: User = args;
-      registerUser.password = generateUserPassword(registerUser.password);
+      // const registerUser: UserInterface = {
+      //   id:1, 
+      //   isadmin: false, 
+      //   code: " ", 
+      //   email,
+      //   password: generateUserPassword(password),
+      // }
+      const registerUser:any=args
       const user = await registerService(registerUser);
       if (user) {
         const accessToken = JWT.generateAccessToken(user);
@@ -31,6 +38,8 @@ export const userResolvers = {
       throw new Error('Server error while registering user');
     }
   },
+  
+  
 
   forgotPassword: async (args: { email: string }): Promise<string> => {
     const emailToReset = args.email;
@@ -69,9 +78,9 @@ export const userResolvers = {
     }
   },
 
-  login: async (args:  User ): Promise<{ user: User; accessToken: string }> => {
+  login: async (args:  UserInterface ): Promise<{ user: UserInterface; accessToken: string }> => {
     try {
-      const logInUser: User = args;
+      const logInUser: UserInterface = args;
       const user = await loginService(logInUser);
       if (user) {
         const accessToken = JWT.generateAccessToken(user);
@@ -95,8 +104,9 @@ export const userResolvers = {
     }
   },
 
-  getAllUsers: async (): Promise<User[]> => {
+  getAllUsers: async (): Promise<UserInterface[]> => {
     try {
+      
       const allUsers = await getAllUsersService();
       if (allUsers === undefined) {
         throw new Error('Failed to retrieve user data');
