@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     environment {
+        // Define environment variables for database configuration
         DATABASE_NAME = 'your_database_name'
         DATABASE_USER = 'your_database_user'
         DATABASE_PASSWORD = 'your_database_password'
@@ -11,8 +12,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
+                    // Your build steps, e.g., npm install, etc.
                     sh 'npm install'
-                    sh 'npm start &'
                 }
             }
         }
@@ -20,6 +21,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
+                    // Your test steps, e.g., npm test, etc.
                     sh 'npm test'
                 }
             }
@@ -28,6 +30,7 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
+                    // Use docker-compose to start containers
                     sh 'docker-compose up -d'
                 }
             }
@@ -36,7 +39,23 @@ pipeline {
         stage('Integration Test') {
             steps {
                 script {
-                    sh 'npm run test'
+                    // Perform integration testing, e.g., using a testing framework
+                    sh 'npm run integration-test'
+                }
+            }
+        }
+        
+        stage('Deploy to Production') {
+            // This stage will only run if the 'Test' stage succeeds
+            when {
+                expression {
+                    currentBuild.resultIsBetterOrEqualTo('SUCCESS')
+                }
+            }
+            steps {
+                script {
+                    // Your deployment steps for production
+                    sh 'kubectl apply -f production-deployment.yaml'
                 }
             }
         }
@@ -44,6 +63,7 @@ pipeline {
 
     post {
         always {
+            // Cleanup steps, e.g., docker-compose down
             script {
                 sh 'docker-compose down'
             }
