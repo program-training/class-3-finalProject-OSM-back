@@ -39,7 +39,6 @@ export const addNewOrderService = async (orderData: OrderInterface) => {
 
 export const getOrdersByUserIdService = async (userId: string) => {
   try {
-    console.log(userId, "service");
     const ordersByUserFromDAL = await getOrdersByUserId(userId);
 
     // Use type assertion to explicitly tell TypeScript that you expect an array

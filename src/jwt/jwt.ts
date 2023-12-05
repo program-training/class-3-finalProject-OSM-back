@@ -39,6 +39,18 @@ export const verifyToken =  (req:Request, res:Response, next:NextFunction) => {
         next()
       }})
   }
+
+  export const getUser = async (token:string) => {
+    try {
+      if (token) {
+        const user = Jwt.verify(token, process.env.SECRET_TOKEN_KEY as string);
+        return user;
+      }
+      return null;
+    } catch (error) {
+      return null;
+    }
+  };
   
 
   
