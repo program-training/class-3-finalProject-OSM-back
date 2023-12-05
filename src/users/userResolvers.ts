@@ -19,10 +19,10 @@ export const userResolvers = {
   registerUser: async (parent:string, args: { email: string; password: string }, context:string, info:string): Promise<{ user: UserInterface; accessToken: string }> => {
     console.log('Received mutation with email:', args.email, 'and password:', args.password);
     try {
-      const registerUser:any=args
+      const registerUser: UserInterface  = args
       console.log(registerUser.password,"register");
       
-      registerUser.password = generateUserPassword(registerUser.password);
+      registerUser.password = generateUserPassword(registerUser.password as string);
       const user = await registerService(registerUser);
       if (user) {
         const accessToken = JWT.generateAccessToken(user);
@@ -77,7 +77,7 @@ export const userResolvers = {
 
   login: async (parent:string, args: { email: string; password: string }, context:string, info:string): Promise<{ user: UserInterface; accessToken: string }> => {
     try {
-      const logInUser:any = args;
+      const logInUser:UserInterface = args;
       const user = await loginService(logInUser);
 
       if (user) {
