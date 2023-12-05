@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    docker.build("your-image-name")
+                    docker.build("server-image")
                 }
             }
         }
@@ -13,7 +13,7 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    docker.image("your-image-name").withRun("--name your-container-name") { c ->
+                    docker.image("server-image").withRun("--name server-container") { c ->
                         docker.inside("--workdir=/app") {
                             sh 'npm install'
                             sh 'npm test'
@@ -27,8 +27,8 @@ pipeline {
     post {
         always {
             script {
-                docker.image("your-image-name").stop()
-                docker.image("your-image-name").remove()
+                docker.image("server-image").stop()
+                docker.image("server-image").remove()
             }
         }
     }
