@@ -8,8 +8,9 @@ pipeline {
                     sh 'docker-compose -f docker-compose.yaml up -d --build'
 
                     try {
-                        sh 'docker exec server-container npm install'
-                        sh 'docker exec server-container npm test'
+                        // Use the service name defined in docker-compose.yaml for the server
+                        sh 'docker exec server npm install'
+                        sh 'docker exec server npm test'
                     } finally {
                         sh 'docker-compose -f docker-compose.yaml down'
                     }
