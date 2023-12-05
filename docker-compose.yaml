@@ -3,15 +3,13 @@ version: '3.8'
 services:
   # Node.js Backend Service
   backend:
-    image: node:14 
+    image: backend
     working_dir: /app
     volumes:
-      - ./backend:/app
+      - ./class-3-finalProject-OSM-back:/app
     command: npm run test
     environment:
       - NODE_ENV=test
-    depends_on:
-      - db
 
   # PostgreSQL Database Service
   db:
@@ -33,6 +31,5 @@ services:
     working_dir: /app
     volumes:
       - ./data-populator:/app
-    depends_on:
-      - db
     command: npm run populate-db # Adjust the command as per your setup
+

@@ -1,7 +1,4 @@
 import express from "express";
-import  userRouter  from "./users/usersRoutes";
-import orderRouter from "./orders/orderRoutes";
-import chalk from "chalk";
 import morgan from "morgan";
 import cors from "cors";
 import * as dotenv from 'dotenv';
@@ -13,7 +10,6 @@ import { ApolloServer } from '@apollo/server';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { expressMiddleware } from '@apollo/server/express4';
 import http from 'http'
-import { startStandaloneServer } from '@apollo/server/standalone';
 
 
 dotenv.config();

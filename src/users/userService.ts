@@ -2,8 +2,9 @@ import { UserInterface } from "../interfaces/userInterface";
 import { loginDal, registerDal,deleteUserByIdDal,
   forgotPasswordDal,resetPasswordDal,getAllUsersDal,comperepasswordDal } from "../users/userDal";
 import { generateUserPassword } from "../bycrypt/bycrypt";
+import { resolversinterface } from '../interfaces/resolverinterface';
 
-export const registerService = async (user: UserInterface) => {
+export const registerService = async (user:UserInterface ) => {
   try {
     const result = await registerDal(user);
     return result;
