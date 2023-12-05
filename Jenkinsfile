@@ -22,7 +22,13 @@ pipeline {
             steps {
                 script {
                     // Your test steps, e.g., npm test, etc.
-                    sh 'npm test'
+                    def testExitCode = sh(script: 'npm test', returnStatus: true)
+                    
+                    if (testExitCode == 0) {
+                        echo 'Tests passed successfully'
+                    } else {
+                        error 'Tests failed'
+                    }
                 }
             }
         }
