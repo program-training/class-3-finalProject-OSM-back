@@ -6,7 +6,7 @@ pipeline {
             steps {
                 script {
                     // Build and start the containers using docker-compose
-                    sh 'docker-compose -f docker-compose.yml up -d --build'
+                    sh 'docker-compose -f docker-compose.yaml up -d --build'
 
                     // Execute tests inside the test container
                     try {
@@ -14,7 +14,7 @@ pipeline {
                         sh 'docker exec server-container npm test'
                     } finally {
                         // Stop and remove containers after tests
-                        sh 'docker-compose -f docker-compose.yml down'
+                        sh 'docker-compose -f docker-compose.yaml down'
                     }
                 }
             }
