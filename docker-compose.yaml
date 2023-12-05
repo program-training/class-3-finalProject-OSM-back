@@ -29,10 +29,8 @@ services:
       dockerfile: Dockerfile.test
     depends_on:
       - postgres
-      - server
     environment:
       SERVER_URL: http://server:3000
 
 volumes:
   postgres_data:
-
