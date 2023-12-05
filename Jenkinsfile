@@ -18,6 +18,16 @@ pipeline {
             }
         }
 
+        stage('Deploy') {
+            steps {
+                script {
+                    // Use docker-compose to start containers
+                    sh 'docker-compose up -d'
+                }
+            }
+        }
+
+        
         stage('Test') {
             steps {
                 script {
@@ -32,16 +42,7 @@ pipeline {
                 }
             }
         }
-
-        stage('Deploy') {
-            steps {
-                script {
-                    // Use docker-compose to start containers
-                    sh 'docker-compose up -d'
-                }
-            }
-        }
-
+        
         stage('Integration Test') {
             steps {
                 script {
