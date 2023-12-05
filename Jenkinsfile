@@ -1,56 +1,42 @@
 pipeline {
     agent any
+
+    environment {
+        DATABASE_NAME = 'your_database_name'
+        DATABASE_USER = 'your_database_user'
+        DATABASE_PASSWORD = 'your_database_password'
+    }
+
     stages {
-        stage("Stop and remove existing containers") {
+        stage('Build') {
             steps {
                 script {
-                    sh 'docker-compose down -v --remove-orphans'
-                    sh 'docker system prune -af'
-                    sh 'sleep 5s'
+                    sh 'npm install'
+                    sh 'npm start &'
                 }
             }
         }
 
-        stage("Run Docker Compose") {
+        stage('Test') {
+            steps {
+                script {
+                    sh 'npm test'
+                }
+            }
+        }
+
+        stage('Deploy') {
             steps {
                 script {
                     sh 'docker-compose up -d'
-                    sh 'sleep 20s' // Adjust the delay based on your application startup time
                 }
             }
         }
 
-        stage("Clone application repository") {
+        stage('Integration Test') {
             steps {
                 script {
-                    checkout([
-                        $class: 'GitSCM',
-                        branches: [[name: '*/DevOps']],
-                        userRemoteConfigs: [[url: 'https://github.com/program-training/class-3-finalProject-OSM-back.git']],
-                        credentialsId: 'test'
-                    ])
-                }
-            }
-        }
-
-        stage("Run Node.js application") {
-            steps {
-                script {
-                    dir('./') {
-                        sh 'npm install'
-                        sh 'npm start &'  
-                        sh 'sleep 10s'
-                    }
-                }
-            }
-        }
-
-        stage("Execute npm run test") {
-            steps {
-                script {
-                    dir('./') {
-                        sh 'npm run test -- --detectOpenHandles'
-                    }
+                    sh 'npm run test'
                 }
             }
         }
@@ -59,10 +45,8 @@ pipeline {
     post {
         always {
             script {
-                sh 'docker-compose down -v --remove-orphans'
-                sh 'docker system prune -af'
+                sh 'docker-compose down'
             }
         }
     }
 }
-
