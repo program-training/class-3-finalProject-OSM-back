@@ -4,19 +4,35 @@ services:
   postgres:
     image: postgres:latest
     environment:
-      POSTGRES_DB: your_database_name
-      POSTGRES_USER: your_database_user
-      POSTGRES_PASSWORD: your_database_password
+      POSTGRES_USER: yourdbuser
+      POSTGRES_PASSWORD: yourdbpassword
+      POSTGRES_DB: yourdbname
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
-  node_app:
+  server:
     build:
       context: .
-      dockerfile: Dockerfile      # Specify the Dockerfile for your Node.js app
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgres://your_database_user:your_database_password@postgres:5432/your_database_name
-    ports:
-      - "3000:3000"
+      DATABASE_URL: postgres://yourdbuser:yourdbpassword@postgres:5432/yourdbname
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    depends_on:
+      - postgres
+      - server
+    environment:
+      SERVER_URL: http://server:3000
+
+volumes:
+  postgres_data:
+
