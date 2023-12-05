@@ -31,7 +31,6 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    // Your test steps, e.g., npm test, etc.
                     def testExitCode = sh(script: 'npm test', returnStatus: true)
                     
                     if (testExitCode == 0) {
