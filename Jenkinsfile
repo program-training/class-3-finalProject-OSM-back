@@ -2,33 +2,21 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Build and Test') {
             steps {
                 script {
-                    docker.build("server-image")
-                }
-            }
-        }
+                    // Build and start the containers using docker-compose
+                    sh 'docker-compose -f docker-compose.yml up -d --build'
 
-        stage('Test') {
-            steps {
-                script {
-                    docker.image("server-image").withRun("--name server-container") { c ->
-                        docker.inside("--workdir=/app") {
-                            sh 'npm install'
-                            sh 'npm test'
-                        }
+                    // Execute tests inside the test container
+                    try {
+                        sh 'docker exec server-container npm install'
+                        sh 'docker exec server-container npm test'
+                    } finally {
+                        // Stop and remove containers after tests
+                        sh 'docker-compose -f docker-compose.yml down'
                     }
                 }
-            }
-        }
-    }
-
-    post {
-        always {
-            script {
-                docker.image("server-image").stop()
-                docker.image("server-image").remove()
             }
         }
     }
