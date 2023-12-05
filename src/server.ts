@@ -2,41 +2,43 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import * as dotenv from 'dotenv';
+import { typeDefs } from "./schema/schema";
+import { resolvers } from "./resolvers/resolvers";
 import { checkConnection } from "./PostgreSQL/PostgreSQL";
 import connectToDatabase from "./mongoDB/mongoConnection";
-import { userResolvers } from './users/userResolvers';
-import { resolvers } from "./resolvers/resolvers";
-import { typeDefs } from "./schema/schema";
 import { ApolloServer } from '@apollo/server';
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
 import { expressMiddleware } from '@apollo/server/express4';
 import http from 'http'
-import { startStandaloneServer } from '@apollo/server/standalone';
-dotenv.config();
 
-const app = express();
-app.use(morgan("tiny"));
-app.use(express.json());
-app.use(cors());
-const httpServer = http.createServer(app);
-interface Context {
-  token?: string;
+interface context  {
+  token?: string
 }
-const server = new ApolloServer<Context>({
-  typeDefs,
-  resolvers, 
-  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
-});
-const PORT = process.env.PORT;
 
-const start = async () => {
+dotenv.config();
+const PORT = process.env.PORT as unknown as number;
+ 
+const app = express();
+const httpServer = http.createServer(app);
+const server = new ApolloServer<context>({
+  typeDefs,
+  resolvers,
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+ })
+
+ const start = async () => {
   await server.start();
   app.use(
     '/',
     cors<cors.CorsRequest>(),
     express.json(),
     morgan("tiny"),
-    expressMiddleware(server),
+    expressMiddleware(server, {
+      context: async ({ req }) => {
+        const token = req.headers.token
+        return {token}
+      },
+    }),
   )
 
   await new Promise<void>((resolve) => httpServer.listen({ port: PORT }, resolve));
@@ -45,3 +47,27 @@ const start = async () => {
   await connectToDatabase();
 }
 start()
+
+
+
+
+
+
+// const startServer = async () => {
+//   try {
+//     const { url } = await startStandaloneServer(server, {
+//       listen: { port: PORT },
+//     });
+
+//     console.log(`Server ready at ${url}`);
+
+//     await checkConnection();
+//     await connectToDatabase();
+//   } catch (error) {
+//     console.error('Error starting the server:', Error);
+//   }
+// };
+
+// startServer();
+//export default app;
+
