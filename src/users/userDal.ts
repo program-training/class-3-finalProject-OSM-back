@@ -19,24 +19,16 @@ export async function createUsersTable(): Promise<void> {
   }
 }
 
-export async function registerDal(
-  user: UserInterface
-): Promise<UserInterface | null> {
+export async function registerDal(user: UserInterface): Promise<UserInterface | null> {
   const client = await pool.connect();
 
   try {
-    const existingUserCheck = await client.query(
-      "SELECT * FROM users WHERE email = $1",
-      [user.email]
-    );
+    const existingUserCheck = await client.query("SELECT * FROM users WHERE email = $1", [user.email]);
 
     if (existingUserCheck.rows.length > 0) {
       throw new Error("User with this email already exists.");
     }
-    const result = await client.query(
-      "INSERT INTO users (email, password, isadmin) VALUES ($1, $2, $3) RETURNING *",
-      [user.email, user.password, user.isadmin || false]
-    );
+    const result = await client.query("INSERT INTO users (email, password, isadmin) VALUES ($1, $2, $3) RETURNING *", [user.email, user.password, user.isadmin || false]);
 
     if (result.rows.length > 0) {
       const insertedUser: UserInterface = result.rows[0];
@@ -55,10 +47,7 @@ export async function registerDal(
 export async function forgotPasswordDal(email: string, code: string) {
   const client = await pool.connect();
   try {
-    const result = await client.query(
-      "UPDATE users SET resetcode = $1 WHERE email = $2 RETURNING *",
-      [code, email]
-    );
+    const result = await client.query("UPDATE users SET resetcode = $1 WHERE email = $2 RETURNING *", [code, email]);
 
     if (result.rows.length > 0) {
       const insertedUser: UserInterface = result.rows[0];
@@ -76,10 +65,7 @@ export async function forgotPasswordDal(email: string, code: string) {
 }
 export async function comperepasswordDal(email: string, newPassword: string) {
   try {
-    const result = await pool.query(
-      "SELECT resetcode FROM users WHERE email = $1",
-      [email]
-    );
+    const result = await pool.query("SELECT resetcode FROM users WHERE email = $1", [email]);
     if (result.rows.length === 1) {
       const resetCodeFromDB = result.rows[0].resetcode;
       const isMatch = resetCodeFromDB === newPassword;
@@ -95,13 +81,10 @@ export async function comperepasswordDal(email: string, newPassword: string) {
   }
 }
 export async function resetPasswordDal(email: string, newPassword: string) {
-  console.log(newPassword,"new")
+  console.log(newPassword, "new");
   const client = await pool.connect();
   try {
-    await client.query(
-      "UPDATE users SET password = $1, resetcode = NULL WHERE email = $2",
-      [newPassword, email]
-    );
+    await client.query("UPDATE users SET password = $1, resetcode = NULL WHERE email = $2", [newPassword, email]);
   } catch (error) {
     console.error("Error updating password:", error);
     throw error;
@@ -113,16 +96,13 @@ export async function loginDal(userEmail: string, userPassword: string) {
   const client = await pool.connect();
 
   try {
-    const result = (await client.query(
-      "SELECT * FROM users WHERE email = $1 ",
-      [userEmail]
-    )) as { rows: UserInterface[] };
+    const result = (await client.query("SELECT * FROM users WHERE email = $1 ", [userEmail])) as { rows: UserInterface[] };
 
-      
     if (result.rows.length > 0) {
       const userById: UserInterface = result.rows[0];
       console.log("user");
-      if (comparePassword(userPassword, userById.password)) {
+      // if (comparePassword(userPassword, userById.password)) {
+      if (userById.password && comparePassword(userPassword, userById.password)) {
         console.log(userById);
         return userById;
       }
@@ -138,39 +118,36 @@ export async function loginDal(userEmail: string, userPassword: string) {
   }
 }
 
-export const getUserById = async (userId:string) =>{
+export const getUserById = async (userId: string) => {
   const client = await pool.connect();
-  try{
-    const { rows:user } = await client.query("SELECT * FROM users WHERE id=$1",[userId])
-    return user
-  }catch (error) {
-    console.error('Error executing SQL query:', error);
-  }finally {
+  try {
+    const { rows: user } = await client.query("SELECT * FROM users WHERE id=$1", [userId]);
+    return user;
+  } catch (error) {
+    console.error("Error executing SQL query:", error);
+  } finally {
     client.release();
   }
-}
+};
 
-export const getAllUsersDal = async ()=>{
+export const getAllUsersDal = async () => {
   const client = await pool.connect();
-  try{
-    const result = await client.query("SELECT * FROM users")
-    return result.rows
-  }catch (error) {
-    console.error('Error executing SQL query:', error);
-  }finally {
+  try {
+    const result = await client.query("SELECT * FROM users");
+    return result.rows;
+  } catch (error) {
+    console.error("Error executing SQL query:", error);
+  } finally {
     client.release();
   }
-}
+};
 
-export const deleteUserByIdDal = async (id : number): Promise<void> => {
+export const deleteUserByIdDal = async (id: number): Promise<void> => {
   const client = await pool.connect();
   console.log(id);
-  
+
   try {
-    const deleteUser = await client.query(
-      "DELETE FROM users WHERE id = $1",
-      [id]
-    );
+    const deleteUser = await client.query("DELETE FROM users WHERE id = $1", [id]);
     console.log(`User with id ${id} has been deleted.`);
     if (deleteUser.rowCount === 0) {
       console.log(`Order with ID ${id} not found`);
