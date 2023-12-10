@@ -71,10 +71,10 @@ export const deleteByOrderId = async (orderId: string):Promise<void> => {
 
 export const getOrdersForHours = async () =>{
   try{
-    let OrdersForHours = await OrderForHoursModel.find({})
-    let countHours = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    const OrdersForHours = await OrderForHoursModel.find({})
+    const countHours = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     OrdersForHours.map((Order)=>{
-      let date = new Date(Order.time as string)
+      const date = new Date(Order.time as string)
       countHours[date.getHours()]++
     })
     return countHours
