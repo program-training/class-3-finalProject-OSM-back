@@ -62,13 +62,6 @@ export const getOrdersByUserId = async (userId: string): CollectionResult => {
 export const deleteByOrderId = async (orderId: string): Promise<void> => {
   try {
     const orderDelete = await OrderModel.findOneAndDelete({ _id: orderId });
-    const changeStream = OrderModel.watch();
-    const handleUpdate = async (change: string) => {
-      console.log("Change occurred:", change);
-      await OrderModel.updateOne({}, { $inc: { changeCount: 1 } });
-    };
-    changeStream.on("delete", handleUpdate);
-
     if (!orderDelete) {
       console.log(`Order with ID ${orderId} not found`);
       throw new Error(`Order with ID ${orderId} not found!`);
