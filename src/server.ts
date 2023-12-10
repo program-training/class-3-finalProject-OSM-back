@@ -8,8 +8,6 @@ import * as dotenv from 'dotenv';
 import { checkConnection } from "./PostgreSQL/PostgreSQL";
 import connectToDatabase from "./mongoDB/mongoConnection";
 
-
-
 dotenv.config();
 const app = express();
 app.use(morgan("tiny"));

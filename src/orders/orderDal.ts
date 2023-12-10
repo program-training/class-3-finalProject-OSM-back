@@ -1,7 +1,7 @@
 import { handleDBResponseError } from "../utils/handleErrors";
 import {OrderInterface} from "../interfaces/orderInterface";
-import { Types, Document, Model } from "mongoose";
-import { ProductModel, ShippingDetailsModel, OrderModel } from "../mongoDB/Schemas/order";
+import { Types, Document, Model, Date } from "mongoose";
+import { ProductModel, ShippingDetailsModel, OrderModel,OrderForHoursModel } from "../mongoDB/Schemas/order";
 
 
 type CollectionResult = Promise<Document[] | Error>;
@@ -68,3 +68,18 @@ export const deleteByOrderId = async (orderId: string):Promise<void> => {
     return handleDBResponseError(error);
   }
 };
+
+export const getOrdersForHours = async () =>{
+  try{
+    let OrdersForHours = await OrderForHoursModel.find({})
+    let countHours = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    OrdersForHours.map((Order)=>{
+      let date = new Date(Order.time as string)
+      countHours[date.getHours()]++
+    })
+    return countHours
+  }catch (error) {
+    return handleDBResponseError(error);
+  }
+
+}
