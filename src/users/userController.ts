@@ -8,6 +8,7 @@ import {
   deleteUserByIdService ,
   getAllUsersService,
   comperepasswordService,
+  getTimeRegisterService,
 } from "./userService";
 import { validateUser } from "../validation/validation";
 import { generateUserPassword } from "../bycrypt/bycrypt";
@@ -111,3 +112,11 @@ export const getAllUsersController = async (req:Request, res:Response) =>{
     res.status(500).json({ error: "Server error while get all users" })
   }
 };
+export const getTimeRegisterController=async(req:Request, res:Response) =>{
+  try{
+    const allUsers = await getTimeRegisterService()
+    res.status(200).json( allUsers )
+  }catch(error){
+    res.status(500).json({ error: "Server error while get all users" })
+  }
+}

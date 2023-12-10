@@ -1,25 +1,40 @@
 import { handleDBResponseError } from "../utils/handleErrors";
-import {OrderInterface} from "../interfaces/orderInterface";
+import { OrderInterface } from "../interfaces/orderInterface";
 import { Types, Document, Model } from "mongoose";
-import { ProductModel, ShippingDetailsModel, OrderModel } from "../mongoDB/Schemas/order";
-
+import {
+  ProductModel,
+  ShippingDetailsModel,
+  OrderModel,
+} from "../mongoDB/Schemas/order";
 
 type CollectionResult = Promise<Document[] | Error>;
 
 export const getAllOrders = async (): CollectionResult => {
   try {
     const orders = await OrderModel.find({});
-    
+    const changeStream = OrderModel.watch();
+    const handleUpdate = async (change: string) => {
+      console.log("Change occurred:", change);
+      await OrderModel.updateOne({}, { $inc: { changeCount: 1 } });
+    };
+    changeStream.on("get", handleUpdate);
     return orders;
   } catch (error) {
     return handleDBResponseError(error);
   }
 };
 
-export const updateByOrderId = async (orderId: Types.ObjectId, updatedData: OrderInterface): CollectionResult => {
+export const updateByOrderId = async (
+  orderId: Types.ObjectId,
+  updatedData: OrderInterface
+): CollectionResult => {
   try {
-    const updatedOrder = await OrderModel.findByIdAndUpdate(orderId, updatedData, { new: true });
-    if (!updatedOrder) throw new Error('Order not found!');
+    const updatedOrder = await OrderModel.findByIdAndUpdate(
+      orderId,
+      updatedData,
+      { new: true }
+    );
+    if (!updatedOrder) throw new Error("Order not found!");
     return [updatedOrder];
   } catch (error) {
     return handleDBResponseError(error);
@@ -53,17 +68,20 @@ export const getOrdersByUserId = async (userId: string): CollectionResult => {
   }
 };
 
-export const deleteByOrderId = async (orderId: string):Promise<void> => {
+export const deleteByOrderId = async (orderId: string): Promise<void> => {
   try {
-    console.log(orderId, "dal");
-    const orderDelete = await OrderModel.findOneAndDelete({ _id:orderId });
-    console.log(orderDelete);
-    
+    const orderDelete = await OrderModel.findOneAndDelete({ _id: orderId });
+    const changeStream = OrderModel.watch();
+    const handleUpdate = async (change: string) => {
+      console.log("Change occurred:", change);
+      await OrderModel.updateOne({}, { $inc: { changeCount: 1 } });
+    };
+    changeStream.on("delete", handleUpdate);
+
     if (!orderDelete) {
       console.log(`Order with ID ${orderId} not found`);
       throw new Error(`Order with ID ${orderId} not found!`);
     }
-
   } catch (error) {
     return handleDBResponseError(error);
   }
