@@ -14,7 +14,6 @@ pipeline {
                         RUN npm install
                         RUN npm install -D typescript
                         COPY . .
-                        RUN npm run build
                         CMD ["npm", "test"]
                     '''
                     // Write Dockerfile content to a file
