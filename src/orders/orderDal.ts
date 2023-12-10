@@ -9,12 +9,6 @@ type CollectionResult = Promise<Document[] | Error>;
 export const getAllOrders = async (): CollectionResult => {
   try {
     const orders = await OrderModel.find({});
-    const changeStream = OrderModel.watch();
-    const handleUpdate = async (change: string) => {
-      console.log("Change occurred:", change);
-      await OrderModel.updateOne({}, { $inc: { changeCount: 1 } });
-    };
-    changeStream.on("get", handleUpdate);
     return orders;
   } catch (error) {
     return handleDBResponseError(error);
