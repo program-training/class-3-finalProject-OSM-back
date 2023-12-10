@@ -240,12 +240,11 @@ async function createLoginTrigger() {
   }
 }
 // createLoginTrigger();
-import { QueryResult } from 'pg';
 
 export const getTimeRegisterDal = async () => {
   const client = await pool.connect();
   try {
-    const result: QueryResult<any> = await client.query(`
+    const result= await client.query(`
       SELECT EXTRACT(HOUR FROM login_time) AS hour, COUNT(*) AS registrations
       FROM login_logs
       GROUP BY hour
