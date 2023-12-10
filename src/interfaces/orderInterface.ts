@@ -20,3 +20,5 @@ export interface ShippingDetails {
   orderType?: string;
   id?: string;
 }
+
+
