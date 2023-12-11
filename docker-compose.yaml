@@ -1,38 +1,36 @@
-version: '3.8'
-
+version: '3'
 services:
-  # Node.js Backend Service
-  backend:
-    image: node:14 
-    working_dir: /app
-    volumes:
-      - ./backend:/app
-    command: npm run test
-    environment:
-      - NODE_ENV=test
-    depends_on:
-      - db
+  mongo-db:
+    image: mongo
+    container_name: mongo-db
+    networks:
+      - app-network
 
-  # PostgreSQL Database Service
-  db:
-    image: postgres:13 
+  my-postgres:
+    image: postgres
+    container_name: my-postgres
     environment:
-      POSTGRES_DB: mydatabase
-      POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
-    ports:
-      - "5432:5432"
-    healthcheck:
-      test: ["CMD", "pg_isready", "-q", "-d", "mydatabase", "-U", "myuser"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+    networks:
+      - app-network
 
-  data-populator:
-    image: node:14
-    working_dir: /app
-    volumes:
-      - ./data-populator:/app
-    depends_on:
-      - db
-    command: npm run populate-db # Adjust the command as per your setup
+  oms-class3:
+    image: oms-end3
+    container_name: oms-class3
+    networks:
+      - app-network
+    environment:
+      - MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test
+      - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/postgres
+      - SECRET_TOKEN_KEY=secretKey
+      - PORT=8081
+
+  oms-test-class3:
+    image: oms-end-test3
+    container_name: oms--test-class3
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
