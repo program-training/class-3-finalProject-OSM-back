@@ -12,13 +12,9 @@ import { OrderInterface } from "../interfaces/orderInterface";
 export const resolvers={
     Query: {
       getAllUsers: userResolvers.getAllUsers,
-<<<<<<< HEAD
-      getTimeRegister:userResolvers.getTimeRegister
-=======
       getAllOrders: () => getAllOrdersService(),
      getOrdersByUserId: (_: unknown, { userId }: { userId: string }) =>
       getOrdersByUserIdService(userId),
->>>>>>> graphQL_develop
     },
     Mutation: {
       registerUser: userResolvers.registerUser,
