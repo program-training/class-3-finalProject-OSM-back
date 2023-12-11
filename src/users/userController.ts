@@ -18,7 +18,7 @@ import { sendemail } from "../nodemailer/nodemailer";
 export const registerController = async (req: Request, res: Response) => {
   try {
     const registerUser: UserInterface = req.body;
-    registerUser.password = generateUserPassword(registerUser.password);
+    registerUser.password = generateUserPassword(registerUser.password as string);
     const user = await registerService(registerUser);
     if (user) {
       const accessToken = JWT.generateAccessToken(user);
