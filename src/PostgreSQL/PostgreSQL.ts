@@ -7,10 +7,10 @@ dotenv.config();
 //   ssl: {
 //     rejectUnauthorized: false,
 //   },
+// });
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_USERNAME,
-});
-  
 });
 // const db = pgp(Pool);
 
