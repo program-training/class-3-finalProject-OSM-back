@@ -149,10 +149,11 @@ export const userResolvers = {
       throw new Error("Server error while getting all users");
     }
   },
-
-  getTimeRegisterController: async () => {
+  getTimeRegister: async (): Promise<Number[]> => {
+    console.log("reso");
     try {
       const allUsers = await getTimeRegisterService();
+      console.log("resolver");
       if (allUsers === undefined) {
         throw new Error("Failed to retrieve user data");
       }

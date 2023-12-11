@@ -240,6 +240,8 @@ export const getTimeRegisterDal = async () => {
       GROUP BY hour
       ORDER BY hour;
     `);
+    console.log(result.rows);
+    
     const countHours = [
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     ];
@@ -248,6 +250,7 @@ export const getTimeRegisterDal = async () => {
       const registrations: number = Number(entry.registrations);
       countHours[hour] += registrations;
     });
+    console.log(countHours);
     return countHours;
   } catch (error) {
     console.error("Error executing SQL query:", error);

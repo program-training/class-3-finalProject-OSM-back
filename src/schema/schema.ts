@@ -14,7 +14,7 @@ export const typeDefs = gql`
   type Query {
     getUser(id: Int!): User
     getAllUsers: [User]
-    getTimeRegisterService: [User_login]
+    getTimeRegister:[Int!]
   }
 
   type Mutation {

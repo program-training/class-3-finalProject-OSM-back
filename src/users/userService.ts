@@ -88,6 +88,8 @@ export const getAllUsersService = async () => {
 export const getTimeRegisterService = async () => {
   try {
     const registrations = await getTimeRegisterDal();
+    console.log("service");
+    
     return registrations;
   } catch (error) {
     console.error("Error in getTimeRegisterController:", error);

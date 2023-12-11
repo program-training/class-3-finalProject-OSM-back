@@ -2,6 +2,7 @@ import { userResolvers } from '../users/userResolvers';
 export const resolvers={
     Query: {
       getAllUsers: userResolvers.getAllUsers,
+      getTimeRegister:userResolvers.getTimeRegister
     },
     Mutation: {
       registerUser: userResolvers.registerUser,
