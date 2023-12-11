@@ -25,7 +25,7 @@ pipeline {
                     // Start MongoDB container
                     sh 'docker run -d --network app-network --name mongo-db mongo'
                     // Build and run the Express.js server container
-                    sh "docker run --rm --name oms-test-class3 --network app-network -e MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test oms-end-test3 npm test"
+                    sh "docker run --rm --name oms-test-class33 --network app-network -e MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test oms-end-test3 npm test"
                 }
             }
         }
