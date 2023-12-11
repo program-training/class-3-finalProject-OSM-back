@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS users (
                     // Start containers using Docker Compose
                     sh 'docker-compose up -d'
                     sh 'docker logs -f oms--test-class3'
-                    sh 'docker logs oms-class3'
+                    sh 'docker logs -f my-postgres'
                 }
             }
         }
