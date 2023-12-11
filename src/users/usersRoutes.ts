@@ -1,5 +1,5 @@
 import express from "express";
-import { registerController,loginController,deleteUserByUserId,forgotPassword,resetPassword,getAllUsersController,comperepassword } from "./userController";
+import { registerController,loginController,deleteUserByUserId,forgotPassword,resetPassword,getAllUsersController,comperepassword,getTimeRegisterController } from "./userController";
 import { validateUser }  from "../validation/validation";
 import { limiter } from '../rateLimiter/rateLimiter'; 
 import { verifyToken } from "../jwt/jwt";
@@ -8,6 +8,7 @@ import { corsConfigs } from "../config/corsConfigs";
 export const userRouter = express.Router();
 
 userRouter.get('/',verifyToken,getAllUsersController)
+userRouter.get('/gettimeregister',getTimeRegisterController)
 userRouter.post("/register", validateUser, registerController);
 userRouter.post("/login", limiter, validateUser, loginController);
 userRouter.post("/forgotpassword", forgotPassword);

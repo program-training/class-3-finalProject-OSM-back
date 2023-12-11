@@ -4,4 +4,5 @@ export interface UserInterface{
     password: string,
     isadmin: boolean
     code:" "
+    registration_time:''
 }

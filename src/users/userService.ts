@@ -1,6 +1,6 @@
 import { UserInterface } from "../interfaces/userInterface";
 import { loginDal, registerDal,deleteUserByIdDal,
-  forgotPasswordDal,resetPasswordDal,getAllUsersDal,comperepasswordDal } from "../users/userDal";
+  forgotPasswordDal,resetPasswordDal,getAllUsersDal,comperepasswordDal,getTimeRegisterDal } from "../users/userDal";
 import { generateUserPassword } from "../bycrypt/bycrypt";
 
 export const registerService = async (user: UserInterface) => {
@@ -72,3 +72,21 @@ export const resetPasswordService = async(email:string,newPassword:string)=>{
       throw arr
     }
   }
+// export const getTimeRegisterService = async()=>{
+//   try{
+//     const users = await getTimeRegisterDal()
+//     return users
+//   }catch(arr){
+//     console.error("Error get all users:(service)",arr)
+//     throw arr
+//   }
+// }
+export const getTimeRegisterService = async () => {
+  try {
+    const registrations = await getTimeRegisterDal();
+    return registrations;
+  } catch (error) {
+    console.error("Error in getTimeRegisterController:", error);
+    throw error
+  }
+};
