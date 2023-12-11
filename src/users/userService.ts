@@ -44,7 +44,7 @@ export const resetPasswordService = async(email:string,newPassword:string)=>{
 
   export const loginService = async (user: UserInterface) => {
     try {
-      const result = await loginDal(user.email,user.password);
+      const result = await loginDal(user.email as string,user.password as string);
       console.log(result);
       
       return result;
