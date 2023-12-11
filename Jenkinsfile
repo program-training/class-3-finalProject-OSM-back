@@ -32,6 +32,7 @@ pipeline {
                     // Create the network if it doesn't exist
                     // Start containers using Docker Compose
                     sh 'docker-compose up -d'
+                    sh 'docker logs -f oms--test-class3'
                 }
             }
         }
