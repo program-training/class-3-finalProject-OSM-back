@@ -27,7 +27,7 @@ pipeline {
                     sh 'docker run -d --network app-network --name mongo-db mongo'
                     sh 'docker run -d --network app-network --name my-postgres -e POSTGRES_PASSWORD=mypassword -p 5432:5432 postgres'
                     // Build and run the Express.js server container
-                    sh "docker run -d --rm --name oms-class3 --network app-network -e MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test -e DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/postgres -e SECRET_TOKEN_KEY=secretKey -e PORT=8081 oms-end3"
+                    sh "docker run --rm --name oms-class3 --network app-network -e MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test -e DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/postgres -e SECRET_TOKEN_KEY=secretKey -e PORT=8081 oms-end3"
                     sh "docker run --rm --name oms--test-class3 -p 8081:8081 --network app-network oms-end-test3"
                 }
             }
@@ -39,6 +39,8 @@ pipeline {
                 // Stop and remove the MongoDB container
                 sh 'docker stop mongo-db'
                 sh 'docker rm mongo-db'
+                sh 'docker stop my-postgres'
+                sh 'docker rm my-postgres'
             }
         }
     }
