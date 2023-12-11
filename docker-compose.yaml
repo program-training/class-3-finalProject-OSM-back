@@ -13,7 +13,9 @@ services:
       POSTGRES_PASSWORD: mypassword
     networks:
       - app-network
-
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+                          
   oms-class3:
     image: oms-end3
     container_name: oms-class3
