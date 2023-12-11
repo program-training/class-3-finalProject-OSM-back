@@ -53,28 +53,27 @@ export const resetPasswordService = async (
   }
 };
 
-export const loginService = async (user: UserInterface) => {
-  try {
-    const result = await loginDal(user.email, user.password);
-    console.log(result);
-
-    return result;
-  } catch (err) {
-    console.error("Error reading data:(service)", err);
-    throw err;
+  export const loginService = async (user: UserInterface) => {
+    try {
+      const result = await loginDal(user.email as string,user.password as string);
+      console.log(result);
+      
+      return result;
+    } catch (err) {
+      console.error("Error reading data:(service)", err);
+      throw err;
+    }
+  };
+  
+  export const deleteUserByIdService = async(userId:number) => {
+    try{
+      const deleteUser = await deleteUserByIdDal(userId)
+      return deleteUser
+    }catch(arr){
+      console.error("Error delete user:(service)",arr)
+      throw arr
+    }
   }
-};
-
-export const deleteUserByIdService = async (userId: number) => {
-  try {
-    const deleteUser = await deleteUserByIdDal(userId);
-    return deleteUser;
-  } catch (arr) {
-    console.error("Error delete user:(service)", arr);
-    throw arr;
-  }
-};
-
 export const getAllUsersService = async () => {
   try {
     const users = await getAllUsersDal();
@@ -88,8 +87,6 @@ export const getAllUsersService = async () => {
 export const getTimeRegisterService = async () => {
   try {
     const registrations = await getTimeRegisterDal();
-    console.log("service");
-    
     return registrations;
   } catch (error) {
     console.error("Error in getTimeRegisterController:", error);

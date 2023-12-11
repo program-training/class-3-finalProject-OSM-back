@@ -1,7 +1,7 @@
 export interface UserInterface{
-    id:number,
-    email: string,
-    password: string,
-    isadmin: boolean
-    code:" "
+    id?:number,
+    email?: string,
+    password?: string,
+    isadmin?: boolean
+    code?:" "
 }
