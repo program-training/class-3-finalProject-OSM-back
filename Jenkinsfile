@@ -27,7 +27,7 @@ pipeline {
                     sh 'docker run -d --network app-network --name mongo-db mongo'
                     // Build and run the Express.js server container
                     sh "docker run --rm --name oms-class3 --network app-network -e MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test -e DATABASE_USERNAME=postgres://users_cwmw_user:kfozee3pFHkIqdsb3xN3DgchdmiLyr7I@dpg-cldimnmg1b2c73f7ul1g-a.oregon-postgres.render.com/users_cwmw -e SECRET_TOKEN_KEY=secretKey -e PORT=8081 oms-end3"
-                    sh "docker run --rm --name oms--test-class3 -p 8081:8081 --network app-network oms-end-test3'
+                    sh "docker run --rm --name oms--test-class3 -p 8081:8081 --network app-network oms-end-test3"
                 }
             }
         }
