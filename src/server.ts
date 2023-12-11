@@ -42,6 +42,6 @@ const start = async () => {
   await new Promise<void>((resolve) => httpServer.listen({ port: PORT }, resolve));
   console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
   await checkConnection();
-  // await connectToDatabase();
+  await connectToDatabase();
 }
 start()
