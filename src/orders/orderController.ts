@@ -7,6 +7,7 @@ import {
   addNewOrderService,
   getOrdersByUserIdService,
   deleteOrdersByOrderIdService,
+  getAllOrdersServiceStatus,
   getOrdersForHoursService
 } from './orderService';
 import { handleError } from '../utils/handleErrors';
@@ -62,6 +63,15 @@ export const handleDeleteOrdersByOrderId = async (req: Request, res: Response) =
   }
 };
 
+
+export const handleGetAllOrdersStatus = async (req: Request, res: Response) => {
+  try {
+    const orders = await getAllOrdersServiceStatus();
+    res.send(orders);
+  } catch (error) {
+    handleError(res, error);
+  }
+};
 export const getOrdersForHoursController = async (req: Request, res: Response) => {
   try{
     const ordersForHours = await getOrdersForHoursService()

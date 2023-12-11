@@ -16,6 +16,7 @@ export const getAllOrdersService = async () => {
   }
 };
 
+
 export const updateByOrderIdService = async (orderId: Types.ObjectId, updatedData: OrderInterface) => {
   try {
     console.log(orderId);
@@ -65,6 +66,47 @@ export const deleteOrdersByOrderIdService = async (orderId:string) => {
     throw error;
   }
 };
+
+
+export const getAllOrdersServiceStatus = async () => {
+  try {
+    const ordersFromDAL = await getAllOrders();
+
+    if (ordersFromDAL instanceof Error) {
+      throw ordersFromDAL;
+    }
+
+    const orderStatistics = {
+      Pending: 0,
+      Refunded: 0,
+      Delivered: 0,
+    };
+
+    ordersFromDAL.forEach((orderDocument) => {
+      const order = orderDocument.toObject();
+
+      switch (order.status) {
+        case "Pending":
+          orderStatistics.Pending += 1;
+          break;
+        case "Refunded":
+          orderStatistics.Refunded += 1;
+          break;
+        case "Delivered":
+          orderStatistics.Delivered += 1;
+          break;
+        default:
+          break;
+      }
+    });
+
+    return orderStatistics;
+  } catch (error) {
+    console.log(chalk.redBright(error));
+    throw error;
+  }
+};
+
 
 export const getOrdersForHoursService = async () => {
   try{
