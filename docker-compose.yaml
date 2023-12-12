@@ -13,12 +13,12 @@ services:
       POSTGRES_PASSWORD: mypassword
     networks:
       - app-network
-    command: ["bash", "-c", "until pg_isready -h my-postgres -p 5432 -U postgres; do echo 'Waiting for PostgreSQL to be ready...'; sleep 2; done && npm start"]
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -h localhost -p 5432 -U postgres"]
-      interval: 60s
-      timeout: 60s
-      retries: 5
+    # command: ["bash", "-c", "until pg_isready -h my-postgres -p 5432 -U postgres; do echo 'Waiting for PostgreSQL to be ready...'; sleep 2; done && npm start"]
+    # healthcheck:
+    #   test: ["CMD-SHELL", "pg_isready -h localhost -p 5432 -U postgres"]
+    #   interval: 60s
+    #   timeout: 60s
+    #   retries: 5
     volumes:
       - /var/jenkins_home/jobs/class3_oms_back_test/workspace/init.sql:/docker-entrypoint-initdb.d/init.sql
       - pg-data:/var/lib/postgresql/data
@@ -33,18 +33,18 @@ services:
       - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/postgres
       - SECRET_TOKEN_KEY=secretKey
       - PORT=8081
-    depends_on:
-      my-postgres:
-        condition: service_healthy
+    # depends_on:
+    #   my-postgres:
+    #     condition: service_healthy
 
   oms-test-class3:
     image: oms-end-test3
     container_name: oms--test-class3
     networks:
       - app-network
-    depends_on:
-      my-postgres:
-        condition: service_healthy
+    # depends_on:
+    #   my-postgres:
+    #     condition: service_healthy
 
 networks:
   app-network:
