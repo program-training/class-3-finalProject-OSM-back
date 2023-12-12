@@ -12,7 +12,6 @@ services:
     container_name: my-postgres
     environment:
       POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: db
     networks:
       - app-network
     volumes:
@@ -20,7 +19,7 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
-      timeout: 5s
+      timeout: 25s
       retries: 3
 
   oms-class3:
@@ -30,7 +29,7 @@ services:
       - app-network
     environment:
       - MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test
-      - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/db
+      - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/postgres
       - SECRET_TOKEN_KEY=secretKey
       - PORT=8081
     depends_on:
