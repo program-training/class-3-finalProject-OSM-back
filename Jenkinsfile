@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS users (
                 // sh 'docker rm mongo-db'
                 // sh 'docker stop my-postgres'
                 // sh 'docker rm my-postgres'
-                sh 'docker-compose down'
+                sh 'docker-compose down -v'
             }
         }
     }
