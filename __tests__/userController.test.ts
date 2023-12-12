@@ -1,10 +1,12 @@
 import request from "supertest";
 import { Request } from "express";
 import app from "../src/server";
+import {createUsersTable} from "../src/users/userDal"
 
 const server=request('http://oms-class3:8081')
 describe('User Controller', () => {
   test('Log in an existing user', async () => {
+    await createUsersTable();
     const existingUser = {
       "email":"elchide@gmail.com","password":"1234567e","isadmin":"false"
     };
