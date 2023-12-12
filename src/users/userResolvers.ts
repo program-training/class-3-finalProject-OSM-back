@@ -30,10 +30,12 @@ export const userResolvers = {
       args.password
     );
     try {
-      const registerUser: UserInterface  = args
-      console.log(registerUser.password,"register");
-      
-      registerUser.password = generateUserPassword(registerUser.password as string);
+      const registerUser: UserInterface = args;
+      console.log(registerUser.password, "register");
+
+      registerUser.password = generateUserPassword(
+        registerUser.password as string
+      );
       const user = await registerService(registerUser);
       if (user) {
         const accessToken = JWT.generateAccessToken(user);
@@ -106,7 +108,7 @@ export const userResolvers = {
     info: string
   ): Promise<{ user: UserInterface; accessToken: string }> => {
     try {
-      const logInUser:UserInterface = args;
+      const logInUser: UserInterface = args;
       const user = await loginService(logInUser);
 
       if (user) {

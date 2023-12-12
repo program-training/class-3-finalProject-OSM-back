@@ -40,8 +40,6 @@ export const addNewOrderService = async (orderData: OrderInterface) => {
 export const getOrdersByUserIdService = async (userId: string) => {
   try {
     const ordersByUserFromDAL = await getOrdersByUserId(userId);
-
-    // Use type assertion to explicitly tell TypeScript that you expect an array
     if (!Array.isArray(ordersByUserFromDAL) || ordersByUserFromDAL.length === 0) {
       throw new Error("No orders found for the given user");
     }
