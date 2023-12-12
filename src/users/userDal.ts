@@ -101,7 +101,8 @@ export async function loginDal(userEmail: string, userPassword: string) {
     if (result.rows.length > 0) {
       const userById: UserInterface = result.rows[0];
       console.log("user");
-      if (comparePassword(userPassword, userById.password as string)) {
+      // if (comparePassword(userPassword, userById.password)) {
+      if (userById.password && comparePassword(userPassword, userById.password)) {
         console.log(userById);
         return userById;
       }
