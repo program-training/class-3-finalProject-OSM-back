@@ -18,6 +18,15 @@ pipeline {
 );'''
                     writeFile file: 'init.sql', text: initSqlContent
                     sh 'chmod a+r ./init.sql'
+                    def initSqlFilePath = './init.sql'
+                    def fileContents = readFile(initSqlFilePath)
+                    
+                    if (fileContents.contains(initSqlContent)) {
+                        echo "init.sql file created successfully with the expected content."
+                    } else {
+                        error "init.sql file is either not created or does not contain the expected content."
+                    }
+                    sh 'ls -alF'
 
                     def dockerfileContent = '''
                         FROM node:18-alpine AS builder
