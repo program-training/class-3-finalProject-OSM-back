@@ -50,8 +50,8 @@ pipeline {
                     sh "docker run --rm --name oms--test-class3 --network app-network oms-end-test3"
 
                     // Retrieve and print logs
-                    sh 'docker logs oms-class3'
-                    sh 'docker logs -f oms--test-class3'
+                    sh 'docker logs -f oms-class3'
+                    // sh 'docker logs -f oms--test-class3'
                     // sh 'docker logs -f my-postgres'
                     
                 }
