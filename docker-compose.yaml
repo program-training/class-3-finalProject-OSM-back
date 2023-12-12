@@ -13,6 +13,7 @@ services:
       POSTGRES_PASSWORD: mypassword
     networks:
       - app-network
+    command: ["bash", "-c", "until pg_isready -h my-postgres -p 5432 -U postgres; do echo 'Waiting for PostgreSQL to be ready...'; sleep 2; done && npm start"]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -h localhost -p 5432 -U postgres"]
       interval: 60s
