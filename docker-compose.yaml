@@ -1,4 +1,5 @@
 version: '3'
+
 services:
   mongo-db:
     image: mongo
@@ -11,18 +12,17 @@ services:
     container_name: my-postgres
     environment:
       POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: db
     networks:
       - app-network
-    # command: ["bash", "-c", "until pg_isready -h my-postgres -p 5432 -U postgres; do echo 'Waiting for PostgreSQL to be ready...'; sleep 2; done && npm start"]
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -h localhost -p 5432 -U postgres"]
-      interval: 10s
-      timeout: 10s
-      retries: 5
     volumes:
-      - /var/jenkins_home/jobs/class3_oms_back_test/workspace/init.sql:/docker-entrypoint-initdb.d/init.sql
-      # - pg-data:/var/lib/postgresql/data
-                          
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
   oms-class3:
     image: oms-end3
     container_name: oms-class3
@@ -30,7 +30,7 @@ services:
       - app-network
     environment:
       - MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test
-      - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/postgres
+      - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/db
       - SECRET_TOKEN_KEY=secretKey
       - PORT=8081
     depends_on:
@@ -43,12 +43,9 @@ services:
     networks:
       - app-network
     depends_on:
-      my-postgres:
-        condition: service_healthy
+      oms-class3:
+        condition: service_started
 
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  pg-data:
