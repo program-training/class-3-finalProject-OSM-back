@@ -11,6 +11,7 @@ services:
     container_name: my-postgres
     environment:
       POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: db
     networks:
       - app-network
     # volumes:
@@ -24,7 +25,7 @@ services:
       - app-network
     environment:
       - MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test
-      - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/postgres
+      - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/db
       - SECRET_TOKEN_KEY=secretKey
       - PORT=8081
 
