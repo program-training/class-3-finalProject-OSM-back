@@ -19,7 +19,6 @@ pipeline {
                     writeFile file: 'init.sql', text: initSqlContent
                    
                     sh 'ls -alF'
-                    file init.sql
 
                     def dockerfileContent = '''
                         FROM node:18-alpine AS builder
