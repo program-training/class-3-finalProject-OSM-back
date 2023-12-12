@@ -151,7 +151,7 @@ export const userResolvers = {
       throw new Error("Server error while getting all users");
     }
   },
-  getTimeRegister: async (): Promise<Number[]> => {
+  getTimeRegister: async (): Promise<number[]> => {
     console.log("reso");
     try {
       const allUsers = await getTimeRegisterService();
