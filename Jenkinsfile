@@ -39,13 +39,15 @@ pipeline {
                     sh 'docker build -t oms-end3 .'
 
                     // Start MongoDB container
-                    sh 'docker run -d --network app-network --name mongo-db mongo'
+                    // sh 'docker run -d --network app-network --name mongo-db mongo'
                     // sh 'docker run -d --network app-network --name my-postgres -e POSTGRES_PASSWORD=mypassword -v ./init.sql:/docker-entrypoint-initdb.d/init.sql postgres'
-
+                    // sh 'sleep 15'
                     // Build and run the Express.js server container
-                    sh "docker run -d --rm --name oms-class3 --network app-network -e MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test -e DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/postgres -e SECRET_TOKEN_KEY=secretKey -e PORT=8081 oms-end3"
-                    sh "docker run -d --rm --name oms--test-class3 --network app-network oms-end-test3"
+                    // sh "docker run -d --rm --name oms-class3 --network app-network -e MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test -e DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/postgres -e SECRET_TOKEN_KEY=secretKey -e PORT=8081 oms-end3"
+                    // sh "docker run -d --rm --name oms--test-class3 --network app-network oms-end-test3"
 
+                    sh 'docker-compose up'
+                    
                     // Retrieve and print logs
                     sh 'docker logs -f oms-class3'
                     // sh 'docker logs -f oms--test-class3'
@@ -59,15 +61,15 @@ pipeline {
         always {
             script {
                 // Stop and remove the MongoDB container
-                sh 'docker stop mongo-db'
-                sh 'docker rm mongo-db'
+                // sh 'docker stop mongo-db'
+                // sh 'docker rm mongo-db'
 
                 // Uncomment these lines if you want to stop and remove PostgreSQL container
                 // sh 'docker stop my-postgres'
                 // sh 'docker rm my-postgres'
 
                 // Uncomment this line if you want to use Docker Compose to stop and remove containers
-                // sh 'docker-compose down -v'
+                sh 'docker-compose down -v'
             }
         }
     }
