@@ -44,7 +44,8 @@ pipeline {
                     // Start containers using Docker Compose
                     sh 'docker-compose up -d'
                     sh 'docker logs -f oms--test-class3'
-                    sh 'docker logs -f my-postgres'
+                    sh 'docker logs my-postgres'
+                    sh 'docker logs oms-class3'
                 }
             }
         }
