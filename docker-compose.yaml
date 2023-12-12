@@ -18,9 +18,9 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-    # volumes:
-    #   - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    #   - pg-data:/var/lib/postgresql/data
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - pg-data:/var/lib/postgresql/data
                           
   oms-class3:
     image: oms-end3
@@ -49,5 +49,5 @@ networks:
   app-network:
     driver: bridge
 
-# volumes:
-#   pg-data:
+volumes:
+  pg-data:
