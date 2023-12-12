@@ -1,5 +1,14 @@
 import { UserInterface } from "../interfaces/userInterface";
-import { loginDal, registerDal, deleteUserByIdDal, forgotPasswordDal, resetPasswordDal, getAllUsersDal, comperepasswordDal } from "../users/userDal";
+import {
+  loginDal,
+  registerDal,
+  deleteUserByIdDal,
+  forgotPasswordDal,
+  resetPasswordDal,
+  getAllUsersDal,
+  comperepasswordDal,
+  getTimeRegisterDal,
+} from "../users/userDal";
 import { generateUserPassword } from "../bycrypt/bycrypt";
 import { resolversinterface } from "../interfaces/resolverinterface";
 
@@ -30,7 +39,10 @@ export const comperepasswordService = async (email: string, code: string) => {
     throw err;
   }
 };
-export const resetPasswordService = async (email: string, newPassword: string) => {
+export const resetPasswordService = async (
+  email: string,
+  newPassword: string
+) => {
   try {
     const newPasswordBycrypt = generateUserPassword(newPassword);
     const result = await resetPasswordDal(email, newPasswordBycrypt);
@@ -41,22 +53,9 @@ export const resetPasswordService = async (email: string, newPassword: string) =
   }
 };
 
-// export const loginService = async (user: UserInterface) => {
-//   try {
-//     const result = await loginDal(user.email,user.password);
-//     console.log(result);
-
-//     return result;
-//   } catch (err) {
-//     console.error("Error reading data:(service)", err);
-//     throw err;
-//   }
-// };
-
-export const loginService = async (user: UserInterface) => {
-  try {
-    if (user.email && user.password) {
-      const result = await loginDal(user.email, user.password);
+  export const loginService = async (user: UserInterface) => {
+    try {
+      const result = await loginDal(user.email as string,user.password as string);
       console.log(result);
       return result;
     } else {
@@ -67,18 +66,6 @@ export const loginService = async (user: UserInterface) => {
     console.error("Error reading data:(service)", err);
     throw err;
   }
-};
-
-export const deleteUserByIdService = async (userId: number) => {
-  try {
-    const deleteUser = await deleteUserByIdDal(userId);
-    return deleteUser;
-  } catch (arr) {
-    console.error("Error delete user:(service)", arr);
-    throw arr;
-  }
-};
-
 export const getAllUsersService = async () => {
   try {
     const users = await getAllUsersDal();
@@ -86,5 +73,15 @@ export const getAllUsersService = async () => {
   } catch (arr) {
     console.error("Error get all users:(service)", arr);
     throw arr;
+  }
+};
+
+export const getTimeRegisterService = async () => {
+  try {
+    const registrations = await getTimeRegisterDal();
+    return registrations;
+  } catch (error) {
+    console.error("Error in getTimeRegisterController:", error);
+    throw error;
   }
 };

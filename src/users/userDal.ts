@@ -101,8 +101,7 @@ export async function loginDal(userEmail: string, userPassword: string) {
     if (result.rows.length > 0) {
       const userById: UserInterface = result.rows[0];
       console.log("user");
-      // if (comparePassword(userPassword, userById.password)) {
-      if (userById.password && comparePassword(userPassword, userById.password)) {
+      if (comparePassword(userPassword, userById.password as string)) {
         console.log(userById);
         return userById;
       }
@@ -156,6 +155,78 @@ export const deleteUserByIdDal = async (id: number): Promise<void> => {
   } catch (error) {
     console.error("Error deleting user:", (error as Error).message);
     throw error;
+  } finally {
+    client.release();
+  }
+};
+async function createLoginTrigger() {
+  const client = await pool.connect();
+
+  try {
+    await client.query("BEGIN");
+
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS login_logs (
+        log_id SERIAL PRIMARY KEY,
+        user_id INTEGER,
+        login_time TIMESTAMP
+      );
+    `);
+
+    await pool.query(`
+      CREATE  FUNCTION log_user_login()
+      RETURNS TRIGGER AS $$
+      BEGIN
+        INSERT INTO login_logs (user_id, login_time) 
+        VALUES (NEW.id, CURRENT_TIMESTAMP);
+        RETURN NEW;
+      END;
+      $$ LANGUAGE plpgsql;
+    `);
+    const result = await pool.query(`
+    SELECT *
+    FROM information_schema.triggers
+    WHERE trigger_name = 'user_login_trigger'
+  `);
+    if (result.rowCount === 0) {
+      await pool.query(`
+      CREATE TRIGGER user_login_trigger
+      AFTER INSERT 
+      ON users
+      FOR EACH ROW
+      EXECUTE PROCEDURE log_user_login();
+    `);
+    }
+    await client.query("COMMIT");
+  } catch (eror) {
+    await client.query("ROLLBACK");
+    throw eror;
+  } finally {
+    client.release();
+  }
+}
+// createLoginTrigger();
+export const getTimeRegisterDal = async () => {
+  const client = await pool.connect();
+  try {
+    const result = await client.query(`
+      SELECT EXTRACT(HOUR FROM login_time) AS hour, COUNT(*) AS registrations
+      FROM login_logs
+      GROUP BY hour
+      ORDER BY hour;
+    `);
+    console.log(result.rows);
+
+    const countHours = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    result.rows.forEach((entry) => {
+      const hour: number = Number(entry.hour);
+      const registrations: number = Number(entry.registrations);
+      countHours[hour] += registrations;
+    });
+    console.log(countHours);
+    return countHours;
+  } catch (error) {
+    console.error("Error executing SQL query:", error);
   } finally {
     client.release();
   }
