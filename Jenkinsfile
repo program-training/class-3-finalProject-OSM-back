@@ -27,6 +27,7 @@ pipeline {
                         error "init.sql file is either not created or does not contain the expected content."
                     }
                     sh 'ls -alF'
+                    file init.sql
 
                     def dockerfileContent = '''
                         FROM node:18-alpine AS builder
