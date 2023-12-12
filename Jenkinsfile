@@ -17,6 +17,7 @@ pipeline {
     registration_time TIMESTAMP
 );'''
                     writeFile file: 'init.sql', text: initSqlContent
+                    sh 'chmod a+r ./init.sql'
                     
                     def dockerfileContent = '''
                         FROM node:18-alpine AS builder
