@@ -9,6 +9,7 @@ import connectToDatabase from "./mongoDB/mongoConnection";
 import { ApolloServer } from "@apollo/server";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { expressMiddleware } from "@apollo/server/express4";
+import Redis from "ioredis";
 import http from "http";
 
 interface context {
@@ -20,6 +21,7 @@ const PORT = process.env.PORT as unknown as number;
 
 const app = express();
 const httpServer = http.createServer(app);
+
 const server = new ApolloServer<context>({
   typeDefs,
   resolvers,
