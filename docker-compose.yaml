@@ -11,9 +11,13 @@ services:
     container_name: my-postgres
     environment:
       POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: db
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -p 5432 -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     # volumes:
     #   - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     #   - pg-data:/var/lib/postgresql/data
@@ -25,15 +29,21 @@ services:
       - app-network
     environment:
       - MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test
-      - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/db
+      - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/postgres
       - SECRET_TOKEN_KEY=secretKey
       - PORT=8081
+    depends_on:
+      my-postgres:
+        condition: service_healthy
 
   oms-test-class3:
     image: oms-end-test3
     container_name: oms--test-class3
     networks:
       - app-network
+    depends_on:
+      my-postgres:
+        condition: service_healthy
 
 networks:
   app-network:
