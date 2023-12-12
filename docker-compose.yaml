@@ -16,11 +16,11 @@ services:
       - app-network
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 10s
-      timeout: 25s
-      retries: 3
+    # healthcheck:
+    #   test: ["CMD-SHELL", "pg_isready -U postgres"]
+    #   interval: 10s
+    #   timeout: 25s
+    #   retries: 3
 
   oms-class3:
     image: oms-end3
@@ -32,18 +32,18 @@ services:
       - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/postgres
       - SECRET_TOKEN_KEY=secretKey
       - PORT=8081
-    depends_on:
-      my-postgres:
-        condition: service_healthy
+    # depends_on:
+    #   my-postgres:
+    #     condition: service_healthy
 
   oms-test-class3:
     image: oms-end-test3
     container_name: oms--test-class3
     networks:
       - app-network
-    depends_on:
-      oms-class3:
-        condition: service_started
+    # depends_on:
+    #   oms-class3:
+    #     condition: service_started
 
 networks:
   app-network:
