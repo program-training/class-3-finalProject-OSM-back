@@ -20,7 +20,7 @@ services:
       timeout: 60s
       retries: 5
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - /var/jenkins_home/jobs/class3_oms_back_test/workspace/init.sql:/docker-entrypoint-initdb.d/init.sql
       - pg-data:/var/lib/postgresql/data
                           
   oms-class3:
