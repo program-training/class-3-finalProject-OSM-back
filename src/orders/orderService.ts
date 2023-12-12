@@ -40,8 +40,6 @@ export const addNewOrderService = async (orderData: OrderInterface) => {
 export const getOrdersByUserIdService = async (userId: string) => {
   try {
     const ordersByUserFromDAL = await getOrdersByUserId(userId);
-
-    // Use type assertion to explicitly tell TypeScript that you expect an array
     if (!Array.isArray(ordersByUserFromDAL) || ordersByUserFromDAL.length === 0) {
       throw new Error("No orders found for the given user");
     }
@@ -58,6 +56,44 @@ export const deleteOrdersByOrderIdService = async (orderId:string) => {
   try {
     const deleteOrderFromDAL = await deleteByOrderId(orderId);
      return deleteOrderFromDAL;
+  } catch (error) {
+    console.log(chalk.redBright(error));
+    throw error;
+  }
+};
+export const getAllOrdersServiceStatus = async () => {
+  try {
+    const ordersFromDAL = await getAllOrders();
+
+    if (ordersFromDAL instanceof Error) {
+      throw ordersFromDAL;
+    }
+
+    const orderStatistics = {
+      Pending: 0,
+      Refunded: 0,
+      Delivered: 0,
+    };
+
+    ordersFromDAL.forEach((orderDocument) => {
+      const order = orderDocument.toObject();
+
+      switch (order.status) {
+        case "Pending":
+          orderStatistics.Pending += 1;
+          break;
+        case "Refunded":
+          orderStatistics.Refunded += 1;
+          break;
+        case "Delivered":
+          orderStatistics.Delivered += 1;
+          break;
+        default:
+          break;
+      }
+    });
+
+    return orderStatistics;
   } catch (error) {
     console.log(chalk.redBright(error));
     throw error;

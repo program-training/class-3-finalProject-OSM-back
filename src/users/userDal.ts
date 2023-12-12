@@ -241,7 +241,7 @@ export const getTimeRegisterDal = async () => {
       ORDER BY hour;
     `);
     console.log(result.rows);
-    
+
     const countHours = [
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     ];
