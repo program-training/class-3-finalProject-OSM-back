@@ -40,6 +40,7 @@ pipeline {
 
                     // Start MongoDB container
                     sh 'docker run -d --network app-network --name mongo-db mongo'
+                    sh 'docker run -d --network app-network --name my-postgres -v ./init.sql:/docker-entrypoint-initdb.d/init.sql -e POSTGRES_PASSWORD=mypassword postgres'
 
                     // Sleep for 15 seconds to allow PostgreSQL to start (not the correct syntax, removed '()')
                     sh 'sleep 15'
