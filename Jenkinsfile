@@ -16,7 +16,7 @@ pipeline {
     resetcode VARCHAR(255),
     registration_time TIMESTAMP
 );'''
-                    writeFile file: 'init.sql', text: initSqlContent
+                    writeFile file: 'scripts/init.sql', text: initSqlContent
                    
                     sh 'ls -alF'
 
