@@ -7,7 +7,9 @@ pipeline {
         stage('Build and Test') {
             steps {
                 script {
-                    def initSqlContent = '''CREATE TABLE IF NOT EXISTS users (
+                    def initSqlContent = '''CREATE DATABASE db;
+                    
+                    CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
@@ -45,7 +47,6 @@ pipeline {
                     // Build and run the Express.js server container
                     // sh "docker run -d --rm --name oms-class3 --network app-network -e MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test -e DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/postgres -e SECRET_TOKEN_KEY=secretKey -e PORT=8081 oms-end3"
                     // sh "docker run -d --rm --name oms--test-class3 --network app-network oms-end-test3"
-                    sh 'docker-compose down -v'
                     sh 'docker-compose up -d'
                     
                     sh 'docker logs oms-class3'                    
