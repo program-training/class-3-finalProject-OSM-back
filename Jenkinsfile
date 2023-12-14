@@ -7,7 +7,6 @@ pipeline {
         stage('Build and Test') {
             steps {
                 script {
-                    // Create the init.sql file
                     def initSqlContent = '''CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
@@ -49,11 +48,7 @@ pipeline {
 
                     sh 'docker-compose up -d'
                     
-                    // Retrieve and print logs
-                    sh 'docker logs -f oms-class3'
-                    // sh 'docker logs -f oms--test-class3'
-                    // sh 'docker logs -f my-postgres'
-                    
+                    sh 'docker logs -f oms-class3'                    
                 }
             }
         }
@@ -61,15 +56,12 @@ pipeline {
     post {
         always {
             script {
-                // Stop and remove the MongoDB container
                 // sh 'docker stop mongo-db'
                 // sh 'docker rm mongo-db'
 
-                // Uncomment these lines if you want to stop and remove PostgreSQL container
                 // sh 'docker stop my-postgres'
                 // sh 'docker rm my-postgres'
 
-                // Uncomment this line if you want to use Docker Compose to stop and remove containers
                 sh 'docker-compose down -v'
             }
         }
