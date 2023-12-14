@@ -16,6 +16,7 @@ services:
       - app-network
     volumes:
       - ./scripts:/docker-entrypoint-initdb.d
+      - pgdata:/var/lib/postgresql/data  # Add this line for the data volume
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -48,3 +49,6 @@ services:
 networks:
   app-network:
     driver: bridge
+
+volumes:
+  pgdata:  # Define the data volume
