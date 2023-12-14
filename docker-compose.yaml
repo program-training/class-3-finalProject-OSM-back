@@ -29,7 +29,7 @@ services:
       - app-network
     environment:
       - MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test
-      - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/postgres
+      - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432
       - SECRET_TOKEN_KEY=secretKey
       - PORT=8081
     depends_on:
