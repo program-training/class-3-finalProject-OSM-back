@@ -49,7 +49,7 @@ pipeline {
                     // sh "docker run -d --rm --name oms--test-class3 --network app-network oms-end-test3"
                     sh 'docker-compose up -d'
                     
-                    sh 'docker logs oms-class3'                    
+                    sh 'docker logs -f oms-class3'                    
                 }
             }
         }
