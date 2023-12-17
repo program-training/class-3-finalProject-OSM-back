@@ -23,7 +23,7 @@ services:
       timeout: 25s
       retries: 3
 
-  oms-class3:
+  oms-back:
     image: oms-back
     container_name: oms-back
     networks:
@@ -37,7 +37,7 @@ services:
       my-postgres:
         condition: service_healthy
 
-  oms-test-class3:
+  oms-back-test:
     image: oms-back-test
     container_name: oms-back-test
     networks:
