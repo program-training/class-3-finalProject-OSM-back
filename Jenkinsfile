@@ -17,7 +17,7 @@ pipeline {
                             registration_time TIMESTAMP
                         );'''
 
-                    sh 'echo initSqlContent'
+                    sh 'echo $initSqlContent'
                     writeFile file: 'scripts/init.sql', text: initSqlContent
                    
                     sh 'ls -alF'
