@@ -27,7 +27,11 @@ pipeline {
                         COPY . .
                         CMD ["npm", "test"]
                     '''
-
+                    sh 'docker network ls | grep -q app-network || docker network create app-network'
+                    
+                    sh 'docker build -t oms-end-test3 -f Dockerfile.test .'
+                    
+                    sh 'docker build -t oms-end3 .'
                     sh 'docker-compose up -d --build'
                     
                     sh 'sleep 30'
