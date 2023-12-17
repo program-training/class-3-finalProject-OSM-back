@@ -36,9 +36,9 @@ pipeline {
                     
                     sh 'sleep 20'
 
-                    sh 'docker-compose logs my-postgres'
-                    sh 'docker-compose logs oms-back'
-                    sh 'docker-compose logs oms-back-test'
+                    sh 'docker-compose logs -f my-postgres'
+                    sh 'docker-compose logs -f oms-back'
+                    sh 'docker-compose logs -f oms-back-test'
                 }
             }
         }
