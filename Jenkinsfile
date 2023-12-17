@@ -1,25 +1,26 @@
 pipeline {
     agent any
-    triggers {
-        githubPush()
-    }
+
     stages {
         stage('Build and Test') {
             steps {
                 script {
-                    def initSqlContent = '''CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
-    email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    isadmin BOOLEAN DEFAULT false,
-    resetcode VARCHAR(255),
-    registration_time TIMESTAMP
-);'''
-                    sh 'docker rm -f 96d6ff15e00158d57c1a2f25033692b7da0f2489ebe1907297ca6ab7763b4ae3'
-                    sh 'docker system prune'
-                    sh "echo '''$initSqlContent''' > scripts/init.sql"
+                    // Ensure Docker containers are stopped and removed if they exist
+                    sh 'docker-compose down -v --remove-orphans'
 
-                    def dockerfileContent = '''
+                    // Create necessary files for database initialization
+                    writeFile file: 'scripts/init.sql', text: '''
+                        CREATE TABLE IF NOT EXISTS users (
+                            id SERIAL PRIMARY KEY,
+                            email VARCHAR(255) NOT NULL,
+                            password VARCHAR(255) NOT NULL,
+                            isadmin BOOLEAN DEFAULT false,
+                            resetcode VARCHAR(255),
+                            registration_time TIMESTAMP
+                        );
+                    '''
+                    
+                    writeFile file: 'Dockerfile.test', text: '''
                         FROM node:18-alpine AS builder
                         WORKDIR /app
                         COPY package*.json ./
@@ -28,30 +29,26 @@ pipeline {
                         COPY . .
                         CMD ["npm", "test"]
                     '''
-                    writeFile file: 'Dockerfile.test', text: dockerfileContent
 
-                    sh 'docker network ls | grep -q app-network || docker network create app-network'
+                    // Build and start required containers
+                    sh 'docker-compose up -d --build'
+                    
+                    // Wait for containers to initialize (adjust the sleep time as needed)
+                    sh 'sleep 30'
 
-                    sh 'docker build -t oms-end-test3 -f Dockerfile.test .'
-                    sh 'docker build -t oms-end3 .'
-
-                    sh 'sleep 50'
-
-                    sh 'docker-compose up -d'
+                    // Show logs for debugging
+                    sh 'docker-compose logs my-postgres'
+                    sh 'docker-compose logs oms-class3'
                 }
             }
         }
     }
+    
     post {
         always {
             script {
-                sh 'docker stop mongo-db'
-                sh 'docker rm mongo-db'
-
-                sh 'docker stop my-postgres'
-                sh 'docker rm my-postgres'
-
-                sh 'docker-compose down -v'
+                // Stop and remove Docker containers after the pipeline execution
+                sh 'docker-compose down -v --remove-orphans'
             }
         }
     }
