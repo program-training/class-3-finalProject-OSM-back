@@ -22,7 +22,7 @@ export const registerService = async (user: UserInterface) => {
       return JSON.parse(dataFromRedis);
     }
     const result = await registerDal(user);
-    await RedisClient.setEx(key,200, JSON.stringify(result));
+    await RedisClient.setEx(key, 200, JSON.stringify(result));
     console.log("Data stored in Redis");
     return result;
   } catch (err) {
@@ -74,7 +74,7 @@ export const loginService = async (user: UserInterface) => {
       user.email as string,
       user.password as string
     );
-    await RedisClient.setEx(key,200,JSON.stringify(result));
+    await RedisClient.setEx(key, 200, JSON.stringify(result));
     console.log("Data stored in Redis");
     return result;
   } catch (err) {
@@ -94,7 +94,16 @@ export const deleteUserByIdService = async (userId: number) => {
 };
 export const getAllUsersService = async () => {
   try {
+    const key = `getAllUser:getAllUsersService`;
+
+    const dataFromRedis = await RedisClient.get(key);
+    if (dataFromRedis) {
+      console.log("Data retrieved from Redis");
+      return JSON.parse(dataFromRedis);
+    }
     const users = await getAllUsersDal();
+    await RedisClient.setEx(key, 200, JSON.stringify(users));
+    console.log("Data stored in Redis");
     return users;
   } catch (arr) {
     console.error("Error get all users:(service)", arr);
@@ -104,7 +113,16 @@ export const getAllUsersService = async () => {
 
 export const getTimeRegisterService = async () => {
   try {
+    const key = `getTimeRegister:getTimeRegister`;
+
+    const dataFromRedis = await RedisClient.get(key);
+    if (dataFromRedis) {
+      console.log("Data retrieved from Redis");
+      return JSON.parse(dataFromRedis);
+    }
     const registrations = await getTimeRegisterDal();
+    await RedisClient.setEx(key, 200, JSON.stringify(registrations));
+    console.log("Data stored in Redis");
     return registrations;
   } catch (error) {
     console.error("Error in getTimeRegisterController:", error);

@@ -17,7 +17,6 @@ import { generateUserPassword } from "../bycrypt/bycrypt";
 import { sendemail } from "../nodemailer/nodemailer";
 
 export const userResolvers = {
-  
   registerUser: async (
     parent: string,
     args: { email: string; password: string },
@@ -153,10 +152,8 @@ export const userResolvers = {
     }
   },
   getTimeRegister: async (): Promise<number[]> => {
-    console.log("reso");
     try {
       const allUsers = await getTimeRegisterService();
-      console.log("resolver");
       if (allUsers === undefined) {
         throw new Error("Failed to retrieve user data");
       }
