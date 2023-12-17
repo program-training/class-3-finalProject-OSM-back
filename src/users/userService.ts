@@ -41,28 +41,12 @@ export const resetPasswordService = async (email: string, newPassword: string) =
   }
 };
 
-// export const loginService = async (user: UserInterface) => {
-//   try {
-//     const result = await loginDal(user.email,user.password);
-//     console.log(result);
-
-//     return result;
-//   } catch (err) {
-//     console.error("Error reading data:(service)", err);
-//     throw err;
-//   }
-// };
-
 export const loginService = async (user: UserInterface) => {
   try {
-    if (user.email && user.password) {
-      const result = await loginDal(user.email, user.password);
-      console.log(result);
-      return result;
-    } else {
-      console.error("User email is undefined");
-      return null;
-    }
+    const result = await loginDal(user.email as string, user.password as string);
+    console.log(result);
+
+    return result;
   } catch (err) {
     console.error("Error reading data:(service)", err);
     throw err;
@@ -78,7 +62,6 @@ export const deleteUserByIdService = async (userId: number) => {
     throw arr;
   }
 };
-
 export const getAllUsersService = async () => {
   try {
     const users = await getAllUsersDal();

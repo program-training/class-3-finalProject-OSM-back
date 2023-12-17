@@ -69,7 +69,8 @@ export const typeDefs = gql`
   type Mutation {
     updateOrder(orderId: String, updatedData: OrderInput): Order
     addNewOrder(orderData: OrderInput): Order
-    deleteOrder(orderId: String): String
+    deleteOrder(orderId: String):String!
+    handleGetAllOrdersStatus:OrderStatusCounts!
   }
 
   input OrderInput {
@@ -95,5 +96,10 @@ export const typeDefs = gql`
     contactNumber: String
     orderType: String
     id: String
+  }
+  type OrderStatusCounts {
+    Pending: Int!
+    Refunded: Int! 
+    Delivered: Int!
   }
 `
