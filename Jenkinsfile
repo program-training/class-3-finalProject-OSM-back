@@ -15,7 +15,7 @@ pipeline {
     resetcode VARCHAR(255),
     registration_time TIMESTAMP
 );'''
-                    sh 'docker rm -f 8c810a482f7888646179e307fb4076e1818d2a8ea7b65efb1f71b089c3ac6757'
+                    sh 'docker rm -f 96d6ff15e00158d57c1a2f25033692b7da0f2489ebe1907297ca6ab7763b4ae3'
                     sh 'docker system prune'
                     sh "echo '''$initSqlContent''' > scripts/init.sql"
 
