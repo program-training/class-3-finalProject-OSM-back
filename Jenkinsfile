@@ -38,7 +38,7 @@ pipeline {
                     
                     sh 'sleep 20'
 
-                    sh 'docker-compose logs my-postgres'
+                    sh 'docker-compose logs my-postgres -f'
                     sh 'docker-compose logs oms-back'
                     sh 'docker-compose logs oms-back-test'
                 }
