@@ -8,6 +8,8 @@ pipeline {
                     sh 'docker-compose down -v --remove-orphans'
 
                     writeFile file: 'scripts/init.sql', text: '''
+                        CREATE DATABASE db;
+                        \c db;
                         CREATE TABLE IF NOT EXISTS users (
                             id SERIAL PRIMARY KEY,
                             email VARCHAR(255) NOT NULL,
