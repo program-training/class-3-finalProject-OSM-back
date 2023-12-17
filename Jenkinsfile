@@ -47,11 +47,11 @@ pipeline {
     post {
         always {
             script {
-                // sh 'docker stop mongo-db'
-                // sh 'docker rm mongo-db'
+                sh 'docker stop mongo-db'
+                sh 'docker rm mongo-db'
 
-                // sh 'docker stop my-postgres'
-                // sh 'docker rm my-postgres'
+                sh 'docker stop my-postgres'
+                sh 'docker rm my-postgres'
 
                 sh 'docker-compose down -v'
             }
