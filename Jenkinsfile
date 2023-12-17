@@ -15,7 +15,7 @@ pipeline {
     resetcode VARCHAR(255),
     registration_time TIMESTAMP
 );'''
-                    sh 'docker stop oms-class3'
+                    sh 'docker rm -f 8c810a482f7888646179e307fb4076e1818d2a8ea7b65efb1f71b089c3ac6757'
                     sh 'docker system prune'
                     sh "echo '''$initSqlContent''' > scripts/init.sql"
 
