@@ -24,8 +24,8 @@ services:
       retries: 3
 
   oms-class3:
-    image: oms-end3
-    container_name: oms-class3
+    image: oms-back
+    container_name: oms-back
     networks:
       - app-network
     environment:
@@ -38,8 +38,8 @@ services:
         condition: service_healthy
 
   oms-test-class3:
-    image: oms-end-test3
-    container_name: oms--test-class3
+    image: oms-back-test
+    container_name: oms-back-test
     networks:
       - app-network
     depends_on:
