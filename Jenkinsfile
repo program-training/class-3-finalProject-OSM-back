@@ -31,7 +31,7 @@ pipeline {
                     '''
                     sh 'docker network ls | grep -q app-network || docker network create app-network'
                     
-                    sh 'docker build -t oms-back-test Dockerfile.test .'
+                    sh 'docker build -t oms-back-test -f Dockerfile.test .'
                     sh 'docker build -t oms-back .'
                     
                     sh 'docker-compose up -d --build'
