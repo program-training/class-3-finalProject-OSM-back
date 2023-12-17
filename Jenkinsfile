@@ -5,10 +5,8 @@ pipeline {
         stage('Build and Test') {
             steps {
                 script {
-                    // Ensure Docker containers are stopped and removed if they exist
                     sh 'docker-compose down -v --remove-orphans'
 
-                    // Create necessary files for database initialization
                     writeFile file: 'scripts/init.sql', text: '''
                         CREATE TABLE IF NOT EXISTS users (
                             id SERIAL PRIMARY KEY,
@@ -30,13 +28,10 @@ pipeline {
                         CMD ["npm", "test"]
                     '''
 
-                    // Build and start required containers
                     sh 'docker-compose up -d --build'
                     
-                    // Wait for containers to initialize (adjust the sleep time as needed)
                     sh 'sleep 30'
 
-                    // Show logs for debugging
                     sh 'docker-compose logs my-postgres'
                     sh 'docker-compose logs oms-class3'
                 }
@@ -47,7 +42,6 @@ pipeline {
     post {
         always {
             script {
-                // Stop and remove Docker containers after the pipeline execution
                 sh 'docker-compose down -v --remove-orphans'
             }
         }
