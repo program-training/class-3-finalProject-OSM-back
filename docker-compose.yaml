@@ -43,7 +43,7 @@ services:
     networks:
       - app-network
     depends_on:
-      oms-class3:
+      oms-back:
         condition: service_started
 
 networks:
