@@ -1,7 +1,8 @@
 import chalk from "chalk";
 import { Types } from "mongoose";
 import { OrderInterface } from "../interfaces/orderInterface";
-import { getAllOrders, updateByOrderId, addNewOrder, getOrdersByUserId, deleteByOrderId } from "./orderDal";
+import { getAllOrders, updateByOrderId, addNewOrder, getOrdersByUserId, deleteByOrderId, getOrdersForHours } from "./orderDal";
+import { client } from "../redis/redisConnection";
 
 export const getAllOrdersService = async () => {
   try {
@@ -18,8 +19,9 @@ export const getAllOrdersService = async () => {
 
 export const updateByOrderIdService = async (orderId: Types.ObjectId, updatedData: OrderInterface) => {
   try {
-    console.log(orderId);
     const updatedOrderFromDAL = await updateByOrderId(orderId, updatedData);
+    const key = `orders:${updatedOrderFromDAL.id}`;
+    await client.setEx(key,200, JSON.stringify(updatedOrderFromDAL));
     return updatedOrderFromDAL;
   } catch (error) {
     console.log(chalk.redBright(error));
@@ -30,6 +32,8 @@ export const updateByOrderIdService = async (orderId: Types.ObjectId, updatedDat
 export const addNewOrderService = async (orderData: OrderInterface) => {
   try {
     const newOrderFromDAL = await addNewOrder(orderData);
+    const key = `orders:${newOrderFromDAL.id}`;
+    await client.setEx(key,200, JSON.stringify(newOrderFromDAL));
     return newOrderFromDAL;
   } catch (error) {
     console.log(chalk.redBright(error));
@@ -40,10 +44,11 @@ export const addNewOrderService = async (orderData: OrderInterface) => {
 export const getOrdersByUserIdService = async (userId: string) => {
   try {
     const ordersByUserFromDAL = await getOrdersByUserId(userId);
+    const key = `orders:${userId}`;
+    await client.setEx(key,200, JSON.stringify(ordersByUserFromDAL));
     if (!Array.isArray(ordersByUserFromDAL) || ordersByUserFromDAL.length === 0) {
       throw new Error("No orders found for the given user");
     }
-
     return ordersByUserFromDAL;
   } catch (error) {
     console.log(chalk.redBright(error));
@@ -99,3 +104,14 @@ export const getAllOrdersServiceStatus = async () => {
     throw error;
   }
 };
+
+export const getOrdersForHoursService = async () => {
+  try{
+    const orderForHours = await getOrdersForHours();
+    console.log(orderForHours);
+    return orderForHours;
+  }catch (error) {
+    console.log(chalk.redBright(error));
+    throw error
+  }
+}

@@ -61,9 +61,12 @@ export const typeDefs = gql`
     shippingDetails: ShippingDetails
   }
 
+  
+
   type Query {
     getAllOrders: [Order]
     getOrdersByUserId(userId: String): [Order]
+    getOrdersForHours: [Int]
   }
 
   type Mutation {

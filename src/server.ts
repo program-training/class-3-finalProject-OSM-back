@@ -6,6 +6,7 @@ import { typeDefs } from "./schema/schema";
 import { resolvers } from "./resolvers/resolvers";
 import { checkConnection } from "./PostgreSQL/PostgreSQL";
 import connectToDatabase from "./mongoDB/mongoConnection";
+import  { connectToRedis }  from "./redis/redisConnection";
 import { ApolloServer } from "@apollo/server";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { expressMiddleware } from "@apollo/server/express4";
@@ -49,5 +50,6 @@ const start = async () => {
   console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
   await checkConnection();
   await connectToDatabase();
+  await connectToRedis();
 };
 start();

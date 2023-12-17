@@ -1,7 +1,7 @@
 import { handleDBResponseError } from "../utils/handleErrors";
 import {OrderInterface} from "../interfaces/orderInterface";
 import { Types, Document, Model } from "mongoose";
-import { ProductModel, ShippingDetailsModel, OrderModel } from "../mongoDB/Schemas/order";
+import { ProductModel, ShippingDetailsModel, OrderModel, OrderForHoursModel } from "../mongoDB/Schemas/order";
 
 
 type CollectionResult = Promise<Document[] | Error>;
@@ -16,11 +16,11 @@ export const getAllOrders = async (): CollectionResult => {
   }
 };
 
-export const updateByOrderId = async (orderId: Types.ObjectId, updatedData: OrderInterface): CollectionResult => {
+export const updateByOrderId = async (orderId: Types.ObjectId, updatedData: OrderInterface) => {
   try {
     const updatedOrder = await OrderModel.findByIdAndUpdate(orderId, updatedData, { new: true });
     if (!updatedOrder) throw new Error('Order not found!');
-    return [updatedOrder];
+    return updatedOrder;
   } catch (error) {
     return handleDBResponseError(error);
   }
@@ -56,12 +56,28 @@ export const getOrdersByUserId = async (userId: string): CollectionResult => {
 export const deleteByOrderId = async (orderId: string) => {
   try {
     const orderDelete = await OrderModel.findOneAndDelete({ _id:orderId });
-    return orderDelete
     if (!orderDelete) {
       console.log(`Order with ID ${orderId} not found`);
       throw new Error(`Order with ID ${orderId} not found!`);
     }
+    return "delete successful"
   } catch (error) {
     return handleDBResponseError(error);
   }
 };
+export const getOrdersForHours = async () =>{
+  try{
+    const OrdersForHours = await OrderForHoursModel.find({})
+    const countHours = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    OrdersForHours.map((Order)=>{
+      const date = new Date(Order.time as string)
+      countHours[date.getHours()]++
+    })
+    console.log(countHours);
+    
+    return countHours
+  }catch (error) {
+    return handleDBResponseError(error);
+  }
+
+}
