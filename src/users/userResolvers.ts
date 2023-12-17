@@ -1,15 +1,6 @@
 // userResolvers.ts
 import { UserInterface } from "../interfaces/userInterface";
-import {
-  registerService,
-  loginService,
-  forgotPasswordService,
-  resetPasswordService,
-  deleteUserByIdService,
-  getAllUsersService,
-  comperepasswordService,
-  getTimeRegisterService,
-} from "./userService";
+import { registerService, loginService, forgotPasswordService, resetPasswordService, deleteUserByIdService, getAllUsersService, comperepasswordService, getTimeRegisterService } from "./userService";
 import { resolversinterface } from "../interfaces/resolverinterface";
 import * as JWT from "../jwt/jwt";
 import { generateUniqueCode } from "../nodemailer/nodemailer";
@@ -17,26 +8,13 @@ import { generateUserPassword } from "../bycrypt/bycrypt";
 import { sendemail } from "../nodemailer/nodemailer";
 
 export const userResolvers = {
-  
-  registerUser: async (
-    parent: string,
-    args: { email: string; password: string },
-    context: string,
-    info: string
-  ): Promise<{ user: UserInterface; accessToken: string }> => {
-    console.log(
-      "Received mutation with email:",
-      args.email,
-      "and password:",
-      args.password
-    );
+  registerUser: async (parent: string, args: { email: string; password: string }, context: string, info: string): Promise<{ user: UserInterface; accessToken: string }> => {
+    console.log("Received mutation with email:", args.email, "and password:", args.password);
     try {
       const registerUser: UserInterface = args;
       console.log(registerUser.password, "register");
 
-      registerUser.password = generateUserPassword(
-        registerUser.password as string
-      );
+      registerUser.password = generateUserPassword(registerUser.password as string);
       const user = await registerService(registerUser);
       if (user) {
         const accessToken = JWT.generateAccessToken(user);
@@ -50,12 +28,7 @@ export const userResolvers = {
     }
   },
 
-  forgotPassword: async (
-    parent: string,
-    args: { email: string },
-    context: string,
-    info: string
-  ): Promise<string> => {
+  forgotPassword: async (parent: string, args: { email: string }, context: string, info: string): Promise<string> => {
     const emailToReset = args.email;
     console.log(emailToReset, "emailtoreset");
     const code = generateUniqueCode();
@@ -69,12 +42,7 @@ export const userResolvers = {
     }
   },
 
-  comperepassword: async (
-    parent: string,
-    args: { email: string; code: string },
-    context: string,
-    info: string
-  ): Promise<string> => {
+  comperepassword: async (parent: string, args: { email: string; code: string }, context: string, info: string): Promise<string> => {
     const emailToReset = args.email;
     const code = args.code;
     try {
@@ -86,12 +54,7 @@ export const userResolvers = {
     }
   },
 
-  resetPassword: async (
-    parent: string,
-    args: { email: string; password: string },
-    context: string,
-    info: string
-  ): Promise<{ success: boolean; message: string }> => {
+  resetPassword: async (parent: string, args: { email: string; password: string }, context: string, info: string): Promise<{ success: boolean; message: string }> => {
     try {
       const { email, password } = args;
       const result = await resetPasswordService(email, password);
@@ -102,12 +65,7 @@ export const userResolvers = {
     }
   },
 
-  login: async (
-    parent: string,
-    args: { email: string; password: string },
-    context: string,
-    info: string
-  ): Promise<{ user: UserInterface; accessToken: string }> => {
+  login: async (parent: string, args: { email: string; password: string }, context: string, info: string): Promise<{ user: UserInterface; accessToken: string }> => {
     try {
       const logInUser: UserInterface = args;
       const user = await loginService(logInUser);
@@ -123,12 +81,7 @@ export const userResolvers = {
     }
   },
 
-  deleteUser: async (
-    parent: string,
-    args: { id: number },
-    context: string,
-    info: string
-  ): Promise<string> => {
+  deleteUser: async (parent: string, args: { id: number }, context: string, info: string): Promise<string> => {
     try {
       console.log(args.id, "dele");
       const userId = args.id;
