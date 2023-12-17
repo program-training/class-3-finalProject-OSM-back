@@ -38,6 +38,7 @@ pipeline {
 
                     sh 'docker-compose logs my-postgres'
                     sh 'docker-compose logs oms-class3'
+                    sh 'docker-compose logs oms--test-class3'
                 }
             }
         }
