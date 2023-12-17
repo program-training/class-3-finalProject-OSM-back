@@ -31,14 +31,14 @@ pipeline {
                     '''
                     sh 'docker network ls | grep -q app-network || docker network create app-network'
                     
-                    sh 'docker build -t oms-back-test -f Dockerfile.test .'
+                    sh 'docker build -t oms-back-test Dockerfile.test .'
                     sh 'docker build -t oms-back .'
                     
                     sh 'docker-compose up -d --build'
                     
                     sh 'sleep 20'
 
-                    sh 'docker-compose logs my-postgres -f'
+                    sh 'docker-compose logs -f my-postgres'
                     sh 'docker-compose logs oms-back'
                     sh 'docker-compose logs oms-back-test'
                 }
