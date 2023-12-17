@@ -2,10 +2,19 @@ import { UserInterface } from "../interfaces/userInterface";
 import { loginDal, registerDal, deleteUserByIdDal, forgotPasswordDal, resetPasswordDal, getAllUsersDal, comperepasswordDal } from "../users/userDal";
 import { generateUserPassword } from "../bycrypt/bycrypt";
 import { resolversinterface } from "../interfaces/resolverinterface";
-
+import RedisClient from "../redis/redis";
 export const registerService = async (user: UserInterface) => {
   try {
+    const key = `usersRegister:${user.email}`;
+
+    const dataFromRedis = await RedisClient.get(key);
+    if (dataFromRedis) {
+      console.log("Data retrieved from Redis");
+      return JSON.parse(dataFromRedis);
+    }
     const result = await registerDal(user);
+    await RedisClient.setEx(key, 200, JSON.stringify(result));
+    console.log("Data stored in Redis");
     return result;
   } catch (err) {
     console.error("Error reading data:(service)", err);
@@ -43,9 +52,15 @@ export const resetPasswordService = async (email: string, newPassword: string) =
 
 export const loginService = async (user: UserInterface) => {
   try {
+    const key = `loginService:${user.email}`;
+    const dataFromRedis = await RedisClient.get(key);
+    if (dataFromRedis) {
+      console.log("Data retrieved from Redis");
+      return JSON.parse(dataFromRedis);
+    }
     const result = await loginDal(user.email as string, user.password as string);
-    console.log(result);
-
+    await RedisClient.setEx(key, 200, JSON.stringify(result));
+    console.log("Data stored in Redis");
     return result;
   } catch (err) {
     console.error("Error reading data:(service)", err);

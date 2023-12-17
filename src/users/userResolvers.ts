@@ -17,6 +17,7 @@ import { generateUserPassword } from "../bycrypt/bycrypt";
 import { sendemail } from "../nodemailer/nodemailer";
 
 export const userResolvers = {
+  
   registerUser: async (
     parent: string,
     args: { email: string; password: string },
