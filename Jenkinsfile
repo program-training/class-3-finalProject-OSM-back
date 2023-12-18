@@ -7,7 +7,7 @@ pipeline {
         stage('Build and Test') {
             steps {
                 script {
-echo 'CREATE DATABASE db;
+echo '''CREATE DATABASE db;
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS users (
     isadmin BOOLEAN DEFAULT false,
     resetcode VARCHAR(255),
     registration_time TIMESTAMP
-);' > scripts/init.sql        
+);''' > scripts/init.sql        
                     sh 'chmod +x scripts/init.sql'
                     sh 'ls -alF'
                     def dockerfileContent = '''
