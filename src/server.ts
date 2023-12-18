@@ -48,26 +48,3 @@ const server = new ApolloServer<context>({
 }
 start()
 
-
-
-
-
-
-// const startServer = async () => {
-//   try {
-//     const { url } = await startStandaloneServer(server, {
-//       listen: { port: PORT },
-//     });
-
-//     console.log(`Server ready at ${url}`);
-
-//     await checkConnection();
-//     await connectToDatabase();
-//   } catch (error) {
-//     console.error('Error starting the server:', Error);
-//   }
-// };
-
-// startServer();
-//export default app;
-
