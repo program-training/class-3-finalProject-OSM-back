@@ -34,9 +34,15 @@ pipeline {
                     sh 'docker build -t oms-back-test -f Dockerfile.test .'
                     sh 'docker build -t oms-back .'
                     
-                    sh 'docker-compose up -d'
+                    sh 'docker-compose up -d'                  
+                }
+            }
+        }
+         stage('logs') {
+            steps {
+                script {
                     sh 'docker logs -f my-postgres'
-                    sh 'docker logs -f oms-back'                    
+                    sh 'docker logs -f oms-back'  
                 }
             }
         }
