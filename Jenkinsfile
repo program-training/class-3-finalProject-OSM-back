@@ -7,16 +7,17 @@ pipeline {
         stage('Build and Test') {
             steps {
                 script {
-                    def initSqlContent = '''CREATE DATABASE db;            
-                            CREATE TABLE IF NOT EXISTS users (
-                            id SERIAL PRIMARY KEY,
-                            email VARCHAR(255) NOT NULL,
-                            password VARCHAR(255) NOT NULL,
-                            isadmin BOOLEAN DEFAULT false,
-                            resetcode VARCHAR(255),
-                            registration_time TIMESTAMP
-                        );'''
-                    writeFile file: 'scripts/init.sql', text: initSqlContent                   
+                               def initSqlContent = '''CREATE DATABASE db;
+CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    isadmin BOOLEAN DEFAULT false,
+    resetcode VARCHAR(255),
+    registration_time TIMESTAMP
+);'''
+new File('scripts/init.sql').text = initSqlContent             
+                    sh 'chmod +x scripts/init.sql'
                     sh 'ls -alF'
                     def dockerfileContent = '''
                         FROM node:18-alpine AS builder
