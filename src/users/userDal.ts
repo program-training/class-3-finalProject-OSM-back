@@ -1,7 +1,7 @@
 import pool from "../PostgreSQL/PostgreSQL";
 import { UserInterface } from "../interfaces/userInterface";
 import { comparePassword } from "../bycrypt/bycrypt";
-
+import db from "../PostgreSQL/PostgreSQL";
 export async function createUsersTable(): Promise<void> {
   try {
     await pool.query(`
@@ -10,7 +10,8 @@ export async function createUsersTable(): Promise<void> {
         email VARCHAR(255) NOT NULL,
         password VARCHAR(255) NOT NULL,
         isadmin BOOLEAN DEFAULT false,
-        resetcode VARCHAR (255)
+        resetcode VARCHAR (255),
+        registration_time TIMESTAMP
         )
     `);
     console.log("Users table created or already exists.");
@@ -18,7 +19,6 @@ export async function createUsersTable(): Promise<void> {
     console.error("Error creating users table:", (error as Error).message);
   }
 }
-
 export async function registerDal(
   user: UserInterface
 ): Promise<UserInterface | null> {
@@ -40,6 +40,16 @@ export async function registerDal(
 
     if (result.rows.length > 0) {
       const insertedUser: UserInterface = result.rows[0];
+      const result1 = await client.query(`
+      SELECT * FROM login_logs
+      `);
+      if (result1.rows.length > 0) {
+        console.log(result1.rows);
+      } else {
+        console.log("No login logs found.");
+      }
+      console.log(result1);
+      
       return insertedUser;
     } else {
       console.error("Error inserting user into the table.");
@@ -111,7 +121,6 @@ export async function resetPasswordDal(email: string, newPassword: string) {
 }
 export async function loginDal(userEmail: string, userPassword: string) {
   const client = await pool.connect();
-
   try {
     const result = (await client.query(
       "SELECT * FROM users WHERE email = $1 ",
@@ -184,6 +193,7 @@ export const deleteUserByIdDal = async (id: number): Promise<void> => {
     client.release();
   }
 };
+// createUsersTable();
 async function createLoginTrigger() {
   const client = await pool.connect();
 

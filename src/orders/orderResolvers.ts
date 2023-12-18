@@ -6,7 +6,8 @@ import {
     updateByOrderIdService,
     addNewOrderService,
     deleteOrdersByOrderIdService,
-    getAllOrdersServiceStatus
+    getAllOrdersServiceStatus,
+    getOrdersForHoursService
   } from "../orders/orderService"; 
 export const orderResolvers = {
     getAllOrders: () => getAllOrdersService(),
@@ -45,6 +46,14 @@ export const orderResolvers = {
         } catch (error) {
           console.error("Error deleting order:", error);
           throw new Error("Could not delete order");
+        }
+      },
+      getOrdersForHours: async () => {
+        try{
+          const orders = await getOrdersForHoursService();
+          return orders;
+        }catch (error){
+          throw new Error("Could not get order")
         }
       }
 }
