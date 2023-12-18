@@ -17,6 +17,8 @@ pipeline {
                             registration_time TIMESTAMP
                         );'''
                     writeFile file: 'scripts/init.sql', text: initSqlContent
+
+                    sh 'chmod 777 scripts/init.sql'
                    
                     sh 'ls -alF'
                     def dockerfileContent = '''
