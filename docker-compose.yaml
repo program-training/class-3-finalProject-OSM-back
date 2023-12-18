@@ -8,42 +8,42 @@ services:
   my-postgres:
     image: postgres
     container_name: my-postgres
+    restart: always
     environment:
       POSTGRES_PASSWORD: mypassword
     networks:
       - app-network
     volumes:
       - ./scripts:/docker-entrypoint-initdb.d
-      - pgdata:/var/lib/postgresql/data  # Add this line for the data volume
+      # - pgdata:/var/lib/postgresql/data 
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 25s
       retries: 3
-  oms-class3:
-    image: oms-end3
-    container_name: oms-class3
+  oms-back:
+    image: oms-back
+    container_name: oms-back
     networks:
       - app-network
     environment:
       - MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test
-      - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432
+      - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/db
       - SECRET_TOKEN_KEY=secretKey
       - PORT=8081
     depends_on:
       my-postgres:
         condition: service_healthy
-  oms-test-class3:
-    image: oms-end-test3
-    container_name: oms--test-class3
+  oms-back-test:
+    image: oms-back-test
+    container_name: oms-back-test
     networks:
       - app-network
     depends_on:
-      oms-class3:
+      oms-back:
         condition: service_started
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  pgdata:  
+# volumes:
+#   pgdata: 
