@@ -35,7 +35,7 @@ pipeline {
                     sh 'docker build -t oms-back .'
                     
                     sh 'docker-compose up -d'
-                    sh 'docker logs my-postgres'
+                    sh 'docker logs -f my-postgres'
                     sh 'docker logs -f oms-back'                    
                 }
             }
