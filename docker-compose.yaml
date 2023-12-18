@@ -31,8 +31,8 @@ services:
       - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432
       - SECRET_TOKEN_KEY=secretKey
       - PORT=8081
-    depends_on:
-      my-postgres:
+    # depends_on:
+    #   my-postgres:
         # condition: service_healthy
   oms-back-test:
     image: oms-back-test
