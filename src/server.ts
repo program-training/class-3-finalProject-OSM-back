@@ -11,7 +11,7 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
 import { expressMiddleware } from "@apollo/server/express4";
 import Redis from "ioredis";
 import http from "http";
-
+import redisClient from "./redisClient";
 interface context {
   token?: string;
 }
@@ -49,5 +49,6 @@ const start = async () => {
   console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
   await checkConnection();
   await connectToDatabase();
+  redisClient.connect()
 };
 start();
