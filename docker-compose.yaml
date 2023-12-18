@@ -6,8 +6,8 @@ services:
     networks:
       - app-network
   my-postgres:
-   image: postgres:14.1-alpine
-    # restart: always
+    image: postgres:14.1-alpine
+    container_name: my-postgres
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -28,20 +28,19 @@ services:
       - app-network
     environment:
       - MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test
-      - DATABASE_USERNAME=postgresql://postgres:postgres@my-postgres:5432
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=postgres
       - SECRET_TOKEN_KEY=secretKey
       - PORT=8081
     depends_on:
-      my-postgres:
-        # condition: service_healthy
+      - my-postgres
   oms-back-test:
     image: oms-back-test
     container_name: oms-back-test
     networks:
       - app-network
     depends_on:
-      oms-back:
-        condition: service_started
+      - oms-back
 networks:
   app-network:
     driver: bridge
