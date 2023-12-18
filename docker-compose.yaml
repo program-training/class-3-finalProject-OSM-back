@@ -45,5 +45,5 @@ services:
 networks:
   app-network:
     driver: bridge
-# volumes:
-#   pgdata: 
+volumes:
+  pgdata: 
