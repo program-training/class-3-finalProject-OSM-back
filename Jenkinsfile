@@ -42,6 +42,7 @@ pipeline {
             steps {
                 script {
                     sh 'docker logs -f my-postgres'
+                    sh 'sleep 100'
                     sh 'docker logs -f oms-back'  
                 }
             }
