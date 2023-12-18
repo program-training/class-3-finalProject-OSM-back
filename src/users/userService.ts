@@ -11,10 +11,19 @@ import {
 } from "../users/userDal";
 import { generateUserPassword } from "../bycrypt/bycrypt";
 import { resolversinterface } from "../interfaces/resolverinterface";
-
+import RedisClient from "../redis/redis";
 export const registerService = async (user: UserInterface) => {
   try {
+    const key = `usersRegister:${user.email}`;
+
+    const dataFromRedis = await RedisClient.get(key);
+    if (dataFromRedis) {
+      console.log("Data retrieved from Redis");
+      return JSON.parse(dataFromRedis);
+    }
     const result = await registerDal(user);
+    await RedisClient.setEx(key, 200, JSON.stringify(result));
+    console.log("Data stored in Redis");
     return result;
   } catch (err) {
     console.error("Error reading data:(service)", err);
@@ -55,12 +64,18 @@ export const resetPasswordService = async (
 
 export const loginService = async (user: UserInterface) => {
   try {
+    const key = `loginService:${user.email}`;
+    const dataFromRedis = await RedisClient.get(key);
+    if (dataFromRedis) {
+      console.log("Data retrieved from Redis");
+      return JSON.parse(dataFromRedis);
+    }
     const result = await loginDal(
       user.email as string,
       user.password as string
     );
-    console.log(result);
-
+    await RedisClient.setEx(key, 200, JSON.stringify(result));
+    console.log("Data stored in Redis");
     return result;
   } catch (err) {
     console.error("Error reading data:(service)", err);
@@ -79,7 +94,16 @@ export const deleteUserByIdService = async (userId: number) => {
 };
 export const getAllUsersService = async () => {
   try {
+    const key = `getAllUser:getAllUsersService`;
+
+    const dataFromRedis = await RedisClient.get(key);
+    if (dataFromRedis) {
+      console.log("Data retrieved from Redis");
+      return JSON.parse(dataFromRedis);
+    }
     const users = await getAllUsersDal();
+    await RedisClient.setEx(key, 200, JSON.stringify(users));
+    console.log("Data stored in Redis");
     return users;
   } catch (arr) {
     console.error("Error get all users:(service)", arr);
@@ -89,7 +113,16 @@ export const getAllUsersService = async () => {
 
 export const getTimeRegisterService = async () => {
   try {
+    const key = `getTimeRegister:getTimeRegister`;
+
+    const dataFromRedis = await RedisClient.get(key);
+    if (dataFromRedis) {
+      console.log("Data retrieved from Redis");
+      return JSON.parse(dataFromRedis);
+    }
     const registrations = await getTimeRegisterDal();
+    await RedisClient.setEx(key, 200, JSON.stringify(registrations));
+    console.log("Data stored in Redis");
     return registrations;
   } catch (error) {
     console.error("Error in getTimeRegisterController:", error);

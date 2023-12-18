@@ -11,13 +11,16 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
 import { expressMiddleware } from "@apollo/server/express4";
 import Redis from "ioredis";
 import http from "http";
-import redisClient from "./redisClient";
+
+import chalk from "chalk";
+import RedisClient from "./redis/redis";
+
 interface context {
   token?: string;
 }
 
 dotenv.config();
-const PORT = process.env.PORT as unknown as number;
+const PORT = process.env.PORT ;
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -46,9 +49,18 @@ const start = async () => {
   await new Promise<void>((resolve) =>
     httpServer.listen({ port: PORT }, resolve)
   );
-  console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
+  console.log(chalk.blueBright(`🚀 Server ready at http://localhost:${PORT}/graphql`));
   await checkConnection();
   await connectToDatabase();
-  redisClient.connect()
+
+  RedisClient.connect()
+    .then(() =>
+      console.log(
+        chalk.magentaBright("Connected to Redis🚀🚀")
+      )
+    )
+    .catch((error) => {
+      if (error instanceof Error) console.log(error.message);
+    });
 };
 start();
