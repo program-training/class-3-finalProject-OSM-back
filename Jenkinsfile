@@ -36,7 +36,7 @@ pipeline {
                     
                     sh 'docker-compose up -d'
                     sh 'docker logs my-postgres'
-                    sh 'docker logs -f oms-class3'                    
+                    sh 'docker logs -f oms-back'                    
                 }
             }
         }
