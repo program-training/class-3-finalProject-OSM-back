@@ -2,7 +2,7 @@ import request from "supertest";
 import { Request } from "express";
 // import app from "../src/server";
 
-const server=request('http://localhost:8080')
+const server=request(app)
 describe('User Controller', () => {
   let userId:number;
   test('register a new user', async () => {
