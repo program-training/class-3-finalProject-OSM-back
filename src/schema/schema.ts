@@ -4,18 +4,23 @@ export const typeDefs = gql`
     id: Int!
     email: String!
     code: String!
-    password:String!
+    password: String!
+  }
+  type User_login {
+    hour: Int!
+    registrations: Int!
   }
 
   type Query {
     getUser(id: Int!): User
     getAllUsers: [User]
+    getTimeRegister:[Int!]
   }
 
   type Mutation {
     registerUser(email: String!, password: String!): RegisterUserResponse
     loginUser(email: String!, password: String!): RegisterUserResponse
-    deleteUser(id:Int!): String
+    deleteUser(id: Int!): String
     forgotPassword(email: String!): String
     comperepassword(email: String!, code: String!): String
     resetPassword(email: String!, password: String!): ResetPasswordResponse
@@ -56,15 +61,19 @@ export const typeDefs = gql`
     shippingDetails: ShippingDetails
   }
 
+  
+
   type Query {
     getAllOrders: [Order]
     getOrdersByUserId(userId: String): [Order]
+    getOrdersForHours: [Int]
   }
 
   type Mutation {
     updateOrder(orderId: String, updatedData: OrderInput): Order
     addNewOrder(orderData: OrderInput): Order
-    deleteOrder(orderId: String): String
+    deleteOrder(orderId: String):String!
+    handleGetAllOrdersStatus:OrderStatusCounts!
   }
 
   input OrderInput {
@@ -90,5 +99,10 @@ export const typeDefs = gql`
     contactNumber: String
     orderType: String
     id: String
+  }
+  type OrderStatusCounts {
+    Pending: Int!
+    Refunded: Int! 
+    Delivered: Int!
   }
 `
