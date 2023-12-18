@@ -13,7 +13,6 @@ import Redis from "ioredis";
 import http from "http";
 import chalk from "chalk";
 import RedisClient from "./redis/redis";
-import { checkRedisMiddleware } from "./redis/checkRedisMiddleware";
 interface context {
   token?: string;
 }
@@ -37,7 +36,6 @@ const start = async () => {
     cors<cors.CorsRequest>(),
     express.json(),
     morgan("tiny"),
-    // checkRedisMiddleware, 
     expressMiddleware(server, {
       context: async ({ req }) => {
         const token = req.headers.token;
