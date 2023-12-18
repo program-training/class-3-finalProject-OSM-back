@@ -18,7 +18,7 @@ interface context {
 }
 
 dotenv.config();
-const PORT = process.env.PORT ;
+const PORT = process.env.PORT;
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -44,23 +44,12 @@ const start = async () => {
     })
   );
 
-<<<<<<< HEAD
   await new Promise<void>((resolve) => httpServer.listen({ port: PORT }, resolve));
-  console.log(`🚀 Server ready at http://localhost:${PORT}/graphql`);
-=======
-  await new Promise<void>((resolve) =>
-    httpServer.listen({ port: PORT }, resolve)
-  );
   console.log(chalk.blueBright(`🚀 Server ready at http://localhost:${PORT}/graphql`));
->>>>>>> e4351fd3153c2c00442120cd4723826d15655349
   await checkConnection();
   await connectToDatabase();
   RedisClient.connect()
-    .then(() =>
-      console.log(
-        chalk.magentaBright("Connected to Redis🚀🚀")
-      )
-    )
+    .then(() => console.log(chalk.magentaBright("Connected to Redis🚀🚀")))
     .catch((error) => {
       if (error instanceof Error) console.log(error.message);
     });
