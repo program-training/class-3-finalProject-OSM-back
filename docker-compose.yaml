@@ -21,29 +21,29 @@ services:
       # interval: 20s
       # timeout: 30s
       # retries: 3
-  oms-back:
-    image: oms-back
-    container_name: oms-back
-    networks:
-      - app-network
-    environment:
-      - MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test
-      - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432
-      - SECRET_TOKEN_KEY=secretKey
-      - PORT=8081
-    # depends_on:
-    #   my-postgres:
-        # condition: service_healthy
-  oms-back-test:
-    image: oms-back-test
-    container_name: oms-back-test
-    networks:
-      - app-network
-    depends_on:
-      oms-back:
-        condition: service_started
-networks:
-  app-network:
-    driver: bridge
-volumes:
-  pgdata: 
+#   oms-back:
+#     image: oms-back
+#     container_name: oms-back
+#     networks:
+#       - app-network
+#     environment:
+#       - MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test
+#       - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432
+#       - SECRET_TOKEN_KEY=secretKey
+#       - PORT=8081
+#     # depends_on:
+#     #   my-postgres:
+#         # condition: service_healthy
+#   oms-back-test:
+#     image: oms-back-test
+#     container_name: oms-back-test
+#     networks:
+#       - app-network
+#     depends_on:
+#       oms-back:
+#         condition: service_started
+# networks:
+#   app-network:
+#     driver: bridge
+# volumes:
+#   pgdata: 
