@@ -8,7 +8,7 @@ services:
   my-postgres:
     image: postgres
     container_name: my-postgres
-    restart: always
+    # restart: always
     environment:
       POSTGRES_PASSWORD: mypassword
     networks:
