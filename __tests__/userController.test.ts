@@ -2,7 +2,7 @@ import request from "supertest";
 import { Request } from "express";
 import app from "../src/server";
 
-const server=request('http://oms-class3:8081')
+const server=request('http://oms-back:8081')
 describe('User Controller', () => {
   test('Log in an existing user', async () => {
     const existingUser = {
