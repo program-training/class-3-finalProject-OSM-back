@@ -2,7 +2,7 @@ import chalk from "chalk";
 import { Types } from "mongoose";
 import { OrderInterface } from "../interfaces/orderInterface";
 import { getAllOrders, updateByOrderId, addNewOrder, getOrdersByUserId, deleteByOrderId, getOrdersForHours } from "./orderDal";
-import { client } from "../redis/redisConnection";
+import RedisClient from "../redis/redis";
 
 export const getAllOrdersService = async () => {
   try {
@@ -21,7 +21,12 @@ export const updateByOrderIdService = async (orderId: Types.ObjectId, updatedDat
   try {
     const updatedOrderFromDAL = await updateByOrderId(orderId, updatedData);
     const key = `orders:${updatedOrderFromDAL.id}`;
-    await client.setEx(key,200, JSON.stringify(updatedOrderFromDAL));
+    const dataFromRedis = await RedisClient.get(key);
+    if (dataFromRedis) {
+      console.log("Data retrieved from Redis");
+      return JSON.parse(dataFromRedis);
+    }
+    await RedisClient.setEx(key,200, JSON.stringify(updatedOrderFromDAL));
     return updatedOrderFromDAL;
   } catch (error) {
     console.log(chalk.redBright(error));
@@ -33,7 +38,12 @@ export const addNewOrderService = async (orderData: OrderInterface) => {
   try {
     const newOrderFromDAL = await addNewOrder(orderData);
     const key = `orders:${newOrderFromDAL.id}`;
-    await client.setEx(key,200, JSON.stringify(newOrderFromDAL));
+    const dataFromRedis = await RedisClient.get(key);
+    if (dataFromRedis) {
+      console.log("Data retrieved from Redis");
+      return JSON.parse(dataFromRedis);
+    }
+    await RedisClient.setEx(key,200, JSON.stringify(newOrderFromDAL));
     return newOrderFromDAL;
   } catch (error) {
     console.log(chalk.redBright(error));
@@ -45,7 +55,12 @@ export const getOrdersByUserIdService = async (userId: string) => {
   try {
     const ordersByUserFromDAL = await getOrdersByUserId(userId);
     const key = `orders:${userId}`;
-    await client.setEx(key,200, JSON.stringify(ordersByUserFromDAL));
+    const dataFromRedis = await RedisClient.get(key);
+    if (dataFromRedis) {
+      console.log("Data retrieved from Redis");
+      return JSON.parse(dataFromRedis);
+    }
+    await RedisClient.setEx(key,200, JSON.stringify(ordersByUserFromDAL));
     if (!Array.isArray(ordersByUserFromDAL) || ordersByUserFromDAL.length === 0) {
       throw new Error("No orders found for the given user");
     }
