@@ -6,42 +6,42 @@ services:
     networks:
       - app-network
   my-postgres:
-    image: postgres
-    container_name: my-postgres
-    # restart: always
+   image: postgres:14.1-alpine
+    restart: always
     environment:
-      POSTGRES_PASSWORD: mypassword
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
     networks:
       - app-network
     volumes:
-       - ./scripts:/docker-entrypoint-initdb.d
-       - pgdata:/var/lib/postgresql/data 
-    # healthcheck:
-      # test: ["CMD-SHELL", "pg_isready -U postgres"]  
-      # interval: 20s
-      # timeout: 30s
-      # retries: 3
-#   oms-back:
-#     image: oms-back
-#     container_name: oms-back
-#     networks:
-#       - app-network
-#     environment:
-#       - MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test
-#       - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432
-#       - SECRET_TOKEN_KEY=secretKey
-#       - PORT=8081
-#     # depends_on:
-#     #   my-postgres:
-#         # condition: service_healthy
-#   oms-back-test:
-#     image: oms-back-test
-#     container_name: oms-back-test
-#     networks:
-#       - app-network
-#     depends_on:
-#       oms-back:
-#         condition: service_started
+      - pgdata:/var/lib/postgresql/data
+      - ./scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 25s
+      retries: 3
+  oms-back:
+    image: oms-back
+    container_name: oms-back
+    networks:
+      - app-network
+    environment:
+      - MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test
+      - DATABASE_USERNAME=postgresql://postgres:postgres@my-postgres:5432
+      - SECRET_TOKEN_KEY=secretKey
+      - PORT=8081
+    depends_on:
+      my-postgres:
+        # condition: service_healthy
+  oms-back-test:
+    image: oms-back-test
+    container_name: oms-back-test
+    networks:
+      - app-network
+    depends_on:
+      oms-back:
+        condition: service_started
 networks:
   app-network:
     driver: bridge
