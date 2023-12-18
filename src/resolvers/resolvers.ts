@@ -5,6 +5,7 @@ export const resolvers={
       getAllUsers: userResolvers.getAllUsers,
       getTimeRegister:userResolvers.getTimeRegister,
       getAllOrders:orderResolvers.getAllOrders,
+      getOrdersForHours:orderResolvers.getOrdersForHours,
       getOrdersByUserId:orderResolvers.getOrdersByUserId
     },
     Mutation: {

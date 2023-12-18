@@ -1,5 +1,8 @@
 pipeline {
-    agent any 
+    agent any
+    triggers {
+        githubPush()
+    }
     stages {
         stage("run postgerss image") {
             steps {

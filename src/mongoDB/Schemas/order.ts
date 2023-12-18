@@ -25,6 +25,11 @@ const orderSchema = new Schema({
   shippingDetails: shippingDetailsSchema 
 });
 
+const ordersforhoursSchema = new Schema({
+  time: String
+})
+
 export const ProductModel = mongoose.model('Product', productSchema);
 export const ShippingDetailsModel = mongoose.model('ShippingDetails', shippingDetailsSchema);
 export const OrderModel = mongoose.model('Order', orderSchema);
+export const OrderForHoursModel = mongoose.model('OrderForHours', ordersforhoursSchema);
