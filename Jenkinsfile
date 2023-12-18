@@ -34,7 +34,7 @@ pipeline {
                     sh 'docker build -t oms-back-test -f Dockerfile.test .'
                     sh 'docker build -t oms-back .'
                     
-                    sh 'docker-compose up -d --build'
+                    sh 'docker-compose up --build'
                     
                     sh 'sleep 20'
 
