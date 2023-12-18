@@ -42,8 +42,8 @@ services:
 #     depends_on:
 #       oms-back:
 #         condition: service_started
-# networks:
-#   app-network:
-#     driver: bridge
-# volumes:
-#   pgdata: 
+networks:
+  app-network:
+    driver: bridge
+volumes:
+  pgdata: 
