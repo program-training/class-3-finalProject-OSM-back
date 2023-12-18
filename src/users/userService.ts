@@ -1,5 +1,5 @@
 import { UserInterface } from "../interfaces/userInterface";
-import { loginDal, registerDal, deleteUserByIdDal, forgotPasswordDal, resetPasswordDal, getAllUsersDal, comperepasswordDal } from "../users/userDal";
+import { loginDal, registerDal, deleteUserByIdDal, forgotPasswordDal, resetPasswordDal, getAllUsersDal, comperepasswordDal, getTimeRegisterDal } from "../users/userDal";
 import { generateUserPassword } from "../bycrypt/bycrypt";
 import { resolversinterface } from "../interfaces/resolverinterface";
 import RedisClient from "../redis/redis";
@@ -79,10 +79,38 @@ export const deleteUserByIdService = async (userId: number) => {
 };
 export const getAllUsersService = async () => {
   try {
+    const key = `getAllUser:getAllUsersService`;
+
+    const dataFromRedis = await RedisClient.get(key);
+    if (dataFromRedis) {
+      console.log("Data retrieved from Redis");
+      return JSON.parse(dataFromRedis);
+    }
     const users = await getAllUsersDal();
+    await RedisClient.setEx(key, 200, JSON.stringify(users));
+    console.log("Data stored in Redis");
     return users;
   } catch (arr) {
     console.error("Error get all users:(service)", arr);
     throw arr;
+  }
+};
+
+export const getTimeRegisterService = async () => {
+  try {
+    const key = `getTimeRegister:getTimeRegister`;
+
+    const dataFromRedis = await RedisClient.get(key);
+    if (dataFromRedis) {
+      console.log("Data retrieved from Redis");
+      return JSON.parse(dataFromRedis);
+    }
+    const registrations = await getTimeRegisterDal();
+    await RedisClient.setEx(key, 200, JSON.stringify(registrations));
+    console.log("Data stored in Redis");
+    return registrations;
+  } catch (error) {
+    console.error("Error in getTimeRegisterController:", error);
+    throw error;
   }
 };

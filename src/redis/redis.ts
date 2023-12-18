@@ -1,9 +1,12 @@
 import { createClient } from "redis";
+import * as dotenv from "dotenv";
+dotenv.config();
+const redisPort: number | undefined = process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT, 10) : undefined;
 const RedisClient = createClient({
-    password: 'J5U2IHHj7zSIO5fZDNXBtWGqlw4k8iTZ',
+    password: process.env.REDIS_PASSWORD,
     socket: {
-        host: 'redis-17818.c135.eu-central-1-1.ec2.cloud.redislabs.com',
-        port: 17818
+        host:process.env.REDIS_HOST,
+        port: redisPort
     }
   });
 

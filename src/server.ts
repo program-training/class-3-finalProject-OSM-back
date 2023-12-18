@@ -13,7 +13,6 @@ import Redis from "ioredis";
 import http from "http";
 import chalk from "chalk";
 import RedisClient from "./redis/redis";
-import { checkRedisMiddleware } from "./redis/checkRedisMiddleware";
 interface context {
   token?: string;
 }
@@ -37,7 +36,6 @@ const start = async () => {
     cors<cors.CorsRequest>(),
     express.json(),
     morgan("tiny"),
-    // checkRedisMiddleware,
     expressMiddleware(server, {
       context: async ({ req }) => {
         const token = req.headers.token;
@@ -49,7 +47,7 @@ const start = async () => {
   await new Promise<void>((resolve) => httpServer.listen({ port: PORT }, resolve));
   console.log(chalk.blueBright(`🚀 Server ready at http://localhost:${PORT}/graphql`));
   await checkConnection();
-  // await connectToDatabase();
+  await connectToDatabase();
   RedisClient.connect()
     .then(() => console.log(chalk.magentaBright("Connected to Redis🚀🚀")))
     .catch((error) => {
