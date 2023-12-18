@@ -8,6 +8,8 @@ type CollectionResult = Promise<Document[] | Error>;
 
 export const getAllOrders = async (): CollectionResult => {
   try {
+    console.log("db");
+    
     const orders = await OrderModel.find({});
     
     return orders;
