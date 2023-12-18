@@ -53,7 +53,7 @@ export const orderResolvers = {
           const orders = await getOrdersForHoursService();
           return orders;
         }catch (error){
-          throw new Error("Could not delete order")
+          throw new Error("Could not get order")
         }
       }
 }

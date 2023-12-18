@@ -73,8 +73,6 @@ export const getOrdersForHours = async () =>{
       const date = new Date(Order.time as string)
       countHours[date.getHours()]++
     })
-    console.log(countHours);
-    
     return countHours
   }catch (error) {
     return handleDBResponseError(error);

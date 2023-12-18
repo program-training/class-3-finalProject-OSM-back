@@ -108,7 +108,6 @@ export const getAllOrdersServiceStatus = async () => {
 export const getOrdersForHoursService = async () => {
   try{
     const orderForHours = await getOrdersForHours();
-    console.log(orderForHours);
     return orderForHours;
   }catch (error) {
     console.log(chalk.redBright(error));
