@@ -32,7 +32,7 @@ export const orderResolvers = {
         const id = orderId;
         try {
           const order = await deleteOrdersByOrderIdService(id);
-          return order;
+          return `delete order successfully`;
         } catch (error) {
           console.error("Error deleting order:", error);
           throw new Error("Could not delete order");

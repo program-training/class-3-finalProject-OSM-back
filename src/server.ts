@@ -11,8 +11,10 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
 import { expressMiddleware } from "@apollo/server/express4";
 import Redis from "ioredis";
 import http from "http";
+
 import chalk from "chalk";
 import RedisClient from "./redis/redis";
+
 interface context {
   token?: string;
 }
@@ -50,6 +52,7 @@ const start = async () => {
   console.log(chalk.blueBright(`🚀 Server ready at http://localhost:${PORT}/graphql`));
   await checkConnection();
   await connectToDatabase();
+
   RedisClient.connect()
     .then(() =>
       console.log(
