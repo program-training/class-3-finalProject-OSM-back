@@ -1,12 +1,10 @@
 version: '3'
-
 services:
   mongo-db:
     image: mongo
     container_name: mongo-db
     networks:
       - app-network
-
   my-postgres:
     image: postgres
     container_name: my-postgres
@@ -16,39 +14,36 @@ services:
       - app-network
     volumes:
       - ./scripts:/docker-entrypoint-initdb.d
-      # - pgdata:/var/lib/postgresql/data 
+      - pgdata:/var/lib/postgresql/data  # Add this line for the data volume
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
       timeout: 25s
       retries: 3
-
-  oms-back:
-    image: oms-back
-    container_name: oms-back
+  oms-class3:
+    image: oms-end3
+    container_name: oms-class3
     networks:
       - app-network
     environment:
       - MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test
-      - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432/db
+      - DATABASE_USERNAME=postgresql://postgres:mypassword@my-postgres:5432
       - SECRET_TOKEN_KEY=secretKey
       - PORT=8081
     depends_on:
       my-postgres:
         condition: service_healthy
-
-  oms-back-test:
-    image: oms-back-test
-    container_name: oms-back-test
+  oms-test-class3:
+    image: oms-end-test3
+    container_name: oms--test-class3
     networks:
       - app-network
     depends_on:
-      oms-back:
+      oms-class3:
         condition: service_started
-
 networks:
   app-network:
     driver: bridge
 
-# volumes:
-#   pgdata:  
+volumes:
+  pgdata:  
