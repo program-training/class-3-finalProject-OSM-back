@@ -33,7 +33,7 @@ services:
       - PORT=8081
     depends_on:
       my-postgres:
-        condition: service_healthy
+        # condition: service_healthy
   oms-back-test:
     image: oms-back-test
     container_name: oms-back-test
