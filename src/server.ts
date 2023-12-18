@@ -52,7 +52,6 @@ const start = async () => {
   console.log(chalk.blueBright(`🚀 Server ready at http://localhost:${PORT}/graphql`));
   await checkConnection();
   await connectToDatabase();
-
   RedisClient.connect()
     .then(() =>
       console.log(
