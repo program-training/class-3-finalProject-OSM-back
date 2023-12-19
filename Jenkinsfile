@@ -7,17 +7,17 @@ pipeline {
         stage('Build and Test') {
             steps {
                 script {
-echo '''"CREATE DATABASE db;
-CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
-    email VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    isadmin BOOLEAN DEFAULT false,
-    resetcode VARCHAR(255),
-    registration_time TIMESTAMP
-);" > scripts/init.sql'''        
-                    sh 'chmod +x scripts/init.sql'
-                    sh 'ls -alF'
+                    // echo '''"CREATE DATABASE db;
+                    // CREATE TABLE IF NOT EXISTS users (
+                    //     id SERIAL PRIMARY KEY,
+                    //     email VARCHAR(255) NOT NULL,
+                    //     password VARCHAR(255) NOT NULL,
+                    //     isadmin BOOLEAN DEFAULT false,
+                    //     resetcode VARCHAR(255),
+                    //     registration_time TIMESTAMP
+                    // );" > scripts/init.sql'''        
+                    // sh 'chmod +x scripts/init.sql'
+                    // sh 'ls -alF'
                     def dockerfileContent = '''
                         FROM node:18-alpine AS builder
                         WORKDIR /app
@@ -33,7 +33,8 @@ CREATE TABLE IF NOT EXISTS users (
                     sh 'docker build -t oms-back-test -f Dockerfile.test .'
                     sh 'docker build -t oms-back .'
                     sh 'docker-compose -f ./docker-compose.yaml config'
-                    sh 'docker-compose up -d'                  
+                    sh 'docker-compose up -d' 
+                    sh 'docker exec -it psql -U postgres my-postgres'
                 }
             }
         }
