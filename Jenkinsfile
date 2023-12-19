@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    triggers {
-        githubPush()
-    }
     stages {
         stage('Build and Test') {
             steps {
@@ -16,8 +13,8 @@ pipeline {
                     //     resetcode VARCHAR(255),
                     //     registration_time TIMESTAMP
                     // );" > scripts/init.sql'''        
-                    // sh 'chmod +x scripts/init.sql'
                     // sh 'ls -alF'
+                    
                     def dockerfileContent = '''
                         FROM node:18-alpine AS builder
                         WORKDIR /app
@@ -40,8 +37,8 @@ pipeline {
          stage('logs') {
             steps {
                 script {
-                    sh 'docker logs -f my-postgres'                    
-                    sh 'docker logs -f oms-back'  
+                    sh 'docker logs  my-postgres'                    
+                    sh 'docker logs  oms-back'  
                 }
             }
         }
