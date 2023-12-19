@@ -34,7 +34,6 @@ pipeline {
                     sh 'docker build -t oms-back .'
                     sh 'docker-compose -f ./docker-compose.yaml config'
                     sh 'docker-compose up -d'
-                    sh 'sleep 120'
                 }
             }
         }
