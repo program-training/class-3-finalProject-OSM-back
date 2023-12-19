@@ -33,8 +33,8 @@ pipeline {
                     sh 'docker build -t oms-back-test -f Dockerfile.test .'
                     sh 'docker build -t oms-back .'
                     sh 'docker-compose -f ./docker-compose.yaml config'
-                    sh 'docker-compose up -d' 
-                    sh 'docker exec -it my-postgres script -q -c "bash" /dev/null'
+                    sh 'docker-compose up -d'
+                    sh 'sleep 120'
                 }
             }
         }
