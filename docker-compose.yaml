@@ -15,11 +15,11 @@ services:
     networks:
       - app-network
     volumes:
-      # - pgdata:/var/lib/postgresql/data
+       - pgdata:/var/lib/postgresql/data
       # - "./db:/docker-entrypoint-initdb.d"
-      - type: bind
-        source: ./db
-        target: /docker-entrypoint-initdb.d
+      # - type: bind
+      #   source: ./db
+      #   target: /docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -48,5 +48,5 @@ services:
 networks:
   app-network:
     driver: bridge
-# volumes:
-#   pgdata: 
+volumes:
+  pgdata: 
