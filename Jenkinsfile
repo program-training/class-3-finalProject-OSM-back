@@ -15,7 +15,7 @@ pipeline {
                     sh 'printenv'
                     echo "Checking out code........"
                     def pullRequestBranch = env.GITHUB_PR_SOURCE_BRANCH ?: 'DevOps'
-                    checkout([$class: 'GitSCM', branches: [[name: "*/${pullRequestBranch}"]], userRemoteConfigs: [[url:'https://github.com/yakovperets/zalmans-server.git']]])
+                    checkout([$class: 'GitSCM', branches: [[name: "*/${pullRequestBranch}"]], userRemoteConfigs: [[url:'https://github.com/program-training/class-3-finalProject-OSM-back.git']]])
 
                     // Check if TAG_NAME exists
                     TAG_NAME = sh(script: "git tag --contains ${env.GIT_COMMIT}", returnStdout: true).trim()
