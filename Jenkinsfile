@@ -42,7 +42,7 @@ pipeline {
             steps {
                 script {
                         echo 'Building Front...'
-                        sh 'docker build -t $DOCKER_CREDENTIALS_USR/oms-back:$TAG_NAME .'
+                        sh "docker build -t $DOCKER_CREDENTIALS_USR/oms-back:$TAG_NAME ."
                 }
             }
         }
@@ -53,7 +53,7 @@ pipeline {
             steps {
                 script{
                     sh 'echo "Logging in to Dockerhub..."'
-                    sh 'echo $DOCKER_CREDENTIALS_PSW | docker login -u $DOCKER_CREDENTIALS_USR --password-stdin'
+                    sh "echo $DOCKER_CREDENTIALS_PSW | docker login -u $DOCKER_CREDENTIALS_USR --password-stdin"
                     sh 'echo "Login Completed"'
                 }
             }
@@ -65,7 +65,8 @@ pipeline {
             steps {
                 script {
                     sh 'echo "Pushing..."'
-                    sh 'docker push $DOCKER_CREDENTIALS_USR/oms-back:$TAG_NAME'
+                    sh "docker push $DOCKER_CREDENTIALS_USR/oms-back:$TAG_NAME"
+                    sh 'echo "Push Completed"'
                 }
             }
         }
