@@ -21,7 +21,7 @@ const PORT = process.env.PORT;
 
 app.listen(PORT, async () => {
   console.log(chalk.blueBright(`Server listening on port: ${PORT}`));
-  checkConnection()
-  connectToDatabase();
+  await checkConnection()
+  await connectToDatabase();
 });
 export default app;
