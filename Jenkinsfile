@@ -95,7 +95,7 @@ pipeline {
         always {
             script {
                 echo 'Cleaning workspace...'
-                sh 'docker rmi $DOCKER_CREDENTIALS_USR/oms-back:$TAG_NAME'
+                sh "docker rmi $DOCKER_CREDENTIALS_USR/oms-back:$TAG_NAME"
             }
         }
     }
