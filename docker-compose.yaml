@@ -1,10 +1,12 @@
 version: '3.8'
+
 services:
   mongo-db:
     image: mongo
     container_name: mongo-db
     networks:
       - app-network
+
   my-postgres:
     image: postgres:14.1-alpine
     restart: always
@@ -19,30 +21,33 @@ services:
       interval: 10s
       timeout: 25s
       retries: 3
-    db-init:
-      image: postgres:14.1-alpine
-      container_name: db-init
-      environment:
-        - POSTGRES_USER=postgres
-        - POSTGRES_PASSWORD=postgres
-      networks:
-        - app-network
-      command: >
-        bash -c "
-          while ! pg_isready -h my-postgres -U postgres; do
-            echo 'Waiting for database to be ready...'
-            sleep 1
-          psql -h my-postgres -U postgres -c 'CREATE DATABASE db;'
-          psql -h my-postgres -U postgres -d db -c '
-            CREATE TABLE IF NOT EXISTS users (
-              id SERIAL PRIMARY KEY,
-              email VARCHAR(255) NOT NULL,
-              password VARCHAR(255) NOT NULL,
-              isadmin BOOLEAN DEFAULT false,
-              resetcode VARCHAR (255),
-              registration_time TIMESTAMP
-            );'
-        "
+
+  db-init:
+    image: postgres:14.1-alpine
+    container_name: db-init
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - app-network
+    command: >
+      bash -c "
+        while ! pg_isready -h my-postgres -U postgres; do
+          echo 'Waiting for database to be ready...'
+          sleep 1
+        done
+        psql -h my-postgres -U postgres -c 'CREATE DATABASE db;'
+        psql -h my-postgres -U postgres -d db -c '
+          CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            email VARCHAR(255) NOT NULL,
+            password VARCHAR(255) NOT NULL,
+            isadmin BOOLEAN DEFAULT false,
+            resetcode VARCHAR (255),
+            registration_time TIMESTAMP
+          );'
+      "
+
   oms-back:
     image: oms-back
     container_name: oms-back
@@ -61,6 +66,7 @@ services:
       interval: 10s
       timeout: 25s
       retries: 3
+
   oms-back-test:
     image: oms-back-test
     container_name: oms-back-test
@@ -79,6 +85,7 @@ services:
       interval: 10s
       timeout: 25s
       retries: 3
+
 networks:
   app-network:
     driver: bridge
