@@ -38,6 +38,11 @@ services:
       - PORT=8081
     depends_on:
       - my-postgres
+    healthcheck:
+      test: ["CMD-SHELL", "docker ps"]
+      interval: 10s
+      timeout: 25s
+      retries: 3
   oms-back-test:
     image: oms-back-test
     container_name: oms-back-test
@@ -51,6 +56,11 @@ services:
       - PORT=8081
     depends_on:
       - oms-back
+    healthcheck:
+      test: ["CMD-SHELL", "docker ps"]
+      interval: 10s
+      timeout: 25s
+      retries: 3
 networks:
   app-network:
     driver: bridge
