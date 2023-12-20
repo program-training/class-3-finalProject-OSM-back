@@ -37,8 +37,9 @@ pipeline {
          stage('logs') {
             steps {
                 script {
+                    sh 'docker ps'
                     sh 'docker logs my-postgres'                    
-                    sh 'docker logs -f oms-back'  
+                    sh 'docker logs -f oms-back' 
                 }
             }
         }
