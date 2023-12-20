@@ -105,9 +105,7 @@ export const typeDefs = gql`
     Refunded: Int!
     Delivered: Int!
   }
-  schema {
-    query: Query
-    mutation: Mutation
-    subscription: Subscription
-  }
-`;
+
+  type Subscription {
+    getOrdersForHours: [Int] 
+}`

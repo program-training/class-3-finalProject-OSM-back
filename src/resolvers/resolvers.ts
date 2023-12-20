@@ -1,6 +1,6 @@
 import { userResolvers } from '../users/userResolvers';
 import { orderResolvers } from '../orders/orderResolvers';
-
+import {pubsub} from "../orders/orderResolvers"
 export const resolvers={
     Query: {
       getAllUsers: userResolvers.getAllUsers,
@@ -24,6 +24,7 @@ export const resolvers={
 
     },
     Subscription: {
-      getTimeRegister:userResolvers.getTimeRegister,
-    }
+      getOrdersForHours:orderResolvers.getOrdersForHours
+    },
+
   }
