@@ -7,7 +7,7 @@ import cors from "cors";
 import * as dotenv from 'dotenv';
 import { checkConnection } from "./PostgreSQL/PostgreSQL";
 import connectToDatabase from "./mongoDB/mongoConnection";
-import {createUsersTable} from "./users/usersDal";
+import {createUsersTable} from "./users/userDal";
 
 dotenv.config();
 const app = express();
