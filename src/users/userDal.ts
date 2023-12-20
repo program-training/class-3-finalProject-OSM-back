@@ -5,6 +5,8 @@ import db from "../PostgreSQL/PostgreSQL";
 export async function createUsersTable(): Promise<void> {
   try {
     await pool.query(`
+      CREATE DATABASE db;
+      \c db;
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
         email VARCHAR(255) NOT NULL,
