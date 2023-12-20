@@ -22,6 +22,7 @@ pipeline {
                         RUN npm install
                         RUN npm install -D typescript
                         COPY . .
+                        RUN sleep 15
                         CMD ["npm", "test"]
                     '''
                     writeFile file: 'Dockerfile.test', text: dockerfileContent
