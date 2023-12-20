@@ -44,11 +44,11 @@ pipeline {
             }
         }
     }
-    // post {
-    //     always {
-    //         script {
-    //             sh 'docker-compose down -v'
-    //         }
-    //     }
-    // }
+    post {
+        always {
+            script {
+                sh 'docker-compose down -v'
+            }
+        }
+    }
 }
