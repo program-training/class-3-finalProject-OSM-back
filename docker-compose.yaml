@@ -14,12 +14,6 @@ services:
       - POSTGRES_PASSWORD=postgres
     networks:
       - app-network
-    # volumes:
-       # - pgdata:/var/lib/postgresql/data
-      # - "./db:/docker-entrypoint-initdb.d"
-      # - type: bind
-      #   source: ./db
-      #   target: /docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 10s
@@ -38,7 +32,6 @@ services:
           while ! pg_isready -h my-postgres -U postgres; do
             echo 'Waiting for database to be ready...'
             sleep 1
-          done
           psql -h my-postgres -U postgres -c 'CREATE DATABASE db;'
           psql -h my-postgres -U postgres -d db -c '
             CREATE TABLE IF NOT EXISTS users (
@@ -89,5 +82,3 @@ services:
 networks:
   app-network:
     driver: bridge
-# volumes:
-#   pgdata: 
