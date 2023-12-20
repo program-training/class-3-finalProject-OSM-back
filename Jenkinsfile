@@ -28,7 +28,7 @@ pipeline {
 
                     if (TAG_EXISTS.toBoolean()) {
                         echo "GitHub Release Tag Name: ${TAG_NAME}"
-                        // Add any other steps you need for when TAG_NAME exists
+                        // Add any steps you need for when TAG_NAME exists
                     } else {
                         echo "No GitHub Release Tag found."
                     }
