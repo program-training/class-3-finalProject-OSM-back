@@ -17,7 +17,7 @@ export async function createUsersTable(): Promise<void> {
     `);
     console.log("Users table created or already exists.");
   } catch (error) {
-    console.error("Error creating users table:", (error as Error).message);
+    console.error("Error creating users table:", error);
   }
 }
 export async function registerDal(
