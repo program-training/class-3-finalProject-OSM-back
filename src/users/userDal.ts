@@ -44,11 +44,11 @@ export async function registerDal(
       SELECT * FROM login_logs
       `);
       if (result1.rows.length > 0) {
-        console.log(result1.rows);
+        // console.log(result1.rows);
       } else {
-        console.log("No login logs found.");
+        // console.log("No login logs found.");
       }
-      console.log(result1);
+      // console.log(result1);
       
       return insertedUser;
     } else {
@@ -250,7 +250,7 @@ export const getTimeRegisterDal = async () => {
       GROUP BY hour
       ORDER BY hour;
     `);
-    console.log(result.rows);
+    // console.log(result.rows);
 
     const countHours = [
       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -260,7 +260,7 @@ export const getTimeRegisterDal = async () => {
       const registrations: number = Number(entry.registrations);
       countHours[hour] += registrations;
     });
-    console.log(countHours);
+    // console.log(countHours);
     return countHours;
   } catch (error) {
     console.error("Error executing SQL query:", error);

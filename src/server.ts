@@ -11,9 +11,11 @@ import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHt
 import { expressMiddleware } from "@apollo/server/express4";
 import Redis from "ioredis";
 import http from "http";
-
+import { WebSocketServer } from 'ws';
+import { useServer } from 'graphql-ws/lib/use/ws';
 import chalk from "chalk";
 import RedisClient from "./redis/redis";
+import { makeExecutableSchema } from "@graphql-tools/schema";
 
 interface context {
   token?: string;
@@ -25,16 +27,29 @@ const PORT = process.env.PORT ;
 const app = express();
 const httpServer = http.createServer(app);
 
+const wsServer = new WebSocketServer({
+  server: httpServer,
+  path: '/graphql'
+});
+const schema = makeExecutableSchema({ typeDefs, resolvers });
+const serverCleanup = useServer({ schema }, wsServer);
 const server = new ApolloServer<context>({
-  typeDefs,
-  resolvers,
-  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  schema,
+  plugins: [ApolloServerPluginDrainHttpServer({ httpServer }),{
+    async serverWillStart() {
+        return {
+            async drainServer() {
+                await serverCleanup.dispose();
+            },
+        };
+    },
+},],
 });
 
 const start = async () => {
   await server.start();
   app.use(
-    "/",
+    "/graphql",
     cors<cors.CorsRequest>(),
     express.json(),
     morgan("tiny"),
@@ -51,7 +66,7 @@ const start = async () => {
   );
   console.log(chalk.blueBright(`🚀 Server ready at http://localhost:${PORT}/graphql`));
   await checkConnection();
-  await connectToDatabase();
+  // await connectToDatabase();
   RedisClient.connect()
     .then(() =>
       console.log(

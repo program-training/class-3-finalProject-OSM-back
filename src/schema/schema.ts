@@ -14,7 +14,7 @@ export const typeDefs = gql`
   type Query {
     getUser(id: Int!): User
     getAllUsers: [User]
-    getTimeRegister:[Int!]
+    getRegisterTime:[Int!]
   }
 
   type Mutation {
@@ -52,7 +52,7 @@ export const typeDefs = gql`
   }
 
   type Order {
-    _id:String
+    _id: String
     id: String
     cartItems: [Product]
     orderTime: String
@@ -60,9 +60,6 @@ export const typeDefs = gql`
     price: Int
     shippingDetails: ShippingDetails
   }
-
-  
-
   type Query {
     getAllOrders: [Order]
     getOrdersByUserId(userId: String): [Order]
@@ -72,12 +69,15 @@ export const typeDefs = gql`
   type Mutation {
     updateOrder(orderId: String, updatedData: OrderInput): Order
     addNewOrder(orderData: OrderInput): Order
-    deleteOrder(orderId: String):String!
-    handleGetAllOrdersStatus:OrderStatusCounts!
+    deleteOrder(orderId: String): String!
+    handleGetAllOrdersStatus: OrderStatusCounts!
+  }
+  type Subscription {
+    getTimeRegister: [Int!]
   }
 
   input OrderInput {
-    _id:String
+    _id: String
     cartItems: [ProductInput]
     orderTime: String
     status: String
@@ -102,7 +102,12 @@ export const typeDefs = gql`
   }
   type OrderStatusCounts {
     Pending: Int!
-    Refunded: Int! 
+    Refunded: Int!
     Delivered: Int!
   }
-`
+  schema {
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
+  }
+`;

@@ -1,4 +1,5 @@
 // userResolvers.ts
+import { PubSub } from "graphql-subscriptions";
 import { UserInterface } from "../interfaces/userInterface";
 import {
   registerService,
@@ -15,7 +16,8 @@ import * as JWT from "../jwt/jwt";
 import { generateUniqueCode } from "../nodemailer/nodemailer";
 import { generateUserPassword } from "../bycrypt/bycrypt";
 import { sendemail } from "../nodemailer/nodemailer";
-
+const pubsub = new PubSub();
+let flag = true;
 export const userResolvers = {
   registerUser: async (
     parent: string,
@@ -38,6 +40,9 @@ export const userResolvers = {
       );
       const user = await registerService(registerUser);
       if (user) {
+        pubsub.publish("TIME_REGISTER_CHANNEL", {
+          getTimeRegister: getTimeRegisterService,
+        });
         const accessToken = JWT.generateAccessToken(user);
         return { user, accessToken };
       } else {
@@ -151,16 +156,34 @@ export const userResolvers = {
       throw new Error("Server error while getting all users");
     }
   },
-  getTimeRegister: async (): Promise<number[]> => {
-    try {
-      const allUsers = await getTimeRegisterService();
-      if (allUsers === undefined) {
-        throw new Error("Failed to retrieve user data");
+  getRegisterTime:async (): Promise<number[]> => {
+      try {
+        const allUsers = await getTimeRegisterService();
+        if (allUsers === undefined) {
+          throw new Error("Failed to retrieve user data");
+        }
+        return allUsers
+      } catch (error) {
+        console.error(error);
+        throw new Error("Server error while getting all users");
       }
-      return allUsers;
-    } catch (error) {
-      console.error(error);
-      throw new Error("Server error while getting all users");
-    }
+  },
+  getTimeRegister: {
+    subscribe: async () => {
+      try {
+        const allUsers = await getTimeRegisterService();
+        if (allUsers === undefined) {
+          throw new Error("Failed to retrieve user data");
+        }
+        console.log(allUsers);
+        // pubsub.publish("TIME_REGISTER_CHANNEL", {
+        //   getTimeRegisterService: allUsers,
+        // });
+        return pubsub.asyncIterator(["TIME_REGISTER_CHANNEL"]);
+      } catch (error) {
+        console.error(error);
+        throw new Error("Server error while getting all users");
+      }
+    },
   },
 };
