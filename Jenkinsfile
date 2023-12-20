@@ -31,12 +31,14 @@ pipeline {
                         // Add any other steps you need for when TAG_NAME exists
                     } else {
                         echo "No GitHub Release Tag found."
-                        // Add any other steps you need for when TAG_NAME does not exist
                     }
                 }
             }
         }
         stage('Build') {
+            when {
+                expression { TAG_EXISTS.toBoolean() }
+            }
             steps {
                 script {
                         echo 'Building Front...'
@@ -45,6 +47,9 @@ pipeline {
             }
         }
         stage('dockerhub login') {
+            when {
+                expression { TAG_EXISTS.toBoolean() }
+            }
             steps {
                 script{
                     sh 'echo "Logging in to Dockerhub..."'
@@ -54,6 +59,9 @@ pipeline {
             }
         }
         stage('dockerhub push') {
+            when {
+                expression { TAG_EXISTS.toBoolean() }
+            }
             steps {
                 script {
                     sh 'echo "Pushing..."'
