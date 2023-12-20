@@ -16,7 +16,10 @@ import { useServer } from 'graphql-ws/lib/use/ws';
 import chalk from "chalk";
 import RedisClient from "./redis/redis";
 import { makeExecutableSchema } from "@graphql-tools/schema";
+<<<<<<< HEAD
+=======
 
+>>>>>>> e46b1b7e16786245bc73fe26fea293af5c56f1ae
 
 interface context {
   token?: string;
@@ -33,7 +36,10 @@ const wsServer = new WebSocketServer({
   path: '/graphql'
 });
 const schema = makeExecutableSchema({ typeDefs, resolvers });
+<<<<<<< HEAD
+=======
 
+>>>>>>> e46b1b7e16786245bc73fe26fea293af5c56f1ae
 const serverCleanup = useServer({ schema }, wsServer);
 const server = new ApolloServer<context>({
   schema,
@@ -68,7 +74,11 @@ const start = async () => {
   );
   console.log(chalk.blueBright(`🚀 Server ready at http://localhost:${PORT}/graphql`));
   await checkConnection();
+<<<<<<< HEAD
+  // await connectToDatabase();
+=======
   await connectToDatabase();
+>>>>>>> e46b1b7e16786245bc73fe26fea293af5c56f1ae
   RedisClient.connect()
     .then(() =>
       console.log(

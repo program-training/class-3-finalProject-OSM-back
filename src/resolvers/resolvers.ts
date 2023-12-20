@@ -4,10 +4,11 @@ import {pubsub} from "../orders/orderResolvers"
 export const resolvers={
     Query: {
       getAllUsers: userResolvers.getAllUsers,
-      getTimeRegister:userResolvers.getTimeRegister,
+      getRegisterTime:userResolvers.getRegisterTime,
       getAllOrders:orderResolvers.getAllOrders,
       getOrdersForHours:orderResolvers.getOrdersForHours,
-      getOrdersByUserId:orderResolvers.getOrdersByUserId
+      getOrdersByUserId:orderResolvers.getOrdersByUserId,
+      
     },
     Mutation: {
       registerUser: userResolvers.registerUser,

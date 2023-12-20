@@ -111,18 +111,9 @@ export const getAllUsersService = async () => {
   }
 };
 
-export const getTimeRegisterService = async () => {
+export const getTimeRegisterService = async (): Promise<number[]|undefined> => {
   try {
-    const key = `getTimeRegister:getTimeRegister`;
-
-    const dataFromRedis = await RedisClient.get(key);
-    if (dataFromRedis) {
-      console.log("Data retrieved from Redis");
-      return JSON.parse(dataFromRedis);
-    }
     const registrations = await getTimeRegisterDal();
-    await RedisClient.setEx(key, 200, JSON.stringify(registrations));
-    console.log("Data stored in Redis");
     return registrations;
   } catch (error) {
     console.error("Error in getTimeRegisterController:", error);
