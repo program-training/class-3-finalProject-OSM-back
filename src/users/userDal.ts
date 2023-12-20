@@ -6,7 +6,7 @@ export async function createUsersTable(): Promise<void> {
   try {
     await pool.query(`
       CREATE DATABASE db;
-      \c db;
+      USE db;
       CREATE TABLE IF NOT EXISTS users (
         id SERIAL PRIMARY KEY,
         email VARCHAR(255) NOT NULL,
