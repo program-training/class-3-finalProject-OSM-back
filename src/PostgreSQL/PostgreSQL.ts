@@ -18,7 +18,7 @@ export async function checkConnection() {
   let client;
   try {
     client = await pool.connect();
-    console.log("conenct to PostgreSQL")
+    console.log("conencted to PostgreSQL")
   } catch (error) {
     console.error("Error connecting to PostgreSQL:", error);
   } finally {
