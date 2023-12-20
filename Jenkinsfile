@@ -40,7 +40,7 @@ pipeline {
             steps {
                 script {
                         echo 'Building Front...'
-                        sh 'docker build -t $DOCKER_CREDENTIALS_USR/store-front:$TAG_NAME .'
+                        sh 'docker build -t $DOCKER_CREDENTIALS_USR/oms-back:$TAG_NAME .'
                 }
             }
         }
@@ -57,7 +57,7 @@ pipeline {
             steps {
                 script {
                     sh 'echo "Pushing..."'
-                    sh 'docker push $DOCKER_CREDENTIALS_USR/store-front:$TAG_NAME'
+                    sh 'docker push $DOCKER_CREDENTIALS_USR/oms-back:$TAG_NAME'
                 }
             }
         }
@@ -68,7 +68,7 @@ pipeline {
                 echo 'Building passed. You may now merge.'
                 setGitHubPullRequestStatus(
                     state: 'SUCCESS',
-                    context: 'class3_store_front_build',
+                    context: 'class3_oms_back_build',
                     message: 'build passed',
                 )
             }
@@ -78,7 +78,7 @@ pipeline {
                 echo 'Pipeline failed. Blocking pull request merge.'
                 setGitHubPullRequestStatus(
                     state: 'FAILURE',
-                    context: 'class3_store_front_build',
+                    context: 'class3_oms_back_build',
                     message: 'build failed',
                 )
             }
@@ -86,7 +86,7 @@ pipeline {
         always {
             script {
                 echo 'Cleaning workspace...'
-                sh 'docker rmi $DOCKER_CREDENTIALS_USR/store-front:latest'
+                sh 'docker rmi $DOCKER_CREDENTIALS_USR/oms-back:$TAG_NAME'
             }
         }
     }
