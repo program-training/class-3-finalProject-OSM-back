@@ -24,7 +24,8 @@ export const resolvers={
 
     },
     Subscription: {
-      getOrdersForHours:orderResolvers.getOrdersForHours
+      getOrdersForHours:orderResolvers.getOrdersForHours,
+      getTimeRegister:userResolvers.getTimeRegister
     },
 
   }
