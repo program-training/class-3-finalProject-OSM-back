@@ -5,10 +5,10 @@ import { checkConnection } from "../src/PostgreSQL/PostgreSQL";
 import { createUsersTable } from "../src/users/userDal";
 import pool from "../src/PostgreSQL/PostgreSQL";
 
-beforeAll(async () => {
-  await checkConnection();
-  await createUsersTable();
-});
+// beforeAll(async () => {
+//   await checkConnection();
+//   await createUsersTable();
+// });
 
 const server = request("http://oms-back:8081");
 describe("User Controller", () => {
