@@ -1,5 +1,6 @@
 import { userResolvers } from '../users/userResolvers';
 import { orderResolvers } from '../orders/orderResolvers';
+import {pubsub} from "../orders/orderResolvers"
 export const resolvers={
     Query: {
       getAllUsers: userResolvers.getAllUsers,
@@ -21,4 +22,8 @@ export const resolvers={
       handleGetAllOrdersStatus:orderResolvers.handleGetAllOrdersStatus
 
     },
+    Subscription: {
+      getOrdersForHours:orderResolvers.getOrdersForHours
+    },
+
   }

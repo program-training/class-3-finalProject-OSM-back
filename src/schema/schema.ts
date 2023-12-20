@@ -105,4 +105,7 @@ export const typeDefs = gql`
     Refunded: Int! 
     Delivered: Int!
   }
-`
+
+  type Subscription {
+    getOrdersForHours: [Int] 
+}`
