@@ -9,6 +9,8 @@ import {
     getAllOrdersServiceStatus,
     getOrdersForHoursService
   } from "../orders/orderService"; 
+  import { PubSub } from "graphql-subscriptions";
+  export const pubsub = new PubSub()
 export const orderResolvers = {
     getAllOrders: () => getAllOrdersService(),
 
@@ -23,6 +25,9 @@ export const orderResolvers = {
       addNewOrder: (_: unknown, { orderData }: { orderData: OrderInterface }) =>{
         try{
          const newOrder = addNewOrderService(orderData)
+         pubsub.publish("ORDERS_FOR_HOURS", {
+          getOrdersForHours:getOrdersForHoursService ,
+        });
          return newOrder
         } catch(error){
          throw new Error("Could not adding order");
@@ -48,12 +53,17 @@ export const orderResolvers = {
           throw new Error("Could not delete order");
         }
       },
-      getOrdersForHours: async () => {
-        try{
-          const orders = await getOrdersForHoursService();
-          return orders;
-        }catch (error){
-          throw new Error("Could not get order")
+      // getOrdersForHours: async () => {
+      //   try{
+      //     const orders = await getOrdersForHoursService();
+      //     return orders;
+      //   }catch (error){
+      //     throw new Error("Could not get order")
+      //   }
+      // }
+      getOrdersForHours: {
+        subscribe: async () => {
+        return pubsub.asyncIterator(["ORDERS_FOR_HOURS"]);
         }
       }
 }

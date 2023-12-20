@@ -20,7 +20,7 @@ const getFromCache = async (key: string) => {
   }
 };
 
-const setToCache = async (key: string, data: any, ttlSeconds: number = 3600) => {
+const setToCache = async (key: string, data: any, ttlSeconds: number = 10) => {
   try {
     await redisClient.set(key, JSON.stringify(data));
     await redisClient.expire(key, ttlSeconds);
