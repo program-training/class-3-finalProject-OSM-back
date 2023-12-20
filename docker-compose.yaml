@@ -31,7 +31,7 @@ services:
     networks:
       - app-network
     environment:
-      - MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test
+      - MONGO_CONNECTION_URI=mongodb://mongo-db:27017
       - DATABASE_USERNAME=postgresql://postgres:postgres@my-postgres:5432
       - DATABASE_PASSWORD=postgres
       - SECRET_TOKEN_KEY=secretKey
@@ -44,7 +44,7 @@ services:
     networks:
       - app-network
     environment:
-      - MONGO_CONNECTION_URI=mongodb://mongo-db:27017/test
+      - MONGO_CONNECTION_URI=mongodb://mongo-db:27017
       - DATABASE_USERNAME=postgresql://postgres:postgres@my-postgres:5432
       - DATABASE_PASSWORD=postgres
       - SECRET_TOKEN_KEY=secretKey
