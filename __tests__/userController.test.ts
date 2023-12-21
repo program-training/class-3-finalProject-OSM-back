@@ -31,7 +31,7 @@ describe("User Controller", () => {
     expect(users.email).toEqual(existingUser.email);
   });
 
-  afterAll(async () => {
-    await pool.end();
-  });
-});
+//   afterAll(async () => {
+//     await pool.end();
+//   });
+// });
